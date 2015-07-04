@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
-import dlord03.plugin.api.event.InvalidationHandler;
+import dlord03.plugin.api.event.InvalidationReportHandler;
 
 public interface Plugin<V extends SecurityData> extends Closeable {
 
@@ -27,6 +27,6 @@ public interface Plugin<V extends SecurityData> extends Closeable {
 
   Iterator<SecurityIdentifier> getValuesUpdatedSince(Instant time);
 
-  void registerInvalidationHandler(InvalidationHandler handler);
+  void registerInvalidationHandler(InvalidationReportHandler handler);
 
 }

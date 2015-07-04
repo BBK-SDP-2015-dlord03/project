@@ -8,7 +8,7 @@ import java.util.Properties;
 import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.DividendSchedule;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
-import dlord03.plugin.api.event.InvalidationHandler;
+import dlord03.plugin.api.event.InvalidationReportHandler;
 
 public class DividendPlugin implements Plugin<DividendSchedule> {
 
@@ -58,7 +58,7 @@ public class DividendPlugin implements Plugin<DividendSchedule> {
   }
 
   @Override
-  public void registerInvalidationHandler(InvalidationHandler handler) {
+  public void registerInvalidationHandler(InvalidationReportHandler handler) {
     // TODO Auto-generated method stub
 
   }

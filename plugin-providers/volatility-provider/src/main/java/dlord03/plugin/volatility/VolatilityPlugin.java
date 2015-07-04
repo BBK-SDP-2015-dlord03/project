@@ -8,7 +8,7 @@ import java.util.Properties;
 import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.VolatilitySurface;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
-import dlord03.plugin.api.event.InvalidationHandler;
+import dlord03.plugin.api.event.InvalidationReportHandler;
 
 public class VolatilityPlugin implements Plugin<VolatilitySurface> {
 
@@ -58,7 +58,7 @@ public class VolatilityPlugin implements Plugin<VolatilitySurface> {
   }
 
   @Override
-  public void registerInvalidationHandler(InvalidationHandler handler) {
+  public void registerInvalidationHandler(InvalidationReportHandler handler) {
     // TODO Auto-generated method stub
 
   }
