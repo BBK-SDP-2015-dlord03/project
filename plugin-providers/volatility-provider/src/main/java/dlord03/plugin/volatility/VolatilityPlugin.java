@@ -6,23 +6,22 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import dlord03.plugin.api.Plugin;
-import dlord03.plugin.api.data.Key;
 import dlord03.plugin.api.data.VolatilitySurface;
+import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationHandler;
 
-public class VolatilityPlugin
-    implements Plugin<Key, VolatilitySurface> {
+public class VolatilityPlugin implements Plugin<VolatilitySurface> {
 
   @Override
   public void open(Properties properties) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
   public void close() {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
@@ -32,34 +31,35 @@ public class VolatilityPlugin
   }
 
   @Override
-  public VolatilitySurface getLatestValue(Key key) {
+  public VolatilitySurface getLatestValue(SecurityIdentifier security) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public VolatilitySurface getLatestValue(Key key, Instant before) {
+  public VolatilitySurface getLatestValue(SecurityIdentifier security,
+      Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public VolatilitySurface getEndOfDayValue(Key key, LocalDate date) {
+  public VolatilitySurface getEndOfDayValue(SecurityIdentifier security,
+      LocalDate date) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public Iterator<Key> getKeysUpdatedSince(Instant time) {
+  public Iterator<String> getValuesUpdatedSince(Instant time) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public void registerInvalidationHandler(
-      InvalidationHandler<Key> handler) {
+  public void registerInvalidationHandler(InvalidationHandler handler) {
     // TODO Auto-generated method stub
-    
+
   }
 
 }

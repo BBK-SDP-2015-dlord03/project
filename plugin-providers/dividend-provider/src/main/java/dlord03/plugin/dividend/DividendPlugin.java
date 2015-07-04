@@ -7,22 +7,21 @@ import java.util.Properties;
 
 import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.DividendSchedule;
-import dlord03.plugin.api.data.Key;
+import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationHandler;
 
-public class DividendPlugin
-    implements Plugin<Key, DividendSchedule> {
+public class DividendPlugin implements Plugin<DividendSchedule> {
 
   @Override
   public void open(Properties properties) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
   public void close() {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
@@ -32,34 +31,35 @@ public class DividendPlugin
   }
 
   @Override
-  public DividendSchedule getLatestValue(Key key) {
+  public DividendSchedule getLatestValue(SecurityIdentifier security) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public DividendSchedule getLatestValue(Key key, Instant before) {
+  public DividendSchedule getLatestValue(SecurityIdentifier security,
+      Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public DividendSchedule getEndOfDayValue(Key key, LocalDate date) {
+  public DividendSchedule getEndOfDayValue(SecurityIdentifier security,
+      LocalDate date) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public Iterator<Key> getKeysUpdatedSince(Instant time) {
+  public Iterator<String> getValuesUpdatedSince(Instant time) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public void registerInvalidationHandler(
-      InvalidationHandler<Key> handler) {
+  public void registerInvalidationHandler(InvalidationHandler handler) {
     // TODO Auto-generated method stub
-    
+
   }
 
 }

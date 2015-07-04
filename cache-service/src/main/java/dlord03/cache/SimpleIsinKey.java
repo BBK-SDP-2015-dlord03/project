@@ -1,8 +1,8 @@
-package dlord03.plugin.api.impl;
+package dlord03.cache;
 
 import java.time.ZonedDateTime;
 
-import dlord03.plugin.api.data.Key;
+import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 /**
  * @author David Lord
@@ -11,20 +11,22 @@ import dlord03.plugin.api.data.Key;
 @SuppressWarnings("serial")
 public class SimpleIsinKey implements Key {
 
-  private final String isin;
+  private final SecurityIdentifier securityIdentifier;
   private final ZonedDateTime updatedAt;
   private final int hashCode;
 
-  public SimpleIsinKey(String isin, ZonedDateTime updatedAt) {
+  public SimpleIsinKey(SecurityIdentifier securityIdentifier,
+      ZonedDateTime updatedAt) {
     super();
-    this.isin = isin;
+    this.securityIdentifier = securityIdentifier;
     this.updatedAt = updatedAt;
-    this.hashCode = 31 * isin.hashCode() + updatedAt.hashCode();
+    this.hashCode =
+        31 * securityIdentifier.hashCode() + updatedAt.hashCode();
   }
 
   @Override
-  public String getIsin() {
-    return isin;
+  public SecurityIdentifier getSecurityIdentifier() {
+    return securityIdentifier;
   }
 
   @Override
@@ -44,7 +46,7 @@ public class SimpleIsinKey implements Key {
     if (!(obj instanceof SimpleIsinKey))
       return false;
     final SimpleIsinKey other = (SimpleIsinKey) obj;
-    return (this.isin.equals(other.isin)
+    return (this.securityIdentifier.equals(other.securityIdentifier)
         && this.updatedAt.equals(other.updatedAt));
   }
 

@@ -1,7 +1,9 @@
 package dlord03.plugin.api.event;
 
-public interface InvalidationHandler<K> {
-  
-  void invalidate(K key);
+import dlord03.plugin.api.data.security.SecurityIdentifier;
+
+public interface InvalidationHandler {
+
+  void invalidate(SecurityIdentifier security);
 
 }
