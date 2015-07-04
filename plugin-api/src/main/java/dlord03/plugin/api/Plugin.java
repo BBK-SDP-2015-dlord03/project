@@ -25,7 +25,7 @@ public interface Plugin<V extends SecurityData> extends Closeable {
 
   V getEndOfDayValue(SecurityIdentifier security, LocalDate date);
 
-  Iterator<String> getValuesUpdatedSince(Instant time);
+  Iterator<SecurityIdentifier> getValuesUpdatedSince(Instant time);
 
   void registerInvalidationHandler(InvalidationHandler handler);
 

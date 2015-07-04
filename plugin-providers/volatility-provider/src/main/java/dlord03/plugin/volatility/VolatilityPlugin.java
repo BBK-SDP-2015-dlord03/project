@@ -51,7 +51,8 @@ public class VolatilityPlugin implements Plugin<VolatilitySurface> {
   }
 
   @Override
-  public Iterator<String> getValuesUpdatedSince(Instant time) {
+  public Iterator<SecurityIdentifier> getValuesUpdatedSince(
+      Instant time) {
     // TODO Auto-generated method stub
     return null;
   }
