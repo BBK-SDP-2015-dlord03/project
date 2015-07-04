@@ -1,0 +1,76 @@
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>uk.ac.bbk.dcs.dlord03</groupId>
+    <artifactId>root</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>Project Root</name>
+
+    <modules>
+        <module>plugin-api</module>
+        <module>plugin-providers</module>
+        <module>cache-service</module>
+        <module>cache-rest-interface</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jdk.version>1.8</jdk.version>
+        <slf4j.version>1.7.12</slf4j.version>
+        <jsr107.api.version>1.0.0</jsr107.api.version>
+        <jsr330.api.version>1</jsr330.api.version>
+    </properties>
+
+    <scm>
+        <connection>scm:git:git://github.com/BBK-SDP-2015-dlord03/project.git</connection>
+        <developerConnection>scm:git:git@github.com:BBK-SDP-2015-dlord03/project.git</developerConnection>
+        <url>https://github.com/BBK-SDP-2015-dlord03/project</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>dlord03</id>
+            <name>David Lord</name>
+            <email>dlord03@dcs.bbk.ac.uk</email>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/BBK-SDP-2015-dlord03/project/issues</url>
+    </issueManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>uk.ac.bbk.dcs.dlord03</groupId>
+                <artifactId>plugin-api</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.3</version>
+                    <configuration>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+    </build>
+
+</project>
