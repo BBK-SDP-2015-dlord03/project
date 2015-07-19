@@ -20,9 +20,8 @@ public class QueryServer {
     ServletHolder servletHolder;
     servletHolder = context.addServlet(ServletContainer.class, "/*");
     servletHolder.setInitOrder(0);
-    servletHolder.setInitParameter(
-      "jersey.config.server.provider.classnames",
-      CacheQueryService.class.getCanonicalName());
+    servletHolder.setInitParameter("jersey.config.server.provider.classnames",
+        CacheQueryService.class.getCanonicalName());
 
     server.start();
     System.out.println("Server started.\nPress enter to stop...");

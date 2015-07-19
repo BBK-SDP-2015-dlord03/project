@@ -1,13 +1,28 @@
 package dlord03.rest;
 
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+import javax.cache.spi.CachingProvider;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import dlord03.cache.Service;
+
 @Path("cache")
 public class CacheQueryService {
+
+  final Service cache;
+
+  public CacheQueryService() {
+    super();
+    // resolve a cache manager
+    CachingProvider cachingProvider = Caching.getCachingProvider();
+    CacheManager cacheManager = cachingProvider.getCacheManager();
+    this.cache = new Service(cacheManager);
+  }
 
   @GET
   @Path("squareRoot")
