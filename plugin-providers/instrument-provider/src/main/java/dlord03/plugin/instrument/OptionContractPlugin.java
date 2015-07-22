@@ -7,11 +7,11 @@ import java.util.Properties;
 
 import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
-import dlord03.plugin.api.data.security.SecurityTermSheet;
+import dlord03.plugin.api.data.security.OptionContract;
 import dlord03.plugin.api.event.InvalidationReportHandler;
 
-public class SecurityTermSheetPlugin
-    implements Plugin<SecurityTermSheet> {
+public class OptionContractPlugin
+    implements Plugin<OptionContract> {
 
   @Override
   public void open(Properties properties) {
@@ -32,20 +32,20 @@ public class SecurityTermSheetPlugin
   }
 
   @Override
-  public SecurityTermSheet getLatestValue(SecurityIdentifier security) {
+  public OptionContract getLatestValue(SecurityIdentifier security) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public SecurityTermSheet getLatestValue(SecurityIdentifier security,
+  public OptionContract getLatestValue(SecurityIdentifier security,
       Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public SecurityTermSheet getEndOfDayValue(SecurityIdentifier security,
+  public OptionContract getEndOfDayValue(SecurityIdentifier security,
       LocalDate date) {
     // TODO Auto-generated method stub
     return null;
