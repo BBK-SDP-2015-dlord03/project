@@ -43,7 +43,7 @@ public class Service {
   }
   
   public void stop() {
-	  
+    this.cacheManager.close();
   }
   
   private void loadPlugins() {

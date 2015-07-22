@@ -18,10 +18,11 @@ public class CacheQueryService {
 
   public CacheQueryService() {
     super();
-    // resolve a cache manager
+    System.setProperty( "hazelcast.logging.type", "slf4j" );
     CachingProvider cachingProvider = Caching.getCachingProvider();
     CacheManager cacheManager = cachingProvider.getCacheManager();
     this.cache = new Service(cacheManager);
+    this.cache.start();
   }
 
   @GET
