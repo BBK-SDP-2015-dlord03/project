@@ -21,7 +21,8 @@ public class CacheQueryService {
     System.setProperty( "hazelcast.logging.type", "slf4j" );
     CachingProvider cachingProvider = Caching.getCachingProvider();
     CacheManager cacheManager = cachingProvider.getCacheManager();
-    this.cache = new Service(cacheManager);
+    this.cache = new Service();
+    this.cache.setCacheManager(cacheManager);
     this.cache.start();
   }
 
