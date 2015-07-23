@@ -9,21 +9,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import dlord03.cache.Service;
+import dlord03.cache.QueryService;
+import dlord03.cache.QueryServiceFactory;
 
 @Path("cache")
 public class CacheQueryService {
 
-  final Service cache;
+  final QueryService queryService;
 
   public CacheQueryService() {
     super();
     System.setProperty( "hazelcast.logging.type", "slf4j" );
     CachingProvider cachingProvider = Caching.getCachingProvider();
     CacheManager cacheManager = cachingProvider.getCacheManager();
-    this.cache = new Service();
-    this.cache.setCacheManager(cacheManager);
-    this.cache.start();
+    this.queryService = QueryServiceFactory.createService(cacheManager, null);
+    this.queryService.start();
   }
 
   @GET

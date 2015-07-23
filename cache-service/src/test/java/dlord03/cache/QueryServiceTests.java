@@ -8,17 +8,17 @@ import javax.cache.Caching;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ServiceTests {
+public class QueryServiceTests {
 
   private CacheManager cacheManager;
   Properties properties;
-  Service service;
+  QueryServiceImpl service;
 
   @Before
   public void setUp() {
     cacheManager = Caching.getCachingProvider().getCacheManager();
     properties = new Properties();
-    service = new Service();
+    service = new QueryServiceImpl();
   }
 
   @Test(expected = IllegalStateException.class)
@@ -41,7 +41,7 @@ public class ServiceTests {
 
   @Test(expected = ClassCastException.class)
   public void testServiceStartWithInvalidPlugin() {
-    properties.setProperty("security.plugin.classname", "dlord03.cache.plugins.InvalidPlugin");
+    properties.setProperty("option.plugin.classname", "dlord03.cache.plugins.InvalidPlugin");
     service.setCacheManager(cacheManager);
     service.setProperties(properties);
     service.start();
@@ -49,7 +49,7 @@ public class ServiceTests {
 
   @Test
   public void testServiceStartWithValidPlugin() {
-    properties.setProperty("security.plugin.classname", "dlord03.cache.plugins.SimplePluginImpl");
+    properties.setProperty("option.plugin.classname", "dlord03.cache.plugins.SimplePluginImpl");
     service.setCacheManager(cacheManager);
     service.setProperties(properties);
     service.start();

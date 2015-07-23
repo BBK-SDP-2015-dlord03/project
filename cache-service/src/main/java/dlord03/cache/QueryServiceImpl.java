@@ -1,31 +1,33 @@
 package dlord03.cache;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
-import javax.cache.Caching;
 import javax.cache.configuration.MutableConfiguration;
 import javax.cache.expiry.AccessedExpiryPolicy;
 import javax.cache.expiry.Duration;
-import javax.cache.spi.CachingProvider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.SecurityData;
+import dlord03.plugin.api.data.security.SecurityIdentifier;
+import dlord03.plugin.api.event.InvalidationReport;
 
-public class Service {
+public class QueryServiceImpl implements QueryService {
 
-  private final static Logger LOG = LoggerFactory.getLogger(Service.class);
+  private final static Logger LOG = LoggerFactory.getLogger(QueryServiceImpl.class);
   private CacheManager cacheManager;
   private Properties properties;
   private Map<String, Plugin<? extends SecurityData>> plugins;
 
-  public Service() {
+  public QueryServiceImpl() {
     super();
     plugins = new ConcurrentHashMap<>();
   }
@@ -34,10 +36,18 @@ public class Service {
     this.cacheManager = cacheManager;
   }
 
+  /* (non-Javadoc)
+   * @see dlord03.cache.Service#getCacheManager()
+   */
+  @Override
   public CacheManager getCacheManager() {
     return this.cacheManager;
   }
 
+  /* (non-Javadoc)
+   * @see dlord03.cache.Service#getProperties()
+   */
+  @Override
   public Properties getProperties() {
     return properties;
   }
@@ -46,15 +56,20 @@ public class Service {
     this.properties = properties;
   }
 
+  /* (non-Javadoc)
+   * @see dlord03.cache.Service#start()
+   */
+  @Override
   public void start() {
-    
+
     // Validate provided context.
     if (cacheManager == null) throw new IllegalStateException("cacheManager can not be null");
     if (properties == null) throw new IllegalStateException("properties can not be null");
 
     loadPlugins();
-    if (plugins == null || plugins.size() == 0) throw new IllegalStateException("no plugins loaded");
-    
+    if (plugins == null || plugins.size() == 0)
+      throw new IllegalStateException("no plugins loaded");
+
     // configure the cache
     MutableConfiguration<String, Integer> config =
         new MutableConfiguration<String, Integer>().setTypes(String.class, Integer.class)
@@ -71,25 +86,28 @@ public class Service {
     Integer value2 = cache.get(key);
     cache.remove(key);
 
-    
+
   }
 
+  /* (non-Javadoc)
+   * @see dlord03.cache.Service#stop()
+   */
+  @Override
   public void stop() {
     this.cacheManager.close();
   }
 
   private void loadPlugins() {
-    
+
     plugins.clear();
-    
-    // List of possible plug-in providers.
-    final String[] pluginTypes = {"volatility", "dividend", "option", "yield", "security"};
-    
+
     // Attempt to load each plug-in if available.
-    for (String pluginType : pluginTypes) {
-      LOG.debug("Checking for '{}' plugin provider", pluginType);
-      String className = properties.getProperty(String.format("%s.plugin.classname", pluginType));
-      Plugin<? extends SecurityData> plugin = loadPlugin(className);
+    for (CacheType cacheType : CacheType.values()) {
+      String pluginType = cacheType.getName();
+      String propertyName = String.format("%s.plugin.classname", pluginType);
+      String className = properties.getProperty(propertyName);
+      LOG.debug("Checking for '{}' plugin provider property {}={}", pluginType, propertyName, className);
+      Plugin<? extends SecurityData> plugin = loadPlugin(className, cacheType);
       if (plugin != null) {
         plugins.put(pluginType, plugin);
         LOG.debug("Plugin provider loaded {}={}", pluginType, className);
@@ -97,22 +115,47 @@ public class Service {
         LOG.debug("No plugin provider loaded for '{}'", pluginType);
       }
     }
-    
 
   }
 
   @SuppressWarnings("unchecked")
-  private Plugin<? extends SecurityData> loadPlugin(String className) {
+  private <T extends SecurityData> Plugin<T> loadPlugin(String className, CacheType cacheType) {
     if (className == null) return null;
-    Class<? extends SecurityData> pluginClass = null;
-    Plugin<? extends SecurityData> plugin = null;
+    Class<T> pluginClass = null;
+    Plugin<T> plugin = null;
     try {
-      pluginClass = (Class<? extends SecurityData>) Class.forName(className);
-      plugin = (Plugin<? extends SecurityData>) pluginClass.newInstance();   
-    } catch (ReflectiveOperationException e) {
+      pluginClass =  (Class<T>) Class.forName(className);
+      plugin = (Plugin<T>) pluginClass.newInstance();
+      plugin.registerInvalidationHandler(new InvalidationReportHandlerImpl(this, cacheType));
+   } catch (ReflectiveOperationException e) {
       LOG.warn("Can not create plugin : {}", className, e);
     }
     return plugin;
+  }
+
+  @Override
+  public SecurityData getLatestValue(CacheType type, SecurityIdentifier security) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public SecurityData getLatestValue(CacheType type, SecurityIdentifier security, Instant before) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public SecurityData getEndOfDayValue(CacheType type, SecurityIdentifier security,
+      LocalDate date) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void handleInvalidationReport(CacheType type, InvalidationReport report) {
+    // TODO Auto-generated method stub
+    
   }
 
 }

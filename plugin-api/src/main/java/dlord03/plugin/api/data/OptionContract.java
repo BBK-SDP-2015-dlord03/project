@@ -1,6 +1,6 @@
-package dlord03.plugin.api.data.security;
+package dlord03.plugin.api.data;
 
-import dlord03.plugin.api.data.SecurityData;
+import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 /**
  * Represents a traded option contract. For an example of the simple representation of these

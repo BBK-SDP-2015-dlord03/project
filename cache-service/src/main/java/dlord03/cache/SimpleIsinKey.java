@@ -4,10 +4,6 @@ import java.time.ZonedDateTime;
 
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-/**
- * @author David Lord
- *
- */
 @SuppressWarnings("serial")
 public class SimpleIsinKey implements Key {
 

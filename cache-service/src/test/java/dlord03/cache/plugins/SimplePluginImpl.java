@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import dlord03.plugin.api.Plugin;
-import dlord03.plugin.api.data.security.OptionContract;
+import dlord03.plugin.api.data.OptionContract;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReportHandler;
 
