@@ -9,7 +9,7 @@ public enum CacheType {
   
   OPTION ("option", OptionContract.class),
   DIVIDEND ("dividend", DividendSchedule.class),
-  VOLATILITY ("dividend", VolatilitySurface.class);
+  VOLATILITY ("volatility", VolatilitySurface.class);
   
   final private String name;
   final private Class<? extends SecurityData> valueClass;
