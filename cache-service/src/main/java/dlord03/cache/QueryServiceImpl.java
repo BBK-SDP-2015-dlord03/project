@@ -36,7 +36,9 @@ public class QueryServiceImpl implements QueryService {
     this.cacheManager = cacheManager;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see dlord03.cache.Service#getCacheManager()
    */
   @Override
@@ -44,7 +46,13 @@ public class QueryServiceImpl implements QueryService {
     return this.cacheManager;
   }
 
-  /* (non-Javadoc)
+  public void setProperties(Properties properties) {
+    this.properties = properties;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see dlord03.cache.Service#getProperties()
    */
   @Override
@@ -52,11 +60,9 @@ public class QueryServiceImpl implements QueryService {
     return properties;
   }
 
-  public void setProperties(Properties properties) {
-    this.properties = properties;
-  }
-
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see dlord03.cache.Service#start()
    */
   @Override
@@ -70,26 +76,13 @@ public class QueryServiceImpl implements QueryService {
     if (plugins == null || plugins.size() == 0)
       throw new IllegalStateException("no plugins loaded");
 
-    // configure the cache
-    MutableConfiguration<String, Integer> config =
-        new MutableConfiguration<String, Integer>().setTypes(String.class, Integer.class)
-            .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
-            .setStatisticsEnabled(true);
-
-    // create the cache
-    Cache<String, Integer> cache = cacheManager.createCache("simpleCache", config);
-
-    // cache operations
-    String key = "key";
-    Integer value1 = 1;
-    cache.put("key", value1);
-    Integer value2 = cache.get(key);
-    cache.remove(key);
-
+    initialiseCaches();
 
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see dlord03.cache.Service#stop()
    */
   @Override
@@ -97,46 +90,10 @@ public class QueryServiceImpl implements QueryService {
     this.cacheManager.close();
   }
 
-  private void loadPlugins() {
-
-    plugins.clear();
-
-    // Attempt to load each plug-in if available.
-    for (CacheType cacheType : CacheType.values()) {
-      String pluginType = cacheType.getName();
-      String propertyName = String.format("%s.plugin.classname", pluginType);
-      String className = properties.getProperty(propertyName);
-      LOG.debug("Checking for '{}' plugin provider property {}={}", pluginType, propertyName, className);
-      Plugin<? extends SecurityData> plugin = loadPlugin(className, cacheType);
-      if (plugin != null) {
-        plugins.put(pluginType, plugin);
-        LOG.debug("Plugin provider loaded {}={}", pluginType, className);
-      } else {
-        LOG.debug("No plugin provider loaded for '{}'", pluginType);
-      }
-    }
-
-  }
-
-  @SuppressWarnings("unchecked")
-  private <T extends SecurityData> Plugin<T> loadPlugin(String className, CacheType cacheType) {
-    if (className == null) return null;
-    Class<T> pluginClass = null;
-    Plugin<T> plugin = null;
-    try {
-      pluginClass =  (Class<T>) Class.forName(className);
-      plugin = (Plugin<T>) pluginClass.newInstance();
-      plugin.registerInvalidationHandler(new InvalidationReportHandlerImpl(this, cacheType));
-   } catch (ReflectiveOperationException e) {
-      LOG.warn("Can not create plugin : {}", className, e);
-    }
-    return plugin;
-  }
-
   @Override
   public SecurityData getLatestValue(CacheType type, SecurityIdentifier security) {
-    // TODO Auto-generated method stub
-    return null;
+    Plugin<? extends SecurityData> plugin = getPlugin(type);
+    return plugin.getLatestValue(security);
   }
 
   @Override
@@ -155,7 +112,68 @@ public class QueryServiceImpl implements QueryService {
   @Override
   public void handleInvalidationReport(CacheType type, InvalidationReport report) {
     // TODO Auto-generated method stub
+
+  }
+
+  private void loadPlugins() {
+
+    plugins.clear();
+
+    // Attempt to load each plug-in if available.
+    for (CacheType cacheType : CacheType.values()) {
+      String pluginType = cacheType.getName();
+      String propertyName = String.format("%s.plugin.classname", pluginType);
+      String className = properties.getProperty(propertyName);
+      LOG.debug("Checking for '{}' plugin provider property {}={}", pluginType, propertyName,
+          className);
+      Plugin<? extends SecurityData> plugin = loadPlugin(className, cacheType);
+      if (plugin != null) {
+        plugins.put(pluginType, plugin);
+        LOG.debug("Plugin provider loaded {}={}", pluginType, className);
+      } else {
+        LOG.debug("No plugin provider loaded for '{}'", pluginType);
+      }
+    }
+
+  }
+
+  @SuppressWarnings("unchecked")
+  private <T extends SecurityData> Plugin<T> loadPlugin(String className, CacheType cacheType) {
+    if (className == null) return null;
+    Class<T> pluginClass = null;
+    Plugin<T> plugin = null;
+    try {
+      pluginClass = (Class<T>) Class.forName(className);
+      plugin = (Plugin<T>) pluginClass.newInstance();
+      plugin.registerInvalidationHandler(new InvalidationReportHandlerImpl(this, cacheType));
+    } catch (ReflectiveOperationException e) {
+      LOG.warn("Can not create plugin : {}", className, e);
+    }
+    return plugin;
+  }
+
+  private void initialiseCaches() {
     
+    // configure the cache
+    MutableConfiguration<String, Integer> config =
+        new MutableConfiguration<String, Integer>().setTypes(String.class, Integer.class)
+            .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
+            .setStatisticsEnabled(true);
+
+    // create the cache
+    Cache<String, Integer> cache = cacheManager.createCache("simpleCache", config);
+
+    // cache operations
+    String key = "key";
+    Integer value1 = 1;
+    cache.put("key", value1);
+    Integer value2 = cache.get(key);
+    cache.remove(key);
+    
+  }
+
+  private Plugin<? extends SecurityData> getPlugin(CacheType cacheType) {
+    return plugins.get(cacheType.getName());
   }
 
 }
