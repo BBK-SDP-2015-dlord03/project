@@ -5,14 +5,14 @@ import java.time.ZonedDateTime;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 @SuppressWarnings("serial")
-public class DateTimeCacheKey implements Key {
+public class SimpleCacheKey implements Key {
 
   private final CacheType cacheType;
   private final SecurityIdentifier securityIdentifier;
   private final ZonedDateTime updatedAt;
   protected int hashCode;
 
-  public DateTimeCacheKey(CacheType cacheType, SecurityIdentifier securityIdentifier,
+  public SimpleCacheKey(CacheType cacheType, SecurityIdentifier securityIdentifier,
       ZonedDateTime updatedAt) {
     super();
     this.cacheType = cacheType;
@@ -44,8 +44,8 @@ public class DateTimeCacheKey implements Key {
   @Override
   public boolean equals(Object obj) {
     if (this == obj) return true;
-    if (!(obj instanceof DateTimeCacheKey)) return false;
-    final DateTimeCacheKey other = (DateTimeCacheKey) obj;
+    if (!(obj instanceof SimpleCacheKey)) return false;
+    final SimpleCacheKey other = (SimpleCacheKey) obj;
     return (this.securityIdentifier.equals(other.securityIdentifier)
         && this.updatedAt.equals(other.updatedAt) && this.cacheType.equals(other.cacheType));
   }

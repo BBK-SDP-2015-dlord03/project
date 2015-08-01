@@ -1,18 +1,19 @@
 package dlord03.cache;
 
+import java.time.temporal.TemporalAccessor;
 import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class DateCacheKeyIndex {
+public class DatedCacheKeyIndex  implements KeyIndex {
 
   private final CacheType cacheType;
   private final SecurityIdentifier securityIdentifier;
   private SortedSet<Key> keys;
 
-  public DateCacheKeyIndex(CacheType cacheType, SecurityIdentifier securityIdentifier) {
+  public DatedCacheKeyIndex(CacheType cacheType, SecurityIdentifier securityIdentifier) {
 
     this.cacheType = cacheType;
     this.securityIdentifier = securityIdentifier;
@@ -26,18 +27,33 @@ public class DateCacheKeyIndex {
 
   }
 
-  public void add(Key key) {
+  @Override
+  public CacheType getCacheType() {
+    return cacheType;
+  }
+
+  @Override
+  public SecurityIdentifier getSecurityIdentifier() {
+    return securityIdentifier;
+  }
+
+  @Override
+  public void add(Key key, TemporalAccessor asof) {
     if (!key.getCacheType().equals(cacheType)) throw new IllegalArgumentException();
     if (!key.getSecurityIdentifier().equals(securityIdentifier)) throw new IllegalArgumentException();
     keys.add(key);
   }
 
-  public CacheType getCacheType() {
-    return cacheType;
+  @Override
+  public Key getLatestKey() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
-  public SecurityIdentifier getSecurityIdentifier() {
-    return securityIdentifier;
+  @Override
+  public Key getLatestKeyAsOf(TemporalAccessor asof) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }
