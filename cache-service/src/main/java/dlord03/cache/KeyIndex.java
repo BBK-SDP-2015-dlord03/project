@@ -1,6 +1,7 @@
 package dlord03.cache;
 
-import java.time.temporal.TemporalAccessor;
+import java.time.Instant;
+import java.time.LocalDate;
 
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
@@ -10,10 +11,16 @@ public interface KeyIndex {
   
   SecurityIdentifier getSecurityIdentifier();
 
-  void add(Key key, TemporalAccessor asof);
-  
   Key getLatestKey();
   
-  Key getLatestKeyAsOf(TemporalAccessor asof);
+  Key getLatestKey(Instant before);
+  
+  Key getEndOfDayKey(LocalDate date);
+
+  void addLatestKey(Key key);
+
+  void addLatestKey(Key key, Instant before);
+  
+  void addEndOfDayKey(Key key, LocalDate date);
 
 }

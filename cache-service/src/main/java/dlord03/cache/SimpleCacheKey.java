@@ -1,6 +1,7 @@
 package dlord03.cache;
 
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
@@ -10,8 +11,10 @@ public class SimpleCacheKey implements Key {
   private final CacheType cacheType;
   private final SecurityIdentifier securityIdentifier;
   private final ZonedDateTime updatedAt;
+  private final static DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
   protected int hashCode;
-
+  protected String timestamp;
+  
   public SimpleCacheKey(CacheType cacheType, SecurityIdentifier securityIdentifier,
       ZonedDateTime updatedAt) {
     super();
@@ -19,6 +22,7 @@ public class SimpleCacheKey implements Key {
     this.securityIdentifier = securityIdentifier;
     this.updatedAt = updatedAt;
     this.hashCode = 31 * securityIdentifier.hashCode() + updatedAt.hashCode();
+    this.timestamp = DateTimeFormatter.ISO_INSTANT.format(updatedAt);
   }
 
   @Override
@@ -32,8 +36,8 @@ public class SimpleCacheKey implements Key {
   }
 
   @Override
-  public ZonedDateTime getUpdatedAt() {
-    return updatedAt;
+  public String getTimestamp() {
+    return timestamp;
   }
 
   @Override
@@ -49,5 +53,11 @@ public class SimpleCacheKey implements Key {
     return (this.securityIdentifier.equals(other.securityIdentifier)
         && this.updatedAt.equals(other.updatedAt) && this.cacheType.equals(other.cacheType));
   }
+
+  public ZonedDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+  
+  
 
 }

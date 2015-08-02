@@ -2,6 +2,7 @@ package dlord03.cache;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
@@ -16,6 +17,7 @@ public class DatedCacheKey extends SimpleCacheKey {
     super(cacheType, securityIdentifier, updatedAt);
     this.fixingDate = fixingDate;
     this.hashCode = this.hashCode + fixingDate.hashCode();
+    this.timestamp = DateTimeFormatter.ISO_LOCAL_DATE.format(updatedAt);
   }
 
   @Override
@@ -31,5 +33,9 @@ public class DatedCacheKey extends SimpleCacheKey {
     final DatedCacheKey other = (DatedCacheKey) obj;
     return (super.equals(obj) && this.fixingDate.equals(other.fixingDate));
   }
-
+  
+  public LocalDate getFixingDate() {
+    return fixingDate;
+  }
+  
 }

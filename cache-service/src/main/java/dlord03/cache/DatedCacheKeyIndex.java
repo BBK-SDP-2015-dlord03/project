@@ -1,30 +1,23 @@
 package dlord03.cache;
 
-import java.time.temporal.TemporalAccessor;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class DatedCacheKeyIndex  implements KeyIndex {
+public class DatedCacheKeyIndex implements KeyIndex {
 
   private final CacheType cacheType;
   private final SecurityIdentifier securityIdentifier;
-  private SortedSet<Key> keys;
+  private SortedSet<DatedCacheKey> keys;
 
   public DatedCacheKeyIndex(CacheType cacheType, SecurityIdentifier securityIdentifier) {
-
     this.cacheType = cacheType;
     this.securityIdentifier = securityIdentifier;
-    this.keys = new ConcurrentSkipListSet<>(new Comparator<Key>() {
-
-      @Override
-      public int compare(Key key1, Key key2) {
-        return key1.getUpdatedAt().compareTo(key2.getUpdatedAt());
-      }
-    });
-
+    this.keys = new ConcurrentSkipListSet<>(getKeyComparator());
   }
 
   @Override
@@ -38,10 +31,11 @@ public class DatedCacheKeyIndex  implements KeyIndex {
   }
 
   @Override
-  public void add(Key key, TemporalAccessor asof) {
+  public void addLatestKey(Key key, Instant before) {
     if (!key.getCacheType().equals(cacheType)) throw new IllegalArgumentException();
-    if (!key.getSecurityIdentifier().equals(securityIdentifier)) throw new IllegalArgumentException();
-    keys.add(key);
+    if (!key.getSecurityIdentifier().equals(securityIdentifier))
+      throw new IllegalArgumentException();
+    keys.add((DatedCacheKey) key);
   }
 
   @Override
@@ -51,9 +45,36 @@ public class DatedCacheKeyIndex  implements KeyIndex {
   }
 
   @Override
-  public Key getLatestKeyAsOf(TemporalAccessor asof) {
+  public Key getLatestKey(Instant before) {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  @Override
+  public Key getEndOfDayKey(LocalDate date) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void addLatestKey(Key key) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void addEndOfDayKey(Key key, LocalDate date) {
+    // TODO Auto-generated method stub
+
+  }
+
+  protected Comparator<DatedCacheKey> getKeyComparator() {
+    return new Comparator<DatedCacheKey>() {
+      @Override
+      public int compare(DatedCacheKey key1, DatedCacheKey key2) {
+        return key1.getFixingDate().compareTo(key2.getFixingDate());
+      }
+    };
   }
 
 }
