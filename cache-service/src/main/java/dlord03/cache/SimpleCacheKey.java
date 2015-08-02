@@ -11,7 +11,6 @@ public class SimpleCacheKey implements Key {
   private final CacheType cacheType;
   private final SecurityIdentifier securityIdentifier;
   private final ZonedDateTime updatedAt;
-  private final static DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
   protected int hashCode;
   protected String timestamp;
   
