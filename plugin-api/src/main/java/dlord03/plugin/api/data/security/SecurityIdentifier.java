@@ -1,7 +1,10 @@
 package dlord03.plugin.api.data.security;
 
+import java.io.Serializable;
 
-public class SecurityIdentifier {
+public class SecurityIdentifier implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private final IdentifierScheme scheme;
   private final String symbol;
@@ -28,9 +31,16 @@ public class SecurityIdentifier {
   }
 
   @Override
+  public String toString() {
+    return String.format("SecurityIdentifier(scheme=%s,symbol=%s)", scheme, symbol);
+  }
+
+  @Override
   public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (!(obj instanceof SecurityIdentifier)) return false;
+    if (this == obj)
+      return true;
+    if (!(obj instanceof SecurityIdentifier))
+      return false;
     final SecurityIdentifier other = (SecurityIdentifier) obj;
     return (this.scheme.equals(other.scheme) && this.symbol.equals(other.symbol));
   }

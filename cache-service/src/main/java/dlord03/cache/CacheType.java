@@ -6,14 +6,16 @@ import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.VolatilitySurface;
 
 public enum CacheType {
-  
-  OPTION ("option", OptionContract.class),
-  DIVIDEND ("dividend", DividendSchedule.class),
-  VOLATILITY ("volatility", VolatilitySurface.class);
-  
+
+  //@formatter:off
+  OPTION("option", OptionContract.class), 
+  DIVIDEND("dividend", DividendSchedule.class), 
+  VOLATILITY("volatility", VolatilitySurface.class);
+  //@formatter:on
+
   final private String name;
   final private Class<? extends SecurityData> valueClass;
-  
+
   private CacheType(String name, Class<? extends SecurityData> clazz) {
     this.name = name;
     this.valueClass = clazz;

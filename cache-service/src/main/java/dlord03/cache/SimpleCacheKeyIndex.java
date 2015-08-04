@@ -12,7 +12,7 @@ public class SimpleCacheKeyIndex implements KeyIndex {
 
   private final CacheType cacheType;
   private final SecurityIdentifier securityIdentifier;
-  private SortedSet<SimpleCacheKey> keys;
+  private final SortedSet<SimpleCacheKey> keys;
 
   public SimpleCacheKeyIndex(CacheType cacheType, SecurityIdentifier securityIdentifier) {
     this.cacheType = cacheType;
@@ -32,12 +32,13 @@ public class SimpleCacheKeyIndex implements KeyIndex {
 
   @Override
   public void addLatestKey(Key key, Instant before) {
-    if (!key.getCacheType().equals(cacheType)) throw new IllegalArgumentException();
+    if (!key.getCacheType().equals(cacheType))
+      throw new IllegalArgumentException();
     if (!key.getSecurityIdentifier().equals(securityIdentifier))
       throw new IllegalArgumentException();
     if (!(key instanceof SimpleCacheKey))
       throw new ClassCastException();
-    keys.add((SimpleCacheKey)key);
+    keys.add((SimpleCacheKey) key);
   }
 
   @Override
@@ -51,7 +52,7 @@ public class SimpleCacheKeyIndex implements KeyIndex {
     // TODO Auto-generated method stub
     return null;
   }
-  
+
   @Override
   public Key getEndOfDayKey(LocalDate date) {
     // TODO Auto-generated method stub
@@ -61,17 +62,18 @@ public class SimpleCacheKeyIndex implements KeyIndex {
   @Override
   public void addLatestKey(Key key) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
   public void addEndOfDayKey(Key key, LocalDate date) {
     // TODO Auto-generated method stub
-    
+
   }
 
   protected Comparator<SimpleCacheKey> getKeyComparator() {
     return new Comparator<SimpleCacheKey>() {
+
       @Override
       public int compare(SimpleCacheKey key1, SimpleCacheKey key2) {
         return key1.getUpdatedAt().compareTo(key2.getUpdatedAt());

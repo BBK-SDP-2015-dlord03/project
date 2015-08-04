@@ -12,7 +12,7 @@ public class DatedCacheKeyIndex implements KeyIndex {
 
   private final CacheType cacheType;
   private final SecurityIdentifier securityIdentifier;
-  private SortedSet<DatedCacheKey> keys;
+  private final SortedSet<DatedCacheKey> keys;
 
   public DatedCacheKeyIndex(CacheType cacheType, SecurityIdentifier securityIdentifier) {
     this.cacheType = cacheType;
@@ -32,7 +32,8 @@ public class DatedCacheKeyIndex implements KeyIndex {
 
   @Override
   public void addLatestKey(Key key, Instant before) {
-    if (!key.getCacheType().equals(cacheType)) throw new IllegalArgumentException();
+    if (!key.getCacheType().equals(cacheType))
+      throw new IllegalArgumentException();
     if (!key.getSecurityIdentifier().equals(securityIdentifier))
       throw new IllegalArgumentException();
     keys.add((DatedCacheKey) key);
@@ -70,6 +71,7 @@ public class DatedCacheKeyIndex implements KeyIndex {
 
   protected Comparator<DatedCacheKey> getKeyComparator() {
     return new Comparator<DatedCacheKey>() {
+
       @Override
       public int compare(DatedCacheKey key1, DatedCacheKey key2) {
         return key1.getFixingDate().compareTo(key2.getFixingDate());

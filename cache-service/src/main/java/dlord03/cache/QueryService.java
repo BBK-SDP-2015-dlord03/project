@@ -10,7 +10,6 @@ import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReport;
 
-
 public interface QueryService {
 
   CacheManager getCacheManager();
@@ -20,13 +19,15 @@ public interface QueryService {
   void start();
 
   void stop();
-  
+
   SecurityData getLatestValue(CacheType type, SecurityIdentifier security);
 
-  SecurityData getLatestValue(CacheType type, SecurityIdentifier security, Instant before);
-  
-  SecurityData getEndOfDayValue(CacheType type, SecurityIdentifier security, LocalDate date);
-  
+  SecurityData getLatestValue(CacheType type, SecurityIdentifier security,
+    Instant before);
+
+  SecurityData getEndOfDayValue(CacheType type, SecurityIdentifier security,
+    LocalDate date);
+
   void handleInvalidationReport(CacheType type, InvalidationReport report);
 
 }

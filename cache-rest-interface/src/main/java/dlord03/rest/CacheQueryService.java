@@ -19,7 +19,7 @@ public class CacheQueryService {
 
   public CacheQueryService() {
     super();
-    System.setProperty( "hazelcast.logging.type", "slf4j" );
+    System.setProperty("hazelcast.logging.type", "slf4j");
     CachingProvider cachingProvider = Caching.getCachingProvider();
     CacheManager cacheManager = cachingProvider.getCacheManager();
     this.queryService = QueryServiceFactory.createService(cacheManager, null);
@@ -47,6 +47,7 @@ public class CacheQueryService {
   }
 
   static class Result {
+
     double input;
     double output;
     String action;

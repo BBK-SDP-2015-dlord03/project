@@ -41,7 +41,8 @@ public class QueryServiceTests {
 
   @Test(expected = ClassCastException.class)
   public void testServiceStartWithInvalidPlugin() {
-    properties.setProperty("option.plugin.classname", "dlord03.cache.plugins.InvalidPlugin");
+    properties.setProperty("option.plugin.classname",
+      "dlord03.cache.plugins.InvalidPlugin");
     service.setCacheManager(cacheManager);
     service.setProperties(properties);
     service.start();
@@ -49,7 +50,8 @@ public class QueryServiceTests {
 
   @Test
   public void testServiceStartWithValidPlugin() {
-    properties.setProperty("option.plugin.classname", "dlord03.cache.plugins.SimplePluginImpl");
+    properties.setProperty("option.plugin.classname",
+      "dlord03.cache.plugins.OptionContractPluginImpl");
     service.setCacheManager(cacheManager);
     service.setProperties(properties);
     service.start();

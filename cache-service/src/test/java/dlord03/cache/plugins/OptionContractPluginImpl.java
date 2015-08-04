@@ -10,7 +10,7 @@ import dlord03.plugin.api.data.OptionContract;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReportHandler;
 
-public class SimplePluginImpl implements Plugin<OptionContract> {
+public class OptionContractPluginImpl implements Plugin<OptionContract> {
 
   @Override
   public void open(Properties properties) {

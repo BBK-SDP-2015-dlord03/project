@@ -10,8 +10,7 @@ import dlord03.plugin.api.data.OptionContract;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReportHandler;
 
-public class OptionContractPlugin
-    implements Plugin<OptionContract> {
+public class OptionContractPlugin implements Plugin<OptionContract> {
 
   @Override
   public void open(Properties properties) {
@@ -38,22 +37,19 @@ public class OptionContractPlugin
   }
 
   @Override
-  public OptionContract getLatestValue(SecurityIdentifier security,
-      Instant before) {
+  public OptionContract getLatestValue(SecurityIdentifier security, Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public OptionContract getEndOfDayValue(SecurityIdentifier security,
-      LocalDate date) {
+  public OptionContract getEndOfDayValue(SecurityIdentifier security, LocalDate date) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public Iterator<SecurityIdentifier> getValuesUpdatedSince(
-      Instant time) {
+  public Iterator<SecurityIdentifier> getValuesUpdatedSince(Instant time) {
     // TODO Auto-generated method stub
     return null;
   }

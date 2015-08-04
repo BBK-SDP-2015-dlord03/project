@@ -25,7 +25,7 @@ public class QueryServiceImpl implements QueryService {
   private final static Logger LOG = LoggerFactory.getLogger(QueryServiceImpl.class);
   private CacheManager cacheManager;
   private Properties properties;
-  private Map<String, Plugin<? extends SecurityData>> plugins;
+  private final Map<String, Plugin<? extends SecurityData>> plugins;
 
   public QueryServiceImpl() {
     super();
@@ -36,11 +36,6 @@ public class QueryServiceImpl implements QueryService {
     this.cacheManager = cacheManager;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see dlord03.cache.Service#getCacheManager()
-   */
   @Override
   public CacheManager getCacheManager() {
     return this.cacheManager;
@@ -50,27 +45,19 @@ public class QueryServiceImpl implements QueryService {
     this.properties = properties;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see dlord03.cache.Service#getProperties()
-   */
   @Override
   public Properties getProperties() {
     return properties;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see dlord03.cache.Service#start()
-   */
   @Override
   public void start() {
 
     // Validate provided context.
-    if (cacheManager == null) throw new IllegalStateException("cacheManager can not be null");
-    if (properties == null) throw new IllegalStateException("properties can not be null");
+    if (cacheManager == null)
+      throw new IllegalStateException("cacheManager can not be null");
+    if (properties == null)
+      throw new IllegalStateException("properties can not be null");
 
     loadPlugins();
     if (plugins == null || plugins.size() == 0)
@@ -80,11 +67,6 @@ public class QueryServiceImpl implements QueryService {
 
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see dlord03.cache.Service#stop()
-   */
   @Override
   public void stop() {
     this.cacheManager.close();
@@ -92,19 +74,20 @@ public class QueryServiceImpl implements QueryService {
 
   @Override
   public SecurityData getLatestValue(CacheType type, SecurityIdentifier security) {
-    Plugin<? extends SecurityData> plugin = getPlugin(type);
+    final Plugin<? extends SecurityData> plugin = getPlugin(type);
     return plugin.getLatestValue(security);
   }
 
   @Override
-  public SecurityData getLatestValue(CacheType type, SecurityIdentifier security, Instant before) {
+  public SecurityData getLatestValue(CacheType type, SecurityIdentifier security,
+    Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public SecurityData getEndOfDayValue(CacheType type, SecurityIdentifier security,
-      LocalDate date) {
+    LocalDate date) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -112,7 +95,6 @@ public class QueryServiceImpl implements QueryService {
   @Override
   public void handleInvalidationReport(CacheType type, InvalidationReport report) {
     // TODO Auto-generated method stub
-
   }
 
   private void loadPlugins() {
@@ -120,13 +102,13 @@ public class QueryServiceImpl implements QueryService {
     plugins.clear();
 
     // Attempt to load each plug-in if available.
-    for (CacheType cacheType : CacheType.values()) {
-      String pluginType = cacheType.getName();
-      String propertyName = String.format("%s.plugin.classname", pluginType);
-      String className = properties.getProperty(propertyName);
-      LOG.debug("Checking for '{}' plugin provider property {}={}", pluginType, propertyName,
-          className);
-      Plugin<? extends SecurityData> plugin = loadPlugin(className, cacheType);
+    for (final CacheType cacheType : CacheType.values()) {
+      final String pluginType = cacheType.getName();
+      final String propertyName = String.format("%s.plugin.classname", pluginType);
+      final String className = properties.getProperty(propertyName);
+      LOG.debug("Checking for '{}' plugin provider property {}={}", pluginType,
+        propertyName, className);
+      final Plugin<? extends SecurityData> plugin = loadPlugin(className, cacheType);
       if (plugin != null) {
         plugins.put(pluginType, plugin);
         LOG.debug("Plugin provider loaded {}={}", pluginType, className);
@@ -138,38 +120,42 @@ public class QueryServiceImpl implements QueryService {
   }
 
   @SuppressWarnings("unchecked")
-  private <T extends SecurityData> Plugin<T> loadPlugin(String className, CacheType cacheType) {
-    if (className == null) return null;
+  private <T extends SecurityData> Plugin<T> loadPlugin(String className,
+    CacheType cacheType) {
+
+    if (className == null)
+      return null;
     Class<T> pluginClass = null;
     Plugin<T> plugin = null;
     try {
       pluginClass = (Class<T>) Class.forName(className);
       plugin = (Plugin<T>) pluginClass.newInstance();
-      plugin.registerInvalidationHandler(new InvalidationReportHandlerImpl(this, cacheType));
-    } catch (ReflectiveOperationException e) {
+      plugin
+        .registerInvalidationHandler(new InvalidationReportHandlerImpl(this, cacheType));
+    } catch (final ReflectiveOperationException e) {
       LOG.warn("Can not create plugin : {}", className, e);
     }
     return plugin;
   }
 
   private void initialiseCaches() {
-    
+
     // configure the cache
-    MutableConfiguration<String, Integer> config =
-        new MutableConfiguration<String, Integer>().setTypes(String.class, Integer.class)
-            .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
-            .setStatisticsEnabled(true);
+    final MutableConfiguration<String, Integer> config =
+      new MutableConfiguration<String, Integer>().setTypes(String.class, Integer.class)
+        .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
+        .setStatisticsEnabled(true);
 
     // create the cache
-    Cache<String, Integer> cache = cacheManager.createCache("simpleCache", config);
+    final Cache<String, Integer> cache = cacheManager.createCache("simpleCache", config);
 
     // cache operations
-    String key = "key";
-    Integer value1 = 1;
+    final String key = "key";
+    final Integer value1 = 1;
     cache.put("key", value1);
-    Integer value2 = cache.get(key);
+    final Integer value2 = cache.get(key);
     cache.remove(key);
-    
+
   }
 
   private Plugin<? extends SecurityData> getPlugin(CacheType cacheType) {

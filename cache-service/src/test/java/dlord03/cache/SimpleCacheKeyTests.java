@@ -23,8 +23,38 @@ public class SimpleCacheKeyTests {
 
   @Test
   public void testTimestampFormat() {
-    SimpleCacheKey key = new SimpleCacheKey(CacheType.DIVIDEND, security, updatedTime);
+    final SimpleCacheKey key = new SimpleCacheKey(CacheType.DIVIDEND, security, updatedTime);
     Assert.assertEquals(UPDATED_AT, key.getTimestamp());
+  }
+
+  @Test
+  public void testObjectEquality() {
+    final SimpleCacheKey key1 = new SimpleCacheKey(CacheType.DIVIDEND, security, updatedTime);
+    final SimpleCacheKey key2 = new SimpleCacheKey(CacheType.DIVIDEND, security, updatedTime);
+    Assert.assertEquals(key1, key2);
+  }
+
+  @Test
+  public void testObjectInequality() {
+    final ZonedDateTime dayBefore = updatedTime.minusDays(1);
+    final SimpleCacheKey key1 = new SimpleCacheKey(CacheType.DIVIDEND, security, updatedTime);
+    final SimpleCacheKey key2 = new SimpleCacheKey(CacheType.DIVIDEND, security, dayBefore);
+    Assert.assertNotEquals(key1, key2);
+  }
+
+  @Test
+  public void testHashEquality() {
+    final SimpleCacheKey key1 = new SimpleCacheKey(CacheType.DIVIDEND, security, updatedTime);
+    final SimpleCacheKey key2 = new SimpleCacheKey(CacheType.DIVIDEND, security, updatedTime);
+    Assert.assertEquals(key1.hashCode(), key2.hashCode());
+  }
+
+  @Test
+  public void testHashInequality() {
+    final ZonedDateTime dayBefore = updatedTime.minusDays(1);
+    final SimpleCacheKey key1 = new SimpleCacheKey(CacheType.DIVIDEND, security, updatedTime);
+    final SimpleCacheKey key2 = new SimpleCacheKey(CacheType.DIVIDEND, security, dayBefore);
+    Assert.assertNotEquals(key1.hashCode(), key2.hashCode());
   }
 
 }

@@ -1,7 +1,5 @@
 package dlord03.cache;
 
-import static org.junit.Assert.*;
-
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
@@ -30,13 +28,13 @@ public class DatedCacheKeyTests {
 
   @Test
   public void testTimestampFormat() {
-    DatedCacheKey key = new DatedCacheKey(CacheType.DIVIDEND, security, updatedTime, fixingDate);
+    final DatedCacheKey key = new DatedCacheKey(CacheType.DIVIDEND, security, updatedTime, fixingDate);
     Assert.assertEquals(FIXING_DATE, key.getTimestamp());
   }
 
   @Test
   public void testFixingDate() {
-    DatedCacheKey key = new DatedCacheKey(CacheType.DIVIDEND, security, updatedTime, fixingDate);
+    final DatedCacheKey key = new DatedCacheKey(CacheType.DIVIDEND, security, updatedTime, fixingDate);
     Assert.assertEquals(fixingDate, key.getFixingDate());
   }
 
