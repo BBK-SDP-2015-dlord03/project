@@ -20,12 +20,12 @@ import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 @RunWith(Parameterized.class)
-public class KeyTests {
+public class SerialisationRoundTripTest {
 
   private static SecurityIdentifier security;
   private static ZonedDateTime updatedTime;
   private static LocalDate fixingDate;
-  private Key key;
+  private Object key;
   private final static String UPDATED_AT = "2015-08-02T14:49:56.025Z";
   private final static String FIXING_DATE = "2015-08-02";
 
@@ -34,7 +34,7 @@ public class KeyTests {
     return Arrays.asList(new Object[] {createSimpleCacheKey(), createDatedCacheKey()});
   }
 
-  public KeyTests(Key key) {
+  public SerialisationRoundTripTest(Object key) {
     this.key = key;
   }
 
@@ -56,17 +56,17 @@ public class KeyTests {
     Assert.assertEquals(key, roundTrippedObject);
   }
 
-  private static Key createSimpleCacheKey() {
+  private static SimpleCacheKey createSimpleCacheKey() {
     security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     updatedTime = ZonedDateTime.parse(UPDATED_AT);
     return new SimpleCacheKey(CacheType.DIVIDEND, security, updatedTime);
   }
 
-  private static Key createDatedCacheKey() {
+  private static DatedCacheKey createDatedCacheKey() {
     security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     updatedTime = ZonedDateTime.parse(UPDATED_AT);
     fixingDate = LocalDate.parse(FIXING_DATE);
-    return new DatedCacheKey(CacheType.DIVIDEND, security, updatedTime, fixingDate);
+    return new DatedCacheKey(CacheType.DIVIDEND, security, fixingDate, updatedTime);
   }
 
 }

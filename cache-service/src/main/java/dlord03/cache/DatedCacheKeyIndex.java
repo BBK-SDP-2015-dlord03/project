@@ -1,6 +1,6 @@
 package dlord03.cache;
 
-import java.time.Instant;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.SortedSet;
@@ -8,7 +8,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class DatedCacheKeyIndex implements KeyIndex {
+public class DatedCacheKeyIndex implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private final CacheType cacheType;
   private final SecurityIdentifier securityIdentifier;
@@ -20,53 +22,25 @@ public class DatedCacheKeyIndex implements KeyIndex {
     this.keys = new ConcurrentSkipListSet<>(getKeyComparator());
   }
 
-  @Override
   public CacheType getCacheType() {
     return cacheType;
   }
 
-  @Override
   public SecurityIdentifier getSecurityIdentifier() {
     return securityIdentifier;
   }
 
-  @Override
-  public void addLatestKey(Key key, Instant before) {
+  public DatedCacheKey getEndOfDayKey(LocalDate date) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public void addEndOfDayKey(DatedCacheKey key, LocalDate date) {
     if (!key.getCacheType().equals(cacheType))
       throw new IllegalArgumentException();
     if (!key.getSecurityIdentifier().equals(securityIdentifier))
       throw new IllegalArgumentException();
-    keys.add((DatedCacheKey) key);
-  }
-
-  @Override
-  public Key getLatestKey() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Key getLatestKey(Instant before) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Key getEndOfDayKey(LocalDate date) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void addLatestKey(Key key) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void addEndOfDayKey(Key key, LocalDate date) {
-    // TODO Auto-generated method stub
-
+    keys.add(key);
   }
 
   protected Comparator<DatedCacheKey> getKeyComparator() {

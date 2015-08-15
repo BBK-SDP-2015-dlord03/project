@@ -1,26 +1,28 @@
+<?xml version="1.0"?>
 <project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <parent>
-        <groupId>uk.ac.bbk.dcs.dlord03</groupId>
-        <artifactId>plugin-providers</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+  <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>instrument-provider</artifactId>
-    <description>An example implmentation the plugin-api for instrument data.</description>
-    <name>Instrument Plugin</name>
+  <parent>
+    <groupId>uk.ac.bbk.dcs.dlord03</groupId>
+    <artifactId>plugin-providers</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
 
-    <dependencies>
+  <artifactId>instrument-provider</artifactId>
+  <description>An example implmentation the plugin-api for instrument data.</description>
+  <name>Instrument Plugin</name>
 
-        <dependency>
-            <groupId>uk.ac.bbk.dcs.dlord03</groupId>
-            <artifactId>plugin-api</artifactId>
-        </dependency>
+  <dependencies>
 
-    </dependencies>
+    <dependency>
+      <groupId>uk.ac.bbk.dcs.dlord03</groupId>
+      <artifactId>plugin-api</artifactId>
+    </dependency>
+
+  </dependencies>
 
 </project>

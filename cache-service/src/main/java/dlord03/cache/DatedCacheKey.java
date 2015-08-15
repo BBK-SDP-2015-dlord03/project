@@ -13,10 +13,10 @@ public class DatedCacheKey extends SimpleCacheKey {
   private static final long serialVersionUID = 1L;
 
   public DatedCacheKey(CacheType cacheType, SecurityIdentifier securityIdentifier,
-    ZonedDateTime updatedAt, LocalDate fixingDate) {
+    LocalDate date, ZonedDateTime updatedAt) {
     super(cacheType, securityIdentifier, updatedAt);
-    this.fixingDate = fixingDate;
-    this.hashCode = this.hashCode + fixingDate.hashCode();
+    this.fixingDate = date;
+    this.hashCode = this.hashCode + date.hashCode();
     this.timestamp = DateTimeFormatter.ISO_LOCAL_DATE.format(updatedAt);
   }
 

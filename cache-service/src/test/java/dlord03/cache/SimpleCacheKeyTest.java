@@ -9,7 +9,7 @@ import org.junit.Test;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class SimpleCacheKeyTests {
+public class SimpleCacheKeyTest {
 
   private SecurityIdentifier security;
   private ZonedDateTime updatedTime;

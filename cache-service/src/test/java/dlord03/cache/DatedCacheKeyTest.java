@@ -10,8 +10,7 @@ import org.junit.Test;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class DatedCacheKeyTests {
-
+public class DatedCacheKeyTest {
 
   private SecurityIdentifier security;
   private ZonedDateTime updatedTime;
@@ -28,13 +27,15 @@ public class DatedCacheKeyTests {
 
   @Test
   public void testTimestampFormat() {
-    final DatedCacheKey key = new DatedCacheKey(CacheType.DIVIDEND, security, updatedTime, fixingDate);
+    final DatedCacheKey key =
+      new DatedCacheKey(CacheType.DIVIDEND, security, fixingDate, updatedTime);
     Assert.assertEquals(FIXING_DATE, key.getTimestamp());
   }
 
   @Test
   public void testFixingDate() {
-    final DatedCacheKey key = new DatedCacheKey(CacheType.DIVIDEND, security, updatedTime, fixingDate);
+    final DatedCacheKey key =
+      new DatedCacheKey(CacheType.DIVIDEND, security, fixingDate, updatedTime);
     Assert.assertEquals(fixingDate, key.getFixingDate());
   }
 

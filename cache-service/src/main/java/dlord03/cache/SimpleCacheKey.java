@@ -1,11 +1,12 @@
 package dlord03.cache;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class SimpleCacheKey implements Key {
+public class SimpleCacheKey implements Serializable {
 
   private static final long serialVersionUID = 1L;
   private final CacheType cacheType;
@@ -29,17 +30,14 @@ public class SimpleCacheKey implements Key {
         cacheType, securityIdentifier, timestamp);
   }
 
-  @Override
   public CacheType getCacheType() {
     return this.cacheType;
   }
 
-  @Override
   public SecurityIdentifier getSecurityIdentifier() {
     return securityIdentifier;
   }
 
-  @Override
   public String getTimestamp() {
     return timestamp;
   }

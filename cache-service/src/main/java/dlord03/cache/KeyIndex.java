@@ -1,11 +1,12 @@
 package dlord03.cache;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public interface KeyIndex {
+public interface KeyIndex extends Serializable {
 
   CacheType getCacheType();
 
@@ -16,8 +17,6 @@ public interface KeyIndex {
   Key getLatestKey(Instant before);
 
   Key getEndOfDayKey(LocalDate date);
-
-  void addLatestKey(Key key);
 
   void addLatestKey(Key key, Instant before);
 

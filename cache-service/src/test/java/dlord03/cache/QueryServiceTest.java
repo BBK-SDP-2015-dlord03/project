@@ -8,7 +8,7 @@ import javax.cache.Caching;
 import org.junit.Before;
 import org.junit.Test;
 
-public class QueryServiceTests {
+public class QueryServiceTest {
 
   private CacheManager cacheManager;
   Properties properties;
