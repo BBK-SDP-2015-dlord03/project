@@ -1,5 +1,7 @@
 package dlord03.cache.index;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 import org.junit.Assert;
@@ -13,7 +15,7 @@ import dlord03.cache.data.DataKeyImpl;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class SimpleCacheKeyIndexTest {
+public class IndexImplTest {
 
   private Index index;
   private DataType dataType;
@@ -43,6 +45,19 @@ public class SimpleCacheKeyIndexTest {
       new DataKeyImpl(dataType, wrongIdentifier, now.minusHours(1).toInstant());
     index.addLatestKey(key, now.toInstant());
   }
+  
+  @Test
+  public void refindEndOfDayKey() {
+    ZonedDateTime now = ZonedDateTime.now();
+    LocalDate date = LocalDate.from(now);
+    Instant recordDate = now.minusDays(7).toInstant();
+    DataKey keyIn;
+    keyIn = new DataKeyImpl(dataType, identifier, recordDate);
+    index.addEndOfDayKey(keyIn, date);
+    DataKey keyOut = index.getEndOfDayKey(date.minusDays(1));
+    Assert.assertEquals(keyIn, keyOut);
+  }
+
 
   @Test
   public void refindLatestKey() {
