@@ -1,0 +1,89 @@
+package dlord03.cache;
+
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Properties;
+
+import javax.cache.Cache;
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import dlord03.cache.data.DataKey;
+import dlord03.cache.data.DataKeyImpl;
+import dlord03.cache.data.DataType;
+import dlord03.cache.index.Index;
+import dlord03.cache.index.IndexImpl;
+import dlord03.cache.index.IndexKey;
+import dlord03.cache.index.IndexKeyImpl;
+import dlord03.cache.index.IndexType;
+import dlord03.plugin.api.data.security.IdentifierScheme;
+import dlord03.plugin.api.data.security.SecurityIdentifier;
+
+public class CacheControllerTest {
+
+  private CacheManager cacheManager;
+  private CacheController cacheController;
+
+  @Before
+  public void setUp() {
+    cacheManager = Caching.getCachingProvider().getCacheManager();
+    cacheController = new CacheController(cacheManager);
+    cacheController.open();
+  }
+
+  @After
+  public void TearDown() {
+    cacheController.close();
+    cacheManager.close();
+  }
+
+  @Test
+  public void createIndexCache() {
+
+    DataType dt = DataType.OPTION;
+    SecurityIdentifier si = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+    IndexKey key = new IndexKeyImpl(IndexType.INTRADAY, dt, si);
+    Index index = new IndexImpl(dt, si);
+
+    // Add an entry
+    Instant queryAge = ZonedDateTime.now().minusHours(2).toInstant();
+    ZonedDateTime dataAge = ZonedDateTime.now().minusHours(12);
+    DataKey storedKey = new DataKeyImpl(dt, si, dataAge.toInstant());
+    // This record is 12 hours old but satisfied a query for 2 hour old data.
+    index.addLatestKey(storedKey, queryAge);
+
+    Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
+    indexCache.put(key, index);
+
+    IndexKey searchKey = new IndexKeyImpl(IndexType.INTRADAY, dt, si);
+    Index foundIndex = indexCache.get(searchKey);
+
+    // The retrieved index is the same one we put in?
+    Assert.assertTrue("Records not equal", foundIndex.equals(index));
+
+    // The retrieved index is not literally the same object?
+    Assert.assertFalse(index == foundIndex);
+
+    // We can still find the entries.
+    Instant twoHoursAgo = ZonedDateTime.now().minusHours(2).toInstant();
+    Instant threeHoursAgo = ZonedDateTime.now().minusHours(3).toInstant();
+    DataKey foundKey = foundIndex.getLatestKey(threeHoursAgo);
+    Assert.assertTrue("Records not equal", foundKey.equals(storedKey));
+
+    foundKey = foundIndex.getLatestKey(twoHoursAgo);
+    Assert.assertNull("Found wrong record", foundKey);
+
+  }
+
+  @Test
+  public void createLatestCache() {
+    CacheController cacheController = new CacheController(cacheManager);
+  }
+
+
+}
