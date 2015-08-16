@@ -1,5 +1,6 @@
-package dlord03.cache;
+package dlord03.cache.index;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
@@ -7,28 +8,31 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import dlord03.cache.data.DataKey;
+import dlord03.cache.data.DataKeyImpl;
+import dlord03.cache.data.DataType;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 public class DatedCacheKeyIndexTest {
 
-  private DatedCacheKeyIndex index;
-  private CacheType cacheType;
+  private Index index;
+  private DataType dataType;
   private SecurityIdentifier identifier;
 
   @Before
   public void setUp() {
     identifier = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
-    cacheType = CacheType.OPTION;
-    index = new DatedCacheKeyIndex(cacheType, identifier);
+    dataType = DataType.OPTION;
+    index = new IndexImpl(dataType, identifier);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void checkCacheType() {
     ZonedDateTime now = ZonedDateTime.now();
     LocalDate date = LocalDate.from(now);
-    DatedCacheKey key;
-    key = new DatedCacheKey(CacheType.DIVIDEND, identifier, date, now.minusHours(1));
+    DataKey key;
+    key = new DataKeyImpl(DataType.DIVIDEND, identifier, now.minusHours(1).toInstant());
     index.addEndOfDayKey(key, date);
   }
 
@@ -38,8 +42,8 @@ public class DatedCacheKeyIndexTest {
     wrongIdentifier = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     ZonedDateTime now = ZonedDateTime.now();
     LocalDate date = LocalDate.from(now);
-    DatedCacheKey key;
-    key = new DatedCacheKey(cacheType, wrongIdentifier, date, now.minusHours(1));
+    DataKey key;
+    key = new DataKeyImpl(dataType, wrongIdentifier, now.minusHours(1).toInstant());
     index.addEndOfDayKey(key, date);
   }
 
@@ -47,11 +51,11 @@ public class DatedCacheKeyIndexTest {
   public void refindEndOfDayKey() {
     ZonedDateTime now = ZonedDateTime.now();
     LocalDate date = LocalDate.from(now);
-    LocalDate lastWeek = date.minusDays(7);
-    DatedCacheKey keyIn;
-    keyIn = new DatedCacheKey(cacheType, identifier, lastWeek, now.minusHours(1));
+    Instant recordDate = now.minusDays(7).toInstant();
+    DataKey keyIn;
+    keyIn = new DataKeyImpl(dataType, identifier, recordDate);
     index.addEndOfDayKey(keyIn, date);
-    DatedCacheKey keyOut = index.getEndOfDayKey(date);
+    DataKey keyOut = index.getEndOfDayKey(date.minusDays(1));
     Assert.assertEquals(keyIn, keyOut);
   }
 

@@ -1,4 +1,4 @@
-package dlord03.cache;
+package dlord03.cache.index;
 
 import java.time.ZonedDateTime;
 
@@ -6,27 +6,31 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import dlord03.cache.data.DataType;
+import dlord03.cache.SerialisationUtils;
+import dlord03.cache.data.DataKey;
+import dlord03.cache.data.DataKeyImpl;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 public class SimpleCacheKeyIndexTest {
 
-  private SimpleCacheKeyIndex index;
-  private CacheType cacheType;
+  private Index index;
+  private DataType dataType;
   private SecurityIdentifier identifier;
 
   @Before
   public void setUp() {
     identifier = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
-    cacheType = CacheType.OPTION;
-    index = new SimpleCacheKeyIndex(cacheType, identifier);
+    dataType = DataType.OPTION;
+    index = new IndexImpl(dataType, identifier);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void checkCacheType() {
     ZonedDateTime now = ZonedDateTime.now();
-    SimpleCacheKey key =
-      new SimpleCacheKey(CacheType.DIVIDEND, identifier, now.minusHours(1));
+    DataKeyImpl key =
+      new DataKeyImpl(DataType.DIVIDEND, identifier, now.minusHours(1).toInstant());
     index.addLatestKey(key, now.toInstant());
   }
 
@@ -35,28 +39,28 @@ public class SimpleCacheKeyIndexTest {
     SecurityIdentifier wrongIdentifier;
     wrongIdentifier = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     ZonedDateTime now = ZonedDateTime.now();
-    SimpleCacheKey key =
-      new SimpleCacheKey(cacheType, wrongIdentifier, now.minusHours(1));
+    DataKeyImpl key =
+      new DataKeyImpl(dataType, wrongIdentifier, now.minusHours(1).toInstant());
     index.addLatestKey(key, now.toInstant());
   }
 
   @Test
   public void refindLatestKey() {
     ZonedDateTime now = ZonedDateTime.now();
-    SimpleCacheKey keyIn = new SimpleCacheKey(cacheType, identifier, now.minusHours(1));
+    DataKeyImpl keyIn = new DataKeyImpl(dataType, identifier, now.minusHours(1).toInstant());
     index.addLatestKey(keyIn, now.toInstant());
     index = SerialisationUtils.roundTrip(index);
-    SimpleCacheKey keyOut = index.getLatestKey(now.toInstant());
+    DataKey keyOut = index.getLatestKey(now.minusMinutes(10).toInstant());
     Assert.assertEquals(keyIn, keyOut);
   }
 
   @Test
   public void refindIntradayKey() {
     ZonedDateTime now = ZonedDateTime.now();
-    SimpleCacheKey keyIn = new SimpleCacheKey(cacheType, identifier, now.minusHours(1));
-    index.addLatestKey(keyIn, now.toInstant());
+    DataKeyImpl keyIn = new DataKeyImpl(dataType, identifier, now.minusHours(1).toInstant());
+    index.addLatestKey(keyIn, now.minusMinutes(10).toInstant());
     index = SerialisationUtils.roundTrip(index);
-    SimpleCacheKey keyOut = index.getLatestKey(now.toInstant());
+    DataKey keyOut = index.getLatestKey(now.minusMinutes(20).toInstant());
     Assert.assertEquals(keyIn, keyOut);
   }
 

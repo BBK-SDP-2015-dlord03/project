@@ -20,7 +20,7 @@ public class QueryServiceTest {
     properties = new Properties();
     service = new QueryServiceImpl();
   }
-
+  
   @Test(expected = IllegalStateException.class)
   public void testServiceStartWithNoCache() {
     service.start();

@@ -16,22 +16,24 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import dlord03.cache.data.DataType;
+import dlord03.cache.index.IndexKey;
+import dlord03.cache.index.IndexKeyImpl;
+import dlord03.cache.index.IndexType;
+import dlord03.cache.data.DataKey;
+import dlord03.cache.data.DataKeyImpl;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 @RunWith(Parameterized.class)
 public class SerialisationRoundTripTest {
 
-  private static SecurityIdentifier security;
-  private static ZonedDateTime updatedTime;
-  private static LocalDate fixingDate;
   private Object key;
   private final static String UPDATED_AT = "2015-08-02T14:49:56.025Z";
-  private final static String FIXING_DATE = "2015-08-02";
 
   @Parameters
   public static Collection<Object> data() {
-    return Arrays.asList(new Object[] {createSimpleCacheKey(), createDatedCacheKey()});
+    return Arrays.asList(new Object[] {createDataKey(), createIndexKey()});
   }
 
   public SerialisationRoundTripTest(Object key) {
@@ -56,17 +58,23 @@ public class SerialisationRoundTripTest {
     Assert.assertEquals(key, roundTrippedObject);
   }
 
-  private static SimpleCacheKey createSimpleCacheKey() {
-    security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
-    updatedTime = ZonedDateTime.parse(UPDATED_AT);
-    return new SimpleCacheKey(CacheType.DIVIDEND, security, updatedTime);
+  @Test
+  public void testRoundTrip() {
+    Object roundTrippedObject = SerialisationUtils.roundTrip(key);
+    Assert.assertEquals(key, roundTrippedObject);
   }
 
-  private static DatedCacheKey createDatedCacheKey() {
-    security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
-    updatedTime = ZonedDateTime.parse(UPDATED_AT);
-    fixingDate = LocalDate.parse(FIXING_DATE);
-    return new DatedCacheKey(CacheType.DIVIDEND, security, fixingDate, updatedTime);
+  private static DataKey createDataKey() {
+    SecurityIdentifier security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
+    ZonedDateTime updatedTime = ZonedDateTime.parse(UPDATED_AT);
+    return new DataKeyImpl(DataType.DIVIDEND, security, updatedTime.toInstant());
+  }
+
+  private static IndexKey createIndexKey() {
+    SecurityIdentifier security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
+    IndexType indexType = IndexType.INTRADAY;
+    DataType dataType = DataType.DIVIDEND;
+    return new IndexKeyImpl(indexType, dataType, security);
   }
 
 }

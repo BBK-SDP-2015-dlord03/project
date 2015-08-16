@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import javax.cache.CacheManager;
 
+import dlord03.cache.data.DataType;
 import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReport;
@@ -20,14 +21,14 @@ public interface QueryService {
 
   void stop();
 
-  SecurityData getLatestValue(CacheType type, SecurityIdentifier security);
+  SecurityData getLatestValue(DataType type, SecurityIdentifier security);
 
-  SecurityData getLatestValue(CacheType type, SecurityIdentifier security,
+  SecurityData getLatestValue(DataType type, SecurityIdentifier security,
     Instant before);
 
-  SecurityData getEndOfDayValue(CacheType type, SecurityIdentifier security,
+  SecurityData getEndOfDayValue(DataType type, SecurityIdentifier security,
     LocalDate date);
 
-  void handleInvalidationReport(CacheType type, InvalidationReport report);
+  void handleInvalidationReport(DataType type, InvalidationReport report);
 
 }

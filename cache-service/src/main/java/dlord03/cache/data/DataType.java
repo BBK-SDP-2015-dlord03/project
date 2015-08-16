@@ -1,22 +1,29 @@
-package dlord03.cache;
+package dlord03.cache.data;
 
 import dlord03.plugin.api.data.DividendSchedule;
 import dlord03.plugin.api.data.OptionContract;
 import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.VolatilitySurface;
 
-public enum CacheType {
+/**
+ * 
+ * Represents the different types of data held in a cache and the classes that represent them.
+ * 
+ * @author david
+ *
+ */
+public enum DataType {
 
-  //@formatter:off
+  // @formatter:off
   OPTION("option", OptionContract.class), 
   DIVIDEND("dividend", DividendSchedule.class), 
   VOLATILITY("volatility", VolatilitySurface.class);
-  //@formatter:on
+  // @formatter:on
 
   final private String name;
   final private Class<? extends SecurityData> valueClass;
 
-  private CacheType(String name, Class<? extends SecurityData> clazz) {
+  private DataType(String name, Class<? extends SecurityData> clazz) {
     this.name = name;
     this.valueClass = clazz;
   }

@@ -1,4 +1,4 @@
-package dlord03.cache;
+package dlord03.cache.index;
 
 import java.time.Instant;
 import java.time.LocalDate;

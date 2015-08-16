@@ -1,13 +1,13 @@
-package dlord03.cache;
+package dlord03.cache.data;
 
 import java.io.Serializable;
 import java.time.Instant;
 
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public interface Key extends Serializable {
+public interface DataKey extends Serializable {
 
-  CacheType getCacheType();
+  DataType getDataType();
 
   SecurityIdentifier getSecurityIdentifier();
 
