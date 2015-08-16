@@ -3,7 +3,9 @@ package dlord03.cache.data;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 
+import dlord03.cache.TimeQueries;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 public class DataKeyImpl implements DataKey {
@@ -12,13 +14,13 @@ public class DataKeyImpl implements DataKey {
 
   private final DataType dataType;
   private final SecurityIdentifier securityIdentifier;
-  private final Instant timestamp;
+  private final Long timestamp;
 
-  public DataKeyImpl(DataType dataType, SecurityIdentifier security, Instant timestamp) {
+  public DataKeyImpl(DataType dataType, SecurityIdentifier security, TemporalAccessor timestamp) {
     super();
     this.dataType = dataType;
     this.securityIdentifier = security;
-    this.timestamp = timestamp;
+    this.timestamp = timestamp.query(TimeQueries.getTimestamp());
   }
 
   @Override
@@ -33,7 +35,7 @@ public class DataKeyImpl implements DataKey {
 
   @Override
   public Instant getTimestamp() {
-    return timestamp;
+    return Instant.ofEpochMilli(timestamp);
   }
 
   @Override

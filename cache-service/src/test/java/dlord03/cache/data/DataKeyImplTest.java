@@ -1,6 +1,7 @@
 package dlord03.cache.data;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 import org.junit.Assert;
@@ -16,47 +17,80 @@ public class DataKeyImplTest {
 
   private SecurityIdentifier security;
   private Instant updatedTime;
-  private final static String UPDATED_AT = "2015-08-02T14:49:56.025Z";
+  private LocalDate updatedDate;
+  private final static String UPDATED_TIME = "2015-08-02T14:49:56.025Z";
+  private final static String UPDATED_DATE = "2015-08-02";
 
   @Before
   public void setUp() {
     security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
-    updatedTime = ZonedDateTime.parse(UPDATED_AT).toInstant();
+    updatedTime = ZonedDateTime.parse(UPDATED_TIME).toInstant();
+    updatedDate = LocalDate.parse(UPDATED_DATE);
   }
 
   @Test
-  public void testTimestampFormat() {
+  public void testTimestampFormatFromInstant() {
     final DataKeyImpl key = new DataKeyImpl(DataType.DIVIDEND, security, updatedTime);
     Assert.assertEquals(updatedTime, key.getTimestamp());
   }
 
   @Test
-  public void testObjectEquality() {
+  public void testObjectEqualityFromInstant() {
     final DataKeyImpl key1 = new DataKeyImpl(DataType.DIVIDEND, security, updatedTime);
     final DataKeyImpl key2 = new DataKeyImpl(DataType.DIVIDEND, security, updatedTime);
     Assert.assertEquals(key1, key2);
   }
 
   @Test
-  public void testObjectInequality() {
-    final ZonedDateTime dayBefore = ZonedDateTime.parse(UPDATED_AT).minusDays(1);
+  public void testObjectInequalityFromInstant() {
+    final ZonedDateTime dayBefore = ZonedDateTime.parse(UPDATED_TIME).minusDays(1);
     final DataKeyImpl key1 = new DataKeyImpl(DataType.DIVIDEND, security, updatedTime);
     final DataKeyImpl key2 = new DataKeyImpl(DataType.DIVIDEND, security, dayBefore.toInstant());
     Assert.assertNotEquals(key1, key2);
   }
 
   @Test
-  public void testHashEquality() {
+  public void testHashEqualityFromInstant() {
     final DataKeyImpl key1 = new DataKeyImpl(DataType.DIVIDEND, security, updatedTime);
     final DataKeyImpl key2 = new DataKeyImpl(DataType.DIVIDEND, security, updatedTime);
     Assert.assertEquals(key1.hashCode(), key2.hashCode());
   }
 
   @Test
-  public void testHashInequality() {
-    final ZonedDateTime dayBefore = ZonedDateTime.parse(UPDATED_AT).minusDays(1);
+  public void testHashInequalityFromInstant() {
+    final ZonedDateTime dayBefore = ZonedDateTime.parse(UPDATED_TIME).minusDays(1);
     final DataKeyImpl key1 = new DataKeyImpl(DataType.DIVIDEND, security, updatedTime);
     final DataKeyImpl key2 = new DataKeyImpl(DataType.DIVIDEND, security, dayBefore.toInstant());
+    Assert.assertNotEquals(key1.hashCode(), key2.hashCode());
+  }
+
+  @Test
+  public void testObjectEqualityFromDate() {
+    final DataKeyImpl key1 = new DataKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    final DataKeyImpl key2 = new DataKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    Assert.assertEquals(key1, key2);
+  }
+
+  @Test
+  public void testObjectInequalityFromDate() {
+    final LocalDate dayBefore = updatedDate.minusDays(1);
+    final DataKeyImpl key1 = new DataKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    final DataKeyImpl key2 = new DataKeyImpl(DataType.DIVIDEND, security, dayBefore);
+    Assert.assertNotEquals(key1, key2);
+  }
+
+  @Test
+  public void testHashEqualityFromDate() {
+    final DataKeyImpl key1 = new DataKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    final DataKeyImpl key2 = new DataKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    Assert.assertEquals(key1.hashCode(), key2.hashCode());
+  }
+
+  @Test
+  public void testHashInequalityFromDate() {
+    final LocalDate dayBefore = updatedDate.minusDays(1);
+    final DataKeyImpl key1 = new DataKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    final DataKeyImpl key2 = new DataKeyImpl(DataType.DIVIDEND, security, dayBefore);
     Assert.assertNotEquals(key1.hashCode(), key2.hashCode());
   }
 

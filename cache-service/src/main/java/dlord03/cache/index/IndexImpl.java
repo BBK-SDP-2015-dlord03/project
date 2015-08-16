@@ -71,8 +71,7 @@ public class IndexImpl implements Index {
 
   @Override
   public DataKey getEndOfDayKey(LocalDate date) {
-    Instant predicateInstant = date.atStartOfDay().plusDays(1).toInstant(ZoneOffset.UTC);
-    DataKey predicateKey = new DataKeyImpl(dataType, securityIdentifier, predicateInstant);
+    DataKey predicateKey = new DataKeyImpl(dataType, securityIdentifier, date);
     IndexRecord<LocalDate> predicate = new IndexRecord<>(predicateKey, date);
     IndexRecord<LocalDate> record;
     record = datedKeys.floor(predicate);

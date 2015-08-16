@@ -12,6 +12,18 @@ public class TimeQueries {
   private final static long MILLIS_IN_A_SECOND = 1000;
   private final static long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
+  /**
+   * Private constructor since this is a utility class.
+   */
+  private TimeQueries() {}
+
+  /**
+   * Compares two {@link TemporalAccessor} objects with different precision.
+   * 
+   * @param other the other object to compare with.
+   * @return 0, -1 or 1 if the other object is equal, less than, or equal respectively.
+   * 
+   */
   public static TemporalQuery<Integer> compareTo(TemporalAccessor other) {
     return new TemporalQuery<Integer>() {
 
@@ -26,6 +38,9 @@ public class TimeQueries {
 
   }
 
+  /**
+   * @return 
+   */
   public static TemporalQuery<Long> getTimestamp() {
     return new TemporalQuery<Long>() {
 
