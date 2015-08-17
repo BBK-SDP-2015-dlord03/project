@@ -10,7 +10,7 @@ import dlord03.plugin.api.data.security.SecurityIdentifier;
  * @author David Lord
  *
  */
-public interface SimpleDataKey extends Serializable {
+public interface SimpleKey extends Serializable {
 
   /**
    * The data type of the value referred to by this key.

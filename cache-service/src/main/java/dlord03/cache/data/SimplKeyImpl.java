@@ -2,14 +2,14 @@ package dlord03.cache.data;
 
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class SimpleDataKeyImpl implements SimpleDataKey {
+public class SimplKeyImpl implements SimpleKey {
 
   private static final long serialVersionUID = -2427181751666407572L;
 
   private final DataType dataType;
   private final SecurityIdentifier securityIdentifier;
 
-  public SimpleDataKeyImpl(DataType dataType, SecurityIdentifier securityIdentifier) {
+  public SimplKeyImpl(DataType dataType, SecurityIdentifier securityIdentifier) {
     super();
     this.dataType = dataType;
     this.securityIdentifier = securityIdentifier;
@@ -43,9 +43,9 @@ public class SimpleDataKeyImpl implements SimpleDataKey {
   public boolean equals(Object obj) {
     if (this == obj)
       return true;
-    if (!(obj instanceof SimpleDataKeyImpl))
+    if (!(obj instanceof SimplKeyImpl))
       return false;
-    final SimpleDataKeyImpl other = (SimpleDataKeyImpl) obj;
+    final SimplKeyImpl other = (SimplKeyImpl) obj;
     return (this.securityIdentifier.equals(other.securityIdentifier)
       && this.dataType.equals(other.dataType));
   }

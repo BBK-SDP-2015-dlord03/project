@@ -8,7 +8,7 @@ import java.time.Instant;
  * @author David Lord
  *
  */
-public interface TemporalDataKey extends SimpleDataKey {
+public interface TemporalKey extends SimpleKey {
 
   /**
    * The timestamp of the value referred to by this key.

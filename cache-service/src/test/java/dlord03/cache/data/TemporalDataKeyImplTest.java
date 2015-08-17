@@ -30,18 +30,18 @@ public class TemporalDataKeyImplTest {
 
   @Test
   public void testTimestampFormatFromInstant() {
-    TemporalDataKeyImpl key;
-    key = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedTime);
+    TemporalKeyImpl key;
+    key = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedTime);
     key = serializeRoundTrip(key);
     Assert.assertEquals(updatedTime, key.getTimestamp());
   }
 
   @Test
   public void testObjectEqualityFromInstant() {
-    TemporalDataKeyImpl key1;
-    key1 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedTime);
-    TemporalDataKeyImpl key2;
-    key2 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedTime);
+    TemporalKeyImpl key1;
+    key1 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedTime);
+    TemporalKeyImpl key2;
+    key2 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedTime);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertEquals(key1, key2);
@@ -50,10 +50,10 @@ public class TemporalDataKeyImplTest {
   @Test
   public void testObjectInequalityFromInstant() {
     final ZonedDateTime dayBefore = ZonedDateTime.parse(UPDATED_TIME).minusDays(1);
-    TemporalDataKeyImpl key1;
-    key1 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedTime);
-    TemporalDataKeyImpl key2;
-    key2 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, dayBefore.toInstant());
+    TemporalKeyImpl key1;
+    key1 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedTime);
+    TemporalKeyImpl key2;
+    key2 = new TemporalKeyImpl(DataType.DIVIDEND, security, dayBefore.toInstant());
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1, key2);
@@ -61,10 +61,10 @@ public class TemporalDataKeyImplTest {
 
   @Test
   public void testHashEqualityFromInstant() {
-    TemporalDataKeyImpl key1;
-    key1 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedTime);
-    TemporalDataKeyImpl key2;
-    key2 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedTime);
+    TemporalKeyImpl key1;
+    key1 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedTime);
+    TemporalKeyImpl key2;
+    key2 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedTime);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertEquals(key1.hashCode(), key2.hashCode());
@@ -73,10 +73,10 @@ public class TemporalDataKeyImplTest {
   @Test
   public void testHashInequalityFromInstant() {
     final ZonedDateTime dayBefore = ZonedDateTime.parse(UPDATED_TIME).minusDays(1);
-    TemporalDataKeyImpl key1;
-    key1 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedTime);
-    TemporalDataKeyImpl key2;
-    key2 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, dayBefore.toInstant());
+    TemporalKeyImpl key1;
+    key1 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedTime);
+    TemporalKeyImpl key2;
+    key2 = new TemporalKeyImpl(DataType.DIVIDEND, security, dayBefore.toInstant());
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1.hashCode(), key2.hashCode());
@@ -84,10 +84,10 @@ public class TemporalDataKeyImplTest {
 
   @Test
   public void testObjectEqualityFromDate() {
-    TemporalDataKeyImpl key1;
-    key1 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedDate);
-    TemporalDataKeyImpl key2;
-    key2 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    TemporalKeyImpl key1;
+    key1 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    TemporalKeyImpl key2;
+    key2 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedDate);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertEquals(key1, key2);
@@ -96,10 +96,10 @@ public class TemporalDataKeyImplTest {
   @Test
   public void testObjectInequalityFromDate() {
     final LocalDate dayBefore = updatedDate.minusDays(1);
-    TemporalDataKeyImpl key1;
-    key1 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedDate);
-    TemporalDataKeyImpl key2;
-    key2 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, dayBefore);
+    TemporalKeyImpl key1;
+    key1 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    TemporalKeyImpl key2;
+    key2 = new TemporalKeyImpl(DataType.DIVIDEND, security, dayBefore);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1, key2);
@@ -107,10 +107,10 @@ public class TemporalDataKeyImplTest {
 
   @Test
   public void testHashEqualityFromDate() {
-    TemporalDataKeyImpl key1;
-    key1 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedDate);
-    TemporalDataKeyImpl key2;
-    key2 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    TemporalKeyImpl key1;
+    key1 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    TemporalKeyImpl key2;
+    key2 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedDate);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertEquals(key1.hashCode(), key2.hashCode());
@@ -119,10 +119,10 @@ public class TemporalDataKeyImplTest {
   @Test
   public void testHashInequalityFromDate() {
     final LocalDate dayBefore = updatedDate.minusDays(1);
-    TemporalDataKeyImpl key1;
-    key1 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedDate);
-    TemporalDataKeyImpl key2;
-    key2 = new TemporalDataKeyImpl(DataType.DIVIDEND, security, dayBefore);
+    TemporalKeyImpl key1;
+    key1 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedDate);
+    TemporalKeyImpl key2;
+    key2 = new TemporalKeyImpl(DataType.DIVIDEND, security, dayBefore);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1.hashCode(), key2.hashCode());

@@ -6,8 +6,8 @@ import java.time.ZoneOffset;
 import java.util.NavigableSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import dlord03.cache.data.TemporalDataKey;
-import dlord03.cache.data.TemporalDataKeyImpl;
+import dlord03.cache.data.TemporalKey;
+import dlord03.cache.data.TemporalKeyImpl;
 import dlord03.cache.data.DataType;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
@@ -27,7 +27,7 @@ public class IndexImpl implements Index {
   private final SecurityIdentifier securityIdentifier;
   private final NavigableSet<IndexRecord<Instant>> timestampedKeys;
   private final NavigableSet<IndexRecord<LocalDate>> datedKeys;
-  private TemporalDataKey latestKey = null;
+  private TemporalKey latestKey = null;
 
   public IndexImpl(DataType dataType, SecurityIdentifier securityIdentifier) {
     super();
@@ -48,13 +48,13 @@ public class IndexImpl implements Index {
   }
 
   @Override
-  public TemporalDataKey getLatestKey() {
+  public TemporalKey getLatestKey() {
     return latestKey;
   }
 
   @Override
-  public TemporalDataKey getLatestKey(Instant before) {
-    TemporalDataKey predicateKey = new TemporalDataKeyImpl(dataType, securityIdentifier, before);
+  public TemporalKey getLatestKey(Instant before) {
+    TemporalKey predicateKey = new TemporalKeyImpl(dataType, securityIdentifier, before);
     IndexRecord<Instant> predicate = new IndexRecord<>(predicateKey, before);
     IndexRecord<Instant> record;
     record = timestampedKeys.floor(predicate);
@@ -63,15 +63,15 @@ public class IndexImpl implements Index {
   }
 
   @Override
-  public void addLatestKey(TemporalDataKey dataKey, Instant before) {
+  public void addLatestKey(TemporalKey dataKey, Instant before) {
     validateKey(dataKey);
     IndexRecord<Instant> foundKey = new IndexRecord<>(dataKey, before);
     timestampedKeys.add(foundKey);
   }
 
   @Override
-  public TemporalDataKey getEndOfDayKey(LocalDate date) {
-    TemporalDataKey predicateKey = new TemporalDataKeyImpl(dataType, securityIdentifier, date);
+  public TemporalKey getEndOfDayKey(LocalDate date) {
+    TemporalKey predicateKey = new TemporalKeyImpl(dataType, securityIdentifier, date);
     IndexRecord<LocalDate> predicate = new IndexRecord<>(predicateKey, date);
     IndexRecord<LocalDate> record;
     record = datedKeys.floor(predicate);
@@ -80,7 +80,7 @@ public class IndexImpl implements Index {
   }
 
   @Override
-  public void addEndOfDayKey(TemporalDataKey dataKey, LocalDate date) {
+  public void addEndOfDayKey(TemporalKey dataKey, LocalDate date) {
     validateKey(dataKey);
     IndexRecord<LocalDate> foundKey = new IndexRecord<>(dataKey, date);
     datedKeys.add(foundKey);
@@ -110,7 +110,7 @@ public class IndexImpl implements Index {
             : this.latestKey.equals(other.latestKey)));
   }
 
-  private void validateKey(TemporalDataKey dataKey) {
+  private void validateKey(TemporalKey dataKey) {
     if (!dataKey.getDataType().equals(dataType)) throw new IllegalArgumentException();
     if (!dataKey.getSecurityIdentifier().equals(securityIdentifier))
       throw new IllegalArgumentException();

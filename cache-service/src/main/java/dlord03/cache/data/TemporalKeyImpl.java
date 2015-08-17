@@ -6,13 +6,13 @@ import java.time.temporal.TemporalAccessor;
 import dlord03.cache.support.TimeQueries;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class TemporalDataKeyImpl extends SimpleDataKeyImpl implements TemporalDataKey {
+public class TemporalKeyImpl extends SimplKeyImpl implements TemporalKey {
 
   private static final long serialVersionUID = -8580381668516461833L;
 
   private final Long timestamp;
 
-  public TemporalDataKeyImpl(DataType dataType, SecurityIdentifier security,
+  public TemporalKeyImpl(DataType dataType, SecurityIdentifier security,
     TemporalAccessor timestamp) {
     super(dataType, security);
     this.timestamp = timestamp.query(TimeQueries.getTimestamp());
@@ -40,9 +40,9 @@ public class TemporalDataKeyImpl extends SimpleDataKeyImpl implements TemporalDa
   public boolean equals(Object obj) {
     if (this == obj)
       return true;
-    if (!(obj instanceof TemporalDataKeyImpl))
+    if (!(obj instanceof TemporalKeyImpl))
       return false;
-    final TemporalDataKeyImpl other = (TemporalDataKeyImpl) obj;
+    final TemporalKeyImpl other = (TemporalKeyImpl) obj;
     return (super.equals(obj) && this.timestamp.equals(other.timestamp));
   }
 

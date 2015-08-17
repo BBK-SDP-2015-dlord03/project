@@ -1,10 +1,10 @@
 package dlord03.cache.index;
 
 import dlord03.cache.data.DataType;
-import dlord03.cache.data.SimpleDataKeyImpl;
+import dlord03.cache.data.SimplKeyImpl;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class IndexKeyImpl extends SimpleDataKeyImpl implements IndexKey {
+public class IndexKeyImpl extends SimplKeyImpl implements IndexKey {
 
   private static final long serialVersionUID = -6938651146376002358L;
 

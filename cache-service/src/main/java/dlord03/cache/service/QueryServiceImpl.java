@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import dlord03.cache.CacheController;
 import dlord03.cache.PluginController;
 import dlord03.cache.QueryService;
-import dlord03.cache.data.TemporalDataKey;
+import dlord03.cache.data.TemporalKey;
 import dlord03.cache.data.DataType;
 import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
@@ -76,7 +76,7 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
   public SecurityData getLatestValue(DataType type, SecurityIdentifier security) {
 
     // First look in the latest cache.
-    Cache<TemporalDataKey, SecurityData> cache = cacheController.getLatestCache();
+    Cache<TemporalKey, SecurityData> cache = cacheController.getLatestCache();
 
     return pluginController.getPlugin(type).getLatestValue(security);
   }

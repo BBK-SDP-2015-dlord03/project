@@ -3,7 +3,7 @@ package dlord03.cache.index;
 import java.io.Serializable;
 import java.time.temporal.TemporalAccessor;
 
-import dlord03.cache.data.TemporalDataKey;
+import dlord03.cache.data.TemporalKey;
 import dlord03.cache.support.TimeQueries;
 
 /**
@@ -19,16 +19,16 @@ public class IndexRecord<T extends TemporalAccessor>
       Serializable {
 
   private static final long serialVersionUID = -258800001073888908L;
-  private final TemporalDataKey dataKey;
+  private final TemporalKey dataKey;
   private final T predicate;
 
-  public IndexRecord(TemporalDataKey dataKey, T predicate) {
+  public IndexRecord(TemporalKey dataKey, T predicate) {
     super();
     this.dataKey = dataKey;
     this.predicate = predicate;
   }
 
-  public TemporalDataKey getKey() {
+  public TemporalKey getKey() {
     return dataKey;
   }
 

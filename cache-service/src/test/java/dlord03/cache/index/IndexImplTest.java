@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import dlord03.cache.data.DataType;
 import dlord03.cache.support.SerialisationUtils;
-import dlord03.cache.data.TemporalDataKey;
-import dlord03.cache.data.TemporalDataKeyImpl;
+import dlord03.cache.data.TemporalKey;
+import dlord03.cache.data.TemporalKeyImpl;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
@@ -31,8 +31,8 @@ public class IndexImplTest {
   @Test(expected = IllegalArgumentException.class)
   public void checkCacheType() {
     ZonedDateTime now = ZonedDateTime.now();
-    TemporalDataKeyImpl key =
-      new TemporalDataKeyImpl(DataType.DIVIDEND, identifier, now.minusHours(1).toInstant());
+    TemporalKeyImpl key =
+      new TemporalKeyImpl(DataType.DIVIDEND, identifier, now.minusHours(1).toInstant());
     index.addLatestKey(key, now.toInstant());
   }
 
@@ -41,8 +41,8 @@ public class IndexImplTest {
     SecurityIdentifier wrongIdentifier;
     wrongIdentifier = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     ZonedDateTime now = ZonedDateTime.now();
-    TemporalDataKeyImpl key =
-      new TemporalDataKeyImpl(dataType, wrongIdentifier, now.minusHours(1).toInstant());
+    TemporalKeyImpl key =
+      new TemporalKeyImpl(dataType, wrongIdentifier, now.minusHours(1).toInstant());
     index.addLatestKey(key, now.toInstant());
   }
   
@@ -51,10 +51,10 @@ public class IndexImplTest {
     ZonedDateTime now = ZonedDateTime.now();
     LocalDate date = LocalDate.from(now);
     Instant recordDate = now.minusDays(7).toInstant();
-    TemporalDataKey keyIn;
-    keyIn = new TemporalDataKeyImpl(dataType, identifier, recordDate);
+    TemporalKey keyIn;
+    keyIn = new TemporalKeyImpl(dataType, identifier, recordDate);
     index.addEndOfDayKey(keyIn, date);
-    TemporalDataKey keyOut = index.getEndOfDayKey(date.minusDays(1));
+    TemporalKey keyOut = index.getEndOfDayKey(date.minusDays(1));
     Assert.assertEquals(keyIn, keyOut);
   }
 
@@ -62,20 +62,20 @@ public class IndexImplTest {
   @Test
   public void refindLatestKey() {
     ZonedDateTime now = ZonedDateTime.now();
-    TemporalDataKeyImpl keyIn = new TemporalDataKeyImpl(dataType, identifier, now.minusHours(1).toInstant());
+    TemporalKeyImpl keyIn = new TemporalKeyImpl(dataType, identifier, now.minusHours(1).toInstant());
     index.addLatestKey(keyIn, now.toInstant());
     index = SerialisationUtils.serializeRoundTrip(index);
-    TemporalDataKey keyOut = index.getLatestKey(now.minusMinutes(10).toInstant());
+    TemporalKey keyOut = index.getLatestKey(now.minusMinutes(10).toInstant());
     Assert.assertEquals(keyIn, keyOut);
   }
 
   @Test
   public void refindIntradayKey() {
     ZonedDateTime now = ZonedDateTime.now();
-    TemporalDataKeyImpl keyIn = new TemporalDataKeyImpl(dataType, identifier, now.minusHours(1).toInstant());
+    TemporalKeyImpl keyIn = new TemporalKeyImpl(dataType, identifier, now.minusHours(1).toInstant());
     index.addLatestKey(keyIn, now.minusMinutes(10).toInstant());
     index = SerialisationUtils.serializeRoundTrip(index);
-    TemporalDataKey keyOut = index.getLatestKey(now.minusMinutes(20).toInstant());
+    TemporalKey keyOut = index.getLatestKey(now.minusMinutes(20).toInstant());
     Assert.assertEquals(keyIn, keyOut);
   }
 
