@@ -50,17 +50,17 @@ public class CacheControllerImp implements CacheController {
         .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
         .setStatisticsEnabled(true);
 
-    // create the index cache
+    // create the latest cache
     latestCache = cacheManager.createCache("latestCache", latestConfig);
 
-    // configure the timestamped cache
+    // configure the time stamped cache
     final MutableConfiguration<DataKey, SecurityData> timestampedConfig =
       new MutableConfiguration<DataKey, SecurityData>()
         .setTypes(DataKey.class, SecurityData.class)
         .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
         .setStatisticsEnabled(true);
 
-    // create the index cache
+    // create the time stamped cache
     timestampedCache = cacheManager.createCache("timestampedCache", timestampedConfig);
 
     // configure the dated cache
@@ -70,7 +70,7 @@ public class CacheControllerImp implements CacheController {
         .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
         .setStatisticsEnabled(true);
 
-    // create the index cache
+    // create the dated cache
     datedCache = cacheManager.createCache("datedCache", datedConfig);
 
   }

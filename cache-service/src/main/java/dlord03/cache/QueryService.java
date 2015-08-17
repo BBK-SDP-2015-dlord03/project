@@ -59,6 +59,4 @@ public interface QueryService {
   SecurityData getEndOfDayValue(DataType type, SecurityIdentifier security,
     LocalDate date);
 
-  // void handleInvalidationReport(DataType type, InvalidationReport report);
-
 }

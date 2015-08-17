@@ -2,7 +2,6 @@ package dlord03.cache.service;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Properties;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -22,7 +21,7 @@ import dlord03.cache.index.IndexImpl;
 import dlord03.cache.index.IndexKey;
 import dlord03.cache.index.IndexKeyImpl;
 import dlord03.cache.index.IndexType;
-import dlord03.cache.service.CacheControllerImp;
+import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
@@ -83,9 +82,27 @@ public class CacheControllerImplTest {
   }
 
   @Test
-  public void createLatestCache() {
-    CacheController cacheController = new CacheControllerImp(cacheManager);
+  public void verifyIndexCache() {
+    Cache<IndexKey, Index> cache = cacheController.getIndexCache();
+    Assert.assertEquals("indexCache", cache.getName());
   }
 
+  @Test
+  public void verifyLatestCache() {
+    Cache<DataKey, SecurityData> cache = cacheController.getLatestCache();
+    Assert.assertEquals("latestCache", cache.getName());
+  }
+
+  @Test
+  public void verifyTimestampedCache() {
+    Cache<DataKey, SecurityData> cache = cacheController.getTimestampedCache();
+    Assert.assertEquals("timestampedCache", cache.getName());
+  }
+
+  @Test
+  public void verifyDatedCache() {
+    Cache<DataKey, SecurityData> cache = cacheController.getDatedCache();
+    Assert.assertEquals("datedCache", cache.getName());
+  }
 
 }
