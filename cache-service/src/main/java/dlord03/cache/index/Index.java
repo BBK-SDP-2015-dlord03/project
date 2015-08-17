@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 import dlord03.cache.data.DataType;
-import dlord03.cache.data.DataKey;
+import dlord03.cache.data.TemporalDataKey;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 public interface Index extends Serializable {
@@ -14,14 +14,14 @@ public interface Index extends Serializable {
 
   SecurityIdentifier getSecurityIdentifier();
 
-  DataKey getLatestKey();
+  TemporalDataKey getLatestKey();
 
-  DataKey getLatestKey(Instant before);
+  TemporalDataKey getLatestKey(Instant before);
 
-  DataKey getEndOfDayKey(LocalDate date);
+  TemporalDataKey getEndOfDayKey(LocalDate date);
 
-  void addLatestKey(DataKey dataKey, Instant before);
+  void addLatestKey(TemporalDataKey dataKey, Instant before);
 
-  void addEndOfDayKey(DataKey dataKey, LocalDate date);
+  void addEndOfDayKey(TemporalDataKey dataKey, LocalDate date);
 
 }

@@ -13,8 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import dlord03.cache.CacheController;
-import dlord03.cache.data.DataKey;
-import dlord03.cache.data.DataKeyImpl;
+import dlord03.cache.data.TemporalDataKey;
+import dlord03.cache.data.TemporalDataKeyImpl;
 import dlord03.cache.data.DataType;
 import dlord03.cache.index.Index;
 import dlord03.cache.index.IndexImpl;
@@ -54,7 +54,7 @@ public class CacheControllerImplTest {
     // Add an entry
     Instant queryAge = ZonedDateTime.now().minusHours(2).toInstant();
     ZonedDateTime dataAge = ZonedDateTime.now().minusHours(12);
-    DataKey storedKey = new DataKeyImpl(dt, si, dataAge.toInstant());
+    TemporalDataKey storedKey = new TemporalDataKeyImpl(dt, si, dataAge.toInstant());
     // This record is 12 hours old but satisfied a query for 2 hour old data.
     index.addLatestKey(storedKey, queryAge);
 
@@ -73,7 +73,7 @@ public class CacheControllerImplTest {
     // We can still find the entries.
     Instant twoHoursAgo = ZonedDateTime.now().minusHours(2).toInstant();
     Instant threeHoursAgo = ZonedDateTime.now().minusHours(3).toInstant();
-    DataKey foundKey = foundIndex.getLatestKey(threeHoursAgo);
+    TemporalDataKey foundKey = foundIndex.getLatestKey(threeHoursAgo);
     Assert.assertTrue("Records not equal", foundKey.equals(storedKey));
 
     foundKey = foundIndex.getLatestKey(twoHoursAgo);
@@ -89,19 +89,19 @@ public class CacheControllerImplTest {
 
   @Test
   public void verifyLatestCache() {
-    Cache<DataKey, SecurityData> cache = cacheController.getLatestCache();
+    Cache<TemporalDataKey, SecurityData> cache = cacheController.getLatestCache();
     Assert.assertEquals("latestCache", cache.getName());
   }
 
   @Test
   public void verifyTimestampedCache() {
-    Cache<DataKey, SecurityData> cache = cacheController.getTimestampedCache();
+    Cache<TemporalDataKey, SecurityData> cache = cacheController.getTimestampedCache();
     Assert.assertEquals("timestampedCache", cache.getName());
   }
 
   @Test
   public void verifyDatedCache() {
-    Cache<DataKey, SecurityData> cache = cacheController.getDatedCache();
+    Cache<TemporalDataKey, SecurityData> cache = cacheController.getDatedCache();
     Assert.assertEquals("datedCache", cache.getName());
   }
 

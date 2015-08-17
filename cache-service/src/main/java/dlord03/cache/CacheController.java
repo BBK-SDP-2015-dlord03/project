@@ -2,7 +2,7 @@ package dlord03.cache;
 
 import javax.cache.Cache;
 
-import dlord03.cache.data.DataKey;
+import dlord03.cache.data.TemporalDataKey;
 import dlord03.cache.index.Index;
 import dlord03.cache.index.IndexKey;
 import dlord03.plugin.api.data.SecurityData;
@@ -21,10 +21,10 @@ public interface CacheController {
 
   Cache<IndexKey, Index> getIndexCache();
 
-  Cache<DataKey, SecurityData> getLatestCache();
+  Cache<TemporalDataKey, SecurityData> getLatestCache();
 
-  Cache<DataKey, SecurityData> getTimestampedCache();
+  Cache<TemporalDataKey, SecurityData> getTimestampedCache();
 
-  Cache<DataKey, SecurityData> getDatedCache();
+  Cache<TemporalDataKey, SecurityData> getDatedCache();
 
 }

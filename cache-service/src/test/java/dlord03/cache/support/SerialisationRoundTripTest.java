@@ -20,8 +20,8 @@ import dlord03.cache.data.DataType;
 import dlord03.cache.index.IndexKey;
 import dlord03.cache.index.IndexKeyImpl;
 import dlord03.cache.index.IndexType;
-import dlord03.cache.data.DataKey;
-import dlord03.cache.data.DataKeyImpl;
+import dlord03.cache.data.TemporalDataKey;
+import dlord03.cache.data.TemporalDataKeyImpl;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
@@ -60,14 +60,14 @@ public class SerialisationRoundTripTest {
 
   @Test
   public void testRoundTrip() {
-    Object roundTrippedObject = SerialisationUtils.roundTrip(key);
+    Object roundTrippedObject = SerialisationUtils.serializeRoundTrip(key);
     Assert.assertEquals(key, roundTrippedObject);
   }
 
-  private static DataKey createDataKey() {
+  private static TemporalDataKey createDataKey() {
     SecurityIdentifier security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     ZonedDateTime updatedTime = ZonedDateTime.parse(UPDATED_AT);
-    return new DataKeyImpl(DataType.DIVIDEND, security, updatedTime.toInstant());
+    return new TemporalDataKeyImpl(DataType.DIVIDEND, security, updatedTime.toInstant());
   }
 
   private static IndexKey createIndexKey() {

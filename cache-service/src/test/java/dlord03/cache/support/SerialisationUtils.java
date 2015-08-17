@@ -9,13 +9,18 @@ import java.io.ObjectOutputStream;
 public class SerialisationUtils {
 
   /**
+   * Private constructor to prevent instantiation of utility class.
+   */
+  private SerialisationUtils() {}
+
+  /**
    * Simulates a round trip through the cache.
    * 
    * @param object the object to store in the cache
    * @return the same object returned from the cache
    */
   @SuppressWarnings("unchecked")
-  public static <T> T roundTrip(T object) {
+  public static <T> T serializeRoundTrip(T object) {
     Object roundTrippedObject = null;
     try {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();

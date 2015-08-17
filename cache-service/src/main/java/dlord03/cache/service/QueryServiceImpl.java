@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Properties;
 
+import javax.cache.Cache;
 import javax.cache.CacheManager;
 
 import org.slf4j.Logger;
@@ -12,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import dlord03.cache.CacheController;
 import dlord03.cache.PluginController;
 import dlord03.cache.QueryService;
+import dlord03.cache.data.TemporalDataKey;
 import dlord03.cache.data.DataType;
-import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReport;
@@ -73,8 +74,11 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
   @Override
   public SecurityData getLatestValue(DataType type, SecurityIdentifier security) {
-    final Plugin<? extends SecurityData> plugin = pluginController.getPlugin(type);
-    return plugin.getLatestValue(security);
+
+    // First look in the latest cache.
+    Cache<TemporalDataKey, SecurityData> cache = cacheController.getLatestCache();
+
+    return pluginController.getPlugin(type).getLatestValue(security);
   }
 
   @Override

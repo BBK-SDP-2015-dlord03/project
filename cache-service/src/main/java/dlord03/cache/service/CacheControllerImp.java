@@ -7,7 +7,7 @@ import javax.cache.expiry.AccessedExpiryPolicy;
 import javax.cache.expiry.Duration;
 
 import dlord03.cache.CacheController;
-import dlord03.cache.data.DataKey;
+import dlord03.cache.data.TemporalDataKey;
 import dlord03.cache.index.Index;
 import dlord03.cache.index.IndexKey;
 import dlord03.plugin.api.data.SecurityData;
@@ -22,9 +22,9 @@ public class CacheControllerImp implements CacheController {
 
   private final CacheManager cacheManager;
   private Cache<IndexKey, Index> indexCache;
-  private Cache<DataKey, SecurityData> latestCache;
-  private Cache<DataKey, SecurityData> timestampedCache;
-  private Cache<DataKey, SecurityData> datedCache;
+  private Cache<TemporalDataKey, SecurityData> latestCache;
+  private Cache<TemporalDataKey, SecurityData> timestampedCache;
+  private Cache<TemporalDataKey, SecurityData> datedCache;
 
   public CacheControllerImp(CacheManager cacheManager) {
     super();
@@ -44,9 +44,9 @@ public class CacheControllerImp implements CacheController {
     indexCache = cacheManager.createCache("indexCache", indexConfig);
 
     // configure the latest cache
-    final MutableConfiguration<DataKey, SecurityData> latestConfig =
-      new MutableConfiguration<DataKey, SecurityData>()
-        .setTypes(DataKey.class, SecurityData.class)
+    final MutableConfiguration<TemporalDataKey, SecurityData> latestConfig =
+      new MutableConfiguration<TemporalDataKey, SecurityData>()
+        .setTypes(TemporalDataKey.class, SecurityData.class)
         .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
         .setStatisticsEnabled(true);
 
@@ -54,9 +54,9 @@ public class CacheControllerImp implements CacheController {
     latestCache = cacheManager.createCache("latestCache", latestConfig);
 
     // configure the time stamped cache
-    final MutableConfiguration<DataKey, SecurityData> timestampedConfig =
-      new MutableConfiguration<DataKey, SecurityData>()
-        .setTypes(DataKey.class, SecurityData.class)
+    final MutableConfiguration<TemporalDataKey, SecurityData> timestampedConfig =
+      new MutableConfiguration<TemporalDataKey, SecurityData>()
+        .setTypes(TemporalDataKey.class, SecurityData.class)
         .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
         .setStatisticsEnabled(true);
 
@@ -64,9 +64,9 @@ public class CacheControllerImp implements CacheController {
     timestampedCache = cacheManager.createCache("timestampedCache", timestampedConfig);
 
     // configure the dated cache
-    final MutableConfiguration<DataKey, SecurityData> datedConfig =
-      new MutableConfiguration<DataKey, SecurityData>()
-        .setTypes(DataKey.class, SecurityData.class)
+    final MutableConfiguration<TemporalDataKey, SecurityData> datedConfig =
+      new MutableConfiguration<TemporalDataKey, SecurityData>()
+        .setTypes(TemporalDataKey.class, SecurityData.class)
         .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
         .setStatisticsEnabled(true);
 
@@ -86,17 +86,17 @@ public class CacheControllerImp implements CacheController {
   }
 
   @Override
-  public Cache<DataKey, SecurityData> getLatestCache() {
+  public Cache<TemporalDataKey, SecurityData> getLatestCache() {
     return latestCache;
   }
 
   @Override
-  public Cache<DataKey, SecurityData> getTimestampedCache() {
+  public Cache<TemporalDataKey, SecurityData> getTimestampedCache() {
     return timestampedCache;
   }
 
   @Override
-  public Cache<DataKey, SecurityData> getDatedCache() {
+  public Cache<TemporalDataKey, SecurityData> getDatedCache() {
     return datedCache;
   }
 
