@@ -5,10 +5,9 @@ import java.util.Properties;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import dlord03.cache.service.QueryServiceImpl;
 
 public class QueryServiceImplTest {
 
@@ -22,7 +21,12 @@ public class QueryServiceImplTest {
     properties = new Properties();
     service = new QueryServiceImpl();
   }
-  
+
+  @After
+  public void tearDown() {
+    service.stop();
+  }
+
   @Test(expected = IllegalStateException.class)
   public void testServiceStartWithNoCache() {
     service.start();
@@ -57,6 +61,18 @@ public class QueryServiceImplTest {
     service.setCacheManager(cacheManager);
     service.setProperties(properties);
     service.start();
+  }
+
+  @Test
+  public void testRoutingRequest() {
+    properties.setProperty("option.plugin.classname",
+      "dlord03.cache.plugins.OptionContractPluginImpl");
+    properties.setProperty("dividend.plugin.classname",
+      "dlord03.cache.plugins.DividendSchedulePluginImpl");
+    service.setCacheManager(cacheManager);
+    service.setProperties(properties);
+    service.start();
+
   }
 
 }

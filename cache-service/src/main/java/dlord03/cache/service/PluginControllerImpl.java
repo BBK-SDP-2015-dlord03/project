@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dlord03.cache.PluginController;
-import dlord03.cache.QueryService;
 import dlord03.cache.data.DataType;
 import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.SecurityData;
@@ -19,19 +18,20 @@ public class PluginControllerImpl implements PluginController {
   private final static Logger LOG = LoggerFactory.getLogger(PluginControllerImpl.class);
 
   private final Properties properties;
-  private final QueryService queryService;
   private final Map<String, Plugin<? extends SecurityData>> plugins;
-    
-  public PluginControllerImpl(Properties properties, QueryService queryService) {
+  private PluginInvalidationReportHandler invalidationReportHandler;
+
+  public PluginControllerImpl(Properties properties) {
     super();
-    this.queryService = queryService;
     this.properties = new Properties(properties);
     this.plugins = new ConcurrentHashMap<>();
+    Object reportHandler = this.properties.get("invalidationReportHandler");
+    if (reportHandler != null
+      && reportHandler instanceof PluginInvalidationReportHandler) {
+      this.invalidationReportHandler = (PluginInvalidationReportHandler) reportHandler;
+    }
   }
 
-  /* (non-Javadoc)
-   * @see dlord03.cache.PluginController#open()
-   */
   @Override
   public void open() {
 
@@ -54,29 +54,20 @@ public class PluginControllerImpl implements PluginController {
     }
 
   }
-  
-  /* (non-Javadoc)
-   * @see dlord03.cache.PluginController#close()
-   */
+
   @Override
-  public void close(){
+  public void close() {
     for (Plugin<? extends SecurityData> plugin : plugins.values()) {
       plugin.close();
     }
     plugins.clear();
   }
-  
-  /* (non-Javadoc)
-   * @see dlord03.cache.PluginController#getPlugin(dlord03.cache.data.DataType)
-   */
+
   @Override
   public Plugin<? extends SecurityData> getPlugin(DataType dataType) {
     return plugins.get(dataType.getName());
   }
-  
-  /* (non-Javadoc)
-   * @see dlord03.cache.PluginController#getPlugins()
-   */
+
   @Override
   public Collection<Plugin<? extends SecurityData>> getPlugins() {
     return plugins.values();
@@ -93,13 +84,12 @@ public class PluginControllerImpl implements PluginController {
     try {
       pluginClass = (Class<T>) Class.forName(className);
       plugin = (Plugin<T>) pluginClass.newInstance();
-      plugin
-        .registerInvalidationHandler(new InvalidationReportHandlerImpl(queryService, dataType));
+      plugin.registerInvalidationHandler(
+        new InvalidationReportHandlerImpl(invalidationReportHandler, dataType));
     } catch (final ReflectiveOperationException e) {
       LOG.warn("Can not create plugin : {}", className, e);
     }
     return plugin;
   }
-
 
 }

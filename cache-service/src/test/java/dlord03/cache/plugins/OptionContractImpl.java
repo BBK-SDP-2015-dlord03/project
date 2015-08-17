@@ -5,8 +5,15 @@ import java.time.ZonedDateTime;
 import dlord03.plugin.api.data.OptionContract;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
+/**
+ * Example of an simple {@link OptionContract} implementation.
+ * 
+ * @author David Lord
+ *
+ */
 public class OptionContractImpl implements OptionContract {
 
+  private static final long serialVersionUID = -7179505812155258961L;
   private final SecurityIdentifier securityIdentifier;
   private final ZonedDateTime updatedAt;
   private final String intrumentType;

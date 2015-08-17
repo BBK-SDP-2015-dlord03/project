@@ -2,9 +2,7 @@ package dlord03.cache.service;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.cache.CacheManager;
 
@@ -20,7 +18,7 @@ import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReport;
 
-public class QueryServiceImpl implements QueryService {
+public class QueryServiceImpl implements QueryService, PluginInvalidationReportHandler {
 
   private final static Logger LOG = LoggerFactory.getLogger(QueryServiceImpl.class);
   private CacheManager cacheManager;
@@ -36,16 +34,14 @@ public class QueryServiceImpl implements QueryService {
     this.cacheManager = cacheManager;
   }
 
-  @Override
   public CacheManager getCacheManager() {
     return this.cacheManager;
   }
 
   public void setProperties(Properties properties) {
-    this.properties = properties;
+    this.properties = new Properties(properties);
   }
 
-  @Override
   public Properties getProperties() {
     return properties;
   }
@@ -56,7 +52,8 @@ public class QueryServiceImpl implements QueryService {
     // Validate provided context.
     if (cacheManager == null)
       throw new IllegalStateException("cacheManager can not be null");
-    if (properties == null) throw new IllegalStateException("properties can not be null");
+    if (properties == null)
+      throw new IllegalStateException("properties can not be null");
 
     loadPlugins();
     if (pluginController.getPlugins().size() == 0)
@@ -68,8 +65,10 @@ public class QueryServiceImpl implements QueryService {
 
   @Override
   public void stop() {
-    this.cacheController.close();
-    this.pluginController.close();
+    if (cacheController != null)
+      cacheController.close();
+    if (pluginController != null)
+      pluginController.close();
   }
 
   @Override
@@ -80,14 +79,14 @@ public class QueryServiceImpl implements QueryService {
 
   @Override
   public SecurityData getLatestValue(DataType type, SecurityIdentifier security,
-      Instant before) {
+    Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public SecurityData getEndOfDayValue(DataType type, SecurityIdentifier security,
-      LocalDate date) {
+    LocalDate date) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -99,17 +98,17 @@ public class QueryServiceImpl implements QueryService {
 
   private void loadPlugins() {
 
-    pluginController = new PluginControllerImpl(properties, this);
+    properties.put("invalidationReportHandler", this);
+    pluginController = new PluginControllerImpl(properties);
     pluginController.open();
 
   }
 
   private void createCache() {
-    
+
     cacheController = new CacheControllerImp(cacheManager);
     cacheController.open();
-    
-  }
 
+  }
 
 }

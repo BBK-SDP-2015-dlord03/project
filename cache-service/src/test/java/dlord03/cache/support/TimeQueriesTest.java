@@ -12,8 +12,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import dlord03.cache.support.TimeQueries;
-
 public class TimeQueriesTest {
 
   private final static String NOW = "2015-08-02T14:49:56.025Z";
@@ -46,42 +44,42 @@ public class TimeQueriesTest {
 
   @Test
   public void compareInstantsSame() {
-    Assert.assertEquals(0, now.query(TimeQueries.compareTo(now)));
+    Assert.assertEquals(0, now.query(TimeQueries.compareTo(now)).intValue());
   }
 
   @Test
   public void compareInstantsGreaterThan() {
-    Assert.assertEquals(1, now.query(TimeQueries.compareTo(justNow)));
+    Assert.assertEquals(1, now.query(TimeQueries.compareTo(justNow)).intValue());
   }
 
   @Test
   public void compareInstantsLessThan() {
-    Assert.assertEquals(-1, justNow.query(TimeQueries.compareTo(now)));
+    Assert.assertEquals(-1, justNow.query(TimeQueries.compareTo(now)).intValue());
   }
 
   @Test
   public void compareLocaDateSame() {
-    Assert.assertEquals(0, today.query(TimeQueries.compareTo(today)));
+    Assert.assertEquals(0, today.query(TimeQueries.compareTo(today)).intValue());
   }
 
   @Test
   public void compareLocaDateGreaterThan() {
-    Assert.assertEquals(-1, yesterday.query(TimeQueries.compareTo(today)));
+    Assert.assertEquals(-1, yesterday.query(TimeQueries.compareTo(today)).intValue());
   }
 
   @Test
   public void compareLocaDateLessThan() {
-    Assert.assertEquals(1, today.query(TimeQueries.compareTo(yesterday)));
+    Assert.assertEquals(1, today.query(TimeQueries.compareTo(yesterday)).intValue());
   }
 
   @Test
   public void crossCompareLessThan() {
-    Assert.assertEquals(-1, today.query(TimeQueries.compareTo(now)));
+    Assert.assertEquals(-1, today.query(TimeQueries.compareTo(now)).intValue());
   }
 
   @Test
   public void crossCompareGreaterThan() {
-    Assert.assertEquals(1, justNow.query(TimeQueries.compareTo(today)));
+    Assert.assertEquals(1, justNow.query(TimeQueries.compareTo(today)).intValue());
   }
 
   /*

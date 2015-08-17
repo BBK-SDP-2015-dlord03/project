@@ -1,6 +1,5 @@
 package dlord03.cache.service;
 
-import dlord03.cache.QueryService;
 import dlord03.cache.data.DataType;
 import dlord03.plugin.api.event.InvalidationReport;
 import dlord03.plugin.api.event.InvalidationReportHandler;
@@ -8,17 +7,18 @@ import dlord03.plugin.api.event.InvalidationReportHandler;
 public class InvalidationReportHandlerImpl implements InvalidationReportHandler {
 
   final private DataType dataType;
-  final private QueryService queryService;
+  final private PluginInvalidationReportHandler handler;
 
-  public InvalidationReportHandlerImpl(QueryService cacheService, DataType dataType) {
+  public InvalidationReportHandlerImpl(PluginInvalidationReportHandler handler,
+    DataType dataType) {
     super();
     this.dataType = dataType;
-    this.queryService = cacheService;
+    this.handler = handler;
   }
 
   @Override
   public void invalidate(InvalidationReport report) {
-    queryService.handleInvalidationReport(dataType, report);
+    handler.handleInvalidationReport(dataType, report);
   }
 
 }
