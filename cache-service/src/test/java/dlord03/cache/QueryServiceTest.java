@@ -8,6 +8,8 @@ import javax.cache.Caching;
 import org.junit.Before;
 import org.junit.Test;
 
+import dlord03.cache.service.QueryServiceImpl;
+
 public class QueryServiceTest {
 
   private CacheManager cacheManager;

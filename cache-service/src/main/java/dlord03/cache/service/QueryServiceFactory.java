@@ -1,8 +1,10 @@
-package dlord03.cache;
+package dlord03.cache.service;
 
 import java.util.Properties;
 
 import javax.cache.CacheManager;
+
+import dlord03.cache.QueryService;
 
 public class QueryServiceFactory {
 

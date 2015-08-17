@@ -3,8 +3,8 @@ package dlord03.cache.index;
 import java.io.Serializable;
 import java.time.temporal.TemporalAccessor;
 
-import dlord03.cache.TimeQueries;
 import dlord03.cache.data.DataKey;
+import dlord03.cache.support.TimeQueries;
 
 /**
  * An object used to store details of a found key in the cache. It provides details of the found key

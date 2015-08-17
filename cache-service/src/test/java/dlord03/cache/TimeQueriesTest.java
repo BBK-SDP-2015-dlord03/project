@@ -12,6 +12,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import dlord03.cache.support.TimeQueries;
+
 public class TimeQueriesTest {
 
   private final static String NOW = "2015-08-02T14:49:56.025Z";

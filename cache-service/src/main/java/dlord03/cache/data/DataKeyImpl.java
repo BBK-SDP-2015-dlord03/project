@@ -5,7 +5,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 
-import dlord03.cache.TimeQueries;
+import dlord03.cache.support.TimeQueries;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 public class DataKeyImpl implements DataKey {

@@ -10,7 +10,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import dlord03.cache.QueryService;
-import dlord03.cache.QueryServiceFactory;
+import dlord03.cache.service.QueryServiceFactory;
 
 @Path("cache")
 public class CacheQueryService {

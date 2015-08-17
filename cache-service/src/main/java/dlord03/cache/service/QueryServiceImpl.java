@@ -1,4 +1,4 @@
-package dlord03.cache;
+package dlord03.cache.service;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -11,6 +11,9 @@ import javax.cache.CacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dlord03.cache.CacheController;
+import dlord03.cache.PluginController;
+import dlord03.cache.QueryService;
 import dlord03.cache.data.DataType;
 import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.SecurityData;
@@ -96,14 +99,14 @@ public class QueryServiceImpl implements QueryService {
 
   private void loadPlugins() {
 
-    pluginController = new PluginController(properties, this);
+    pluginController = new PluginControllerImpl(properties, this);
     pluginController.open();
 
   }
 
   private void createCache() {
     
-    cacheController = new CacheController(cacheManager);
+    cacheController = new CacheControllerImp(cacheManager);
     cacheController.open();
     
   }

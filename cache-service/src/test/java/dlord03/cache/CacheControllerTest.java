@@ -21,6 +21,7 @@ import dlord03.cache.index.IndexImpl;
 import dlord03.cache.index.IndexKey;
 import dlord03.cache.index.IndexKeyImpl;
 import dlord03.cache.index.IndexType;
+import dlord03.cache.service.CacheControllerImp;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
@@ -32,7 +33,7 @@ public class CacheControllerTest {
   @Before
   public void setUp() {
     cacheManager = Caching.getCachingProvider().getCacheManager();
-    cacheController = new CacheController(cacheManager);
+    cacheController = new CacheControllerImp(cacheManager);
     cacheController.open();
   }
 
@@ -82,7 +83,7 @@ public class CacheControllerTest {
 
   @Test
   public void createLatestCache() {
-    CacheController cacheController = new CacheController(cacheManager);
+    CacheController cacheController = new CacheControllerImp(cacheManager);
   }
 
 

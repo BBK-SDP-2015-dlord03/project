@@ -11,6 +11,12 @@ import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReport;
 
+/**
+ * 
+ * 
+ * @author David Lord
+ *
+ */
 public interface QueryService {
 
   CacheManager getCacheManager();
@@ -23,8 +29,7 @@ public interface QueryService {
 
   SecurityData getLatestValue(DataType type, SecurityIdentifier security);
 
-  SecurityData getLatestValue(DataType type, SecurityIdentifier security,
-    Instant before);
+  SecurityData getLatestValue(DataType type, SecurityIdentifier security, Instant before);
 
   SecurityData getEndOfDayValue(DataType type, SecurityIdentifier security,
     LocalDate date);
