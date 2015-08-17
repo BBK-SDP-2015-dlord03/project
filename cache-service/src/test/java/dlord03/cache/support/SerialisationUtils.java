@@ -1,4 +1,4 @@
-package dlord03.cache;
+package dlord03.cache.support;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -1,4 +1,4 @@
-package dlord03.cache;
+package dlord03.cache.service;
 
 import java.util.Properties;
 
@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import dlord03.cache.service.QueryServiceImpl;
 
-public class QueryServiceTest {
+public class QueryServiceImplTest {
 
   private CacheManager cacheManager;
   Properties properties;

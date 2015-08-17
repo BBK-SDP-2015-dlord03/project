@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import dlord03.cache.data.DataType;
-import dlord03.cache.SerialisationUtils;
+import dlord03.cache.support.SerialisationUtils;
 import dlord03.cache.data.DataKey;
 import dlord03.cache.data.DataKeyImpl;
 import dlord03.plugin.api.data.security.IdentifierScheme;

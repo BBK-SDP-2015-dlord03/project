@@ -1,4 +1,4 @@
-package dlord03.cache;
+package dlord03.cache.service;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import dlord03.cache.CacheController;
 import dlord03.cache.data.DataKey;
 import dlord03.cache.data.DataKeyImpl;
 import dlord03.cache.data.DataType;
@@ -25,7 +26,7 @@ import dlord03.cache.service.CacheControllerImp;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class CacheControllerTest {
+public class CacheControllerImplTest {
 
   private CacheManager cacheManager;
   private CacheController cacheController;
