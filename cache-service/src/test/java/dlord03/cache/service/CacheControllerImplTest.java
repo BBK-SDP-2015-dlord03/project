@@ -13,9 +13,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import dlord03.cache.CacheController;
+import dlord03.cache.data.DataType;
+import dlord03.cache.data.SimpleKey;
 import dlord03.cache.data.TemporalKey;
 import dlord03.cache.data.TemporalKeyImpl;
-import dlord03.cache.data.DataType;
 import dlord03.cache.index.Index;
 import dlord03.cache.index.IndexImpl;
 import dlord03.cache.index.IndexKey;
@@ -89,7 +90,7 @@ public class CacheControllerImplTest {
 
   @Test
   public void verifyLatestCache() {
-    Cache<TemporalKey, SecurityData> cache = cacheController.getLatestCache();
+    Cache<SimpleKey, SecurityData> cache = cacheController.getLatestCache();
     Assert.assertEquals("latestCache", cache.getName());
   }
 

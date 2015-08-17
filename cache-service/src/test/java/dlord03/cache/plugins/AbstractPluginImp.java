@@ -22,7 +22,9 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
   protected final List<T> fixingRecords;
   protected final List<T> intraDayRecords;
   protected SecurityIdentifier si;
-  protected long hitCount = 0;
+  protected long latestHitCount = 0;
+  protected long latestPredicateHitCount = 0;
+  protected long endOfDayHitCount = 0;
 
   public AbstractPluginImp() {
     super();
@@ -49,16 +51,19 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
 
   @Override
   public T getLatestValue(SecurityIdentifier security) {
+    latestHitCount++;
     return getRecord(intraDayRecords, ZonedDateTime.now().plusYears(1000));
   }
 
   @Override
   public T getLatestValue(SecurityIdentifier security, Instant before) {
+    latestPredicateHitCount++;
     return getRecord(intraDayRecords, before.atZone(ZoneId.systemDefault()));
   }
 
   @Override
   public T getEndOfDayValue(SecurityIdentifier security, LocalDate date) {
+    endOfDayHitCount++;
     return getRecord(intraDayRecords, date.atStartOfDay(ZoneId.systemDefault()));
   }
 
@@ -73,7 +78,19 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
   }
 
   public long getHitCount() {
-    return hitCount;
+    return latestHitCount + latestPredicateHitCount + endOfDayHitCount;
+  }
+
+  public long getLatestHitCount() {
+    return latestHitCount;
+  }
+
+  public long getlatestPredicateHitCount() {
+    return latestPredicateHitCount;
+  }
+
+  public long getEndOfDayHitCount() {
+    return endOfDayHitCount;
   }
 
   public void invalidateLatest() {

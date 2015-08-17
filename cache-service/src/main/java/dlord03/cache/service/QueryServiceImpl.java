@@ -13,8 +13,9 @@ import org.slf4j.LoggerFactory;
 import dlord03.cache.CacheController;
 import dlord03.cache.PluginController;
 import dlord03.cache.QueryService;
-import dlord03.cache.data.TemporalKey;
 import dlord03.cache.data.DataType;
+import dlord03.cache.data.SimpleKey;
+import dlord03.cache.data.SimpleKeyGenerator;
 import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReport;
@@ -37,6 +38,14 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
   public CacheManager getCacheManager() {
     return this.cacheManager;
+  }
+
+  public PluginController getPluginController() {
+    return this.pluginController;
+  }
+
+  public CacheController getCacheController() {
+    return this.cacheController;
   }
 
   public void setProperties(Properties properties) {
@@ -75,10 +84,25 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
   @Override
   public SecurityData getLatestValue(DataType type, SecurityIdentifier security) {
 
-    // First look in the latest cache.
-    Cache<TemporalKey, SecurityData> cache = cacheController.getLatestCache();
+    // Get the key for the requested data.
+    SimpleKey key = SimpleKeyGenerator.generate(type, security);
 
-    return pluginController.getPlugin(type).getLatestValue(security);
+    // Get the latest cache.
+    Cache<SimpleKey, SecurityData> cache = cacheController.getLatestCache();
+
+    // Is the record in the latest cache?
+    SecurityData result = cache.get(key);
+
+    // If it wasn't then ask the relevant plug-in for it.
+    if (result == null) {
+      result = pluginController.getPlugin(type).getLatestValue(security);
+      // If the plug-in returned it then add it to the cache.
+      if (result != null) {
+        cache.put(key, result);
+      }
+    }
+
+    return result;
   }
 
   @Override

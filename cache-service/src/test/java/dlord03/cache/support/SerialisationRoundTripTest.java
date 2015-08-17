@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,11 +16,11 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import dlord03.cache.data.DataType;
+import dlord03.cache.data.TemporalKey;
+import dlord03.cache.data.TemporalKeyImpl;
 import dlord03.cache.index.IndexKey;
 import dlord03.cache.index.IndexKeyImpl;
 import dlord03.cache.index.IndexType;
-import dlord03.cache.data.TemporalKey;
-import dlord03.cache.data.TemporalKeyImpl;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 

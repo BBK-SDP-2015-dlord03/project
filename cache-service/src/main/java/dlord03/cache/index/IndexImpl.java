@@ -2,19 +2,18 @@ package dlord03.cache.index;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.NavigableSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+import dlord03.cache.data.DataType;
 import dlord03.cache.data.TemporalKey;
 import dlord03.cache.data.TemporalKeyImpl;
-import dlord03.cache.data.DataType;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 /**
- * Provides a index of cache keys allowing for them to be searched from one record in the cache
- * rather than needing to rely on the underlying cache's implementation of a search which may
- * involve querying many distributed nodes.
+ * Provides a index of cache keys allowing for them to be searched from one record in the
+ * cache rather than needing to rely on the underlying cache's implementation of a search
+ * which may involve querying many distributed nodes.
  * 
  * @author David Lord
  *
@@ -58,7 +57,8 @@ public class IndexImpl implements Index {
     IndexRecord<Instant> predicate = new IndexRecord<>(predicateKey, before);
     IndexRecord<Instant> record;
     record = timestampedKeys.floor(predicate);
-    if (record != null && record.getPredicate().isAfter(before)) return record.getKey();
+    if (record != null && record.getPredicate().isAfter(before))
+      return record.getKey();
     return null;
   }
 
@@ -75,7 +75,8 @@ public class IndexImpl implements Index {
     IndexRecord<LocalDate> predicate = new IndexRecord<>(predicateKey, date);
     IndexRecord<LocalDate> record;
     record = datedKeys.floor(predicate);
-    if (record != null && record.getPredicate().isAfter(date)) return record.getKey();
+    if (record != null && record.getPredicate().isAfter(date))
+      return record.getKey();
     return null;
   }
 
@@ -99,19 +100,21 @@ public class IndexImpl implements Index {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (!(obj instanceof IndexImpl)) return false;
+    if (this == obj)
+      return true;
+    if (!(obj instanceof IndexImpl))
+      return false;
     final IndexImpl other = (IndexImpl) obj;
     return (this.dataType.equals(other.dataType)
-        && this.securityIdentifier.equals(other.securityIdentifier)
-        && this.datedKeys.equals(other.datedKeys)
-        && this.timestampedKeys.equals(other.timestampedKeys) && (latestKey == null
-            ? other.latestKey == null
-            : this.latestKey.equals(other.latestKey)));
+      && this.securityIdentifier.equals(other.securityIdentifier)
+      && this.datedKeys.equals(other.datedKeys)
+      && this.timestampedKeys.equals(other.timestampedKeys) && (latestKey == null
+        ? other.latestKey == null : this.latestKey.equals(other.latestKey)));
   }
 
   private void validateKey(TemporalKey dataKey) {
-    if (!dataKey.getDataType().equals(dataType)) throw new IllegalArgumentException();
+    if (!dataKey.getDataType().equals(dataType))
+      throw new IllegalArgumentException();
     if (!dataKey.getSecurityIdentifier().equals(securityIdentifier))
       throw new IllegalArgumentException();
   }

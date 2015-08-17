@@ -6,8 +6,16 @@ import javax.cache.CacheManager;
 import javax.cache.Caching;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import dlord03.cache.data.DataType;
+import dlord03.cache.plugins.DividendSchedulePluginImpl;
+import dlord03.plugin.api.data.Dividend;
+import dlord03.plugin.api.data.DividendSchedule;
+import dlord03.plugin.api.data.security.IdentifierScheme;
+import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 public class QueryServiceImplTest {
 
@@ -64,7 +72,48 @@ public class QueryServiceImplTest {
   }
 
   @Test
-  public void testRoutingRequest() {
+  public void testGetLastestDividendRecord() {
+
+    initialiseQueryService();
+
+    // Get a reference to the dividend plug-in.
+    DividendSchedulePluginImpl plugin;
+    plugin = (DividendSchedulePluginImpl) service.getPluginController()
+      .getPlugin(DataType.DIVIDEND);
+
+    // Construct a predicate.
+    SecurityIdentifier security;
+    security = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+
+    // Search for the latest dividend record.
+    DividendSchedule dividends;
+    dividends = (DividendSchedule) service.getLatestValue(DataType.DIVIDEND, security);
+
+    // Confirm the plug-in was called.
+    Assert.assertEquals("Failed to call plugin", 1, plugin.getLatestHitCount());
+
+    // Confirm the record was found.
+    Assert.assertNotNull("Failed to find record", dividends);
+
+    // Search again.
+    dividends = null;
+    dividends = (DividendSchedule) service.getLatestValue(DataType.DIVIDEND, security);
+
+    // Confirm the cached value was used and the plug-in was not called again.
+    Assert.assertNotNull("Failed to find record", dividends);
+    Assert.assertEquals("Called plugin for cached value", 1, plugin.getLatestHitCount());
+
+    int dividendCount = 0;
+    for (Dividend dividend : dividends) {
+      Assert.assertNotNull(dividend.getAmount());
+      dividendCount++;
+    }
+
+    Assert.assertTrue("No dividends", dividendCount > 0);
+
+  }
+
+  private void initialiseQueryService() {
     properties.setProperty("option.plugin.classname",
       "dlord03.cache.plugins.OptionContractPluginImpl");
     properties.setProperty("dividend.plugin.classname",
@@ -72,7 +121,6 @@ public class QueryServiceImplTest {
     service.setCacheManager(cacheManager);
     service.setProperties(properties);
     service.start();
-
   }
 
 }

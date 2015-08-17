@@ -19,7 +19,7 @@ public class PluginControllerImpl implements PluginController {
 
   private final Properties properties;
   private final Map<String, Plugin<? extends SecurityData>> plugins;
-  private PluginInvalidationReportHandler invalidationReportHandler;
+  private PluginInvalidationReportHandler invalidationHandler;
 
   public PluginControllerImpl(Properties properties) {
     super();
@@ -28,7 +28,7 @@ public class PluginControllerImpl implements PluginController {
     Object reportHandler = this.properties.get("invalidationReportHandler");
     if (reportHandler != null
       && reportHandler instanceof PluginInvalidationReportHandler) {
-      this.invalidationReportHandler = (PluginInvalidationReportHandler) reportHandler;
+      this.invalidationHandler = (PluginInvalidationReportHandler) reportHandler;
     }
   }
 
@@ -84,8 +84,10 @@ public class PluginControllerImpl implements PluginController {
     try {
       pluginClass = (Class<T>) Class.forName(className);
       plugin = (Plugin<T>) pluginClass.newInstance();
-      plugin.registerInvalidationHandler(
-        new InvalidationReportHandlerImpl(invalidationReportHandler, dataType));
+      InvalidationReportHandlerImpl reportHandler;
+      reportHandler = new InvalidationReportHandlerImpl(invalidationHandler, dataType);
+      plugin.registerInvalidationHandler(reportHandler);
+      plugin.open(properties);
     } catch (final ReflectiveOperationException e) {
       LOG.warn("Can not create plugin : {}", className, e);
     }
