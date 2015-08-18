@@ -1,6 +1,7 @@
 package dlord03.cache.service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Properties;
 
 import javax.cache.CacheManager;
@@ -122,22 +123,26 @@ public class QueryServiceImplTest {
 
   @Test
   public void testGetIntraDayDividendRecord() {
+    Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
+    findIntraDayDividendRecord("BT.L", twoHoursAgo);
+  }
 
+  @Test(expected = java.lang.AssertionError.class)
+  public void testGetMissingIntraDayDividendRecord() {
+    Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
+    findIntraDayDividendRecord("SLET.L", twoHoursAgo);
   }
 
   @Test
   public void testGetEndOfDayDividendRecord() {
-
+    LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+    findEndOfDayDividendRecord("BT.L", twoWeeksAgo);
   }
 
-  @Test
-  public void testGetMissingIntraDayDividendRecord() {
-
-  }
-
-  @Test
+  @Test(expected = java.lang.AssertionError.class)
   public void testGetMissingEndOfDayDividendRecord() {
-
+    LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+    findEndOfDayDividendRecord("SLET.L", twoWeeksAgo);
   }
 
   @Test
@@ -168,63 +173,38 @@ public class QueryServiceImplTest {
     optionContract = getLatestValue(DataType.OPTION, security);
 
     // Confirm the cached value was used and the plug-in was not called again.
-    Assert.assertNotNull("Failed to find record", optionContract.getName());
+    Assert.assertEquals("BT Group Plc", optionContract.getName());
     Assert.assertEquals("Called plugin for cached value", 1, plugin.getLatestHitCount());
 
   }
 
   @Test
   public void testGetIntraDayOptionRecord() {
-
-    initialiseQueryService();
-
-    // Get a reference to the dividend plug-in.
-    OptionContractPluginImpl plugin;
-    plugin = getOptionPlugin();
-
-    // Construct a security predicate.
-    SecurityIdentifier security;
-    security = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
-
-    // Construct a intra-day predicate.
     Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
-    security = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
-
-    // Search for the latest dividend record at time predicate.
-    OptionContract option;
-    option = getLatestValue(DataType.OPTION, security, twoHoursAgo);
-
-    // Confirm the plug-in was called.
-    long hitCount = plugin.getlatestPredicateHitCount();
-    Assert.assertEquals("Failed to call plugin", 1, hitCount);
-
-    // Confirm the record was found.
-    Assert.assertNotNull("Failed to find record", option);
-
-    // Search again.
-    option = null;
-    option = getLatestValue(DataType.OPTION, security, twoHoursAgo);
-
-    // Confirm the cached value was used and the plug-in was not called again.
-    Assert.assertNotNull("Failed to find record", option.getName());
-    hitCount = plugin.getlatestPredicateHitCount();
-    Assert.assertEquals("Called plugin for cached value", 1, hitCount);
-
+    findIntraDayOptionRecord("BT.L", twoHoursAgo);
   }
 
-  @Test
-  public void testGetEndOfDaOptionRecord() {
-
-  }
-
-  @Test
+  @Test(expected = java.lang.AssertionError.class)
   public void testGetMissingIntraDayOptionRecord() {
-
+    Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
+    findIntraDayOptionRecord("SLET.L", twoHoursAgo);
   }
 
   @Test
-  public void testGetMissingEndOfDayOptionRecord() {
+  public void testGetEndOfDayOptionRecord() {
+    LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+    findEndOfDayOptionRecord("BT.L", twoWeeksAgo);
+  }
 
+  @Test(expected = java.lang.AssertionError.class)
+  public void testGetMissingEndOfDayOptionRecord() {
+    LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+    findEndOfDayOptionRecord("SLET.L", twoWeeksAgo);
+  }
+
+  @SuppressWarnings("unchecked")
+  private <T> T getLatestValue(DataType type, SecurityIdentifier security) {
+    return (T) service.getLatestValue(type, security);
   }
 
   @SuppressWarnings("unchecked")
@@ -234,8 +214,9 @@ public class QueryServiceImplTest {
   }
 
   @SuppressWarnings("unchecked")
-  private <T> T getLatestValue(DataType type, SecurityIdentifier security) {
-    return (T) service.getLatestValue(type, security);
+  private <T> T getEndOfDayValue(DataType type, SecurityIdentifier security,
+    LocalDate date) {
+    return (T) service.getEndOfDayValue(type, security, date);
   }
 
   @Test
@@ -274,6 +255,154 @@ public class QueryServiceImplTest {
     pc = service.getPluginController();
     p = (DividendSchedulePluginImpl) pc.getPlugin(DataType.DIVIDEND);
     return p;
+  }
+
+  private void findIntraDayDividendRecord(String ric, Instant asOf) {
+
+    initialiseQueryService();
+
+    // Get a reference to the dividend plug-in.
+    DividendSchedulePluginImpl plugin = getDividendPlugin();
+
+    // Construct a security predicate.
+    SecurityIdentifier security;
+    security = new SecurityIdentifier(IdentifierScheme.RIC, ric);
+
+    // Search for the latest dividend record at time predicate.
+    DividendSchedule dividends;
+    dividends = getLatestValue(DataType.DIVIDEND, security, asOf);
+
+    // Confirm the plug-in was called.
+    long hitCount = plugin.getlatestPredicateHitCount();
+    Assert.assertEquals("Failed to call plugin", 1, hitCount);
+
+    // Confirm the record was found.
+    Assert.assertNotNull("Failed to find record", dividends);
+
+    // Search again.
+    dividends = null;
+    dividends = getLatestValue(DataType.DIVIDEND, security, asOf);
+
+    // Confirm the cached value was used and the plug-in was not called again.
+    int dividendCount = 0;
+    for (Dividend dividend : dividends) {
+      Assert.assertNotNull(dividend.getAmount());
+      dividendCount++;
+    }
+    Assert.assertTrue("No dividends", dividendCount > 0);
+
+    hitCount = plugin.getlatestPredicateHitCount();
+    Assert.assertEquals("Called plugin for cached value", 1, hitCount);
+
+  }
+
+  private void findEndOfDayDividendRecord(String ric, LocalDate date) {
+
+    initialiseQueryService();
+
+    // Get a reference to the dividend plug-in.
+    DividendSchedulePluginImpl plugin = getDividendPlugin();
+
+    // Construct a security predicate.
+    SecurityIdentifier security;
+    security = new SecurityIdentifier(IdentifierScheme.RIC, ric);
+
+    // Search for the latest dividend record at time predicate.
+    DividendSchedule dividends;
+    dividends = getEndOfDayValue(DataType.DIVIDEND, security, date);
+
+    // Confirm the plug-in was called.
+    long hitCount = plugin.getEndOfDayHitCount();
+    Assert.assertEquals("Failed to call plugin", 1, hitCount);
+
+    // Confirm the record was found.
+    Assert.assertNotNull("Failed to find record", dividends);
+
+    // Search again.
+    dividends = null;
+    dividends = getEndOfDayValue(DataType.DIVIDEND, security, date);
+
+    // Confirm the cached value was used and the plug-in was not called again.
+    int dividendCount = 0;
+    for (Dividend dividend : dividends) {
+      Assert.assertNotNull(dividend.getAmount());
+      dividendCount++;
+    }
+    Assert.assertTrue("No dividends", dividendCount > 0);
+
+    hitCount = plugin.getEndOfDayHitCount();
+    Assert.assertEquals("Called plugin for cached value", 1, hitCount);
+
+  }
+
+  private void findIntraDayOptionRecord(String ric, Instant asOf) {
+
+    initialiseQueryService();
+
+    // Get a reference to the option plug-in.
+    OptionContractPluginImpl plugin = getOptionPlugin();
+
+    // Construct a security predicate.
+    SecurityIdentifier security;
+    security = new SecurityIdentifier(IdentifierScheme.RIC, ric);
+
+    // Search for the latest dividend record at time predicate.
+    OptionContract option;
+    option = getLatestValue(DataType.OPTION, security, asOf);
+
+    // Confirm the plug-in was called.
+    long hitCount = plugin.getlatestPredicateHitCount();
+    Assert.assertEquals("Failed to call plugin", 1, hitCount);
+
+    // Confirm the record was found.
+    Assert.assertNotNull("Failed to find record", option);
+
+    // Search again.
+    option = null;
+    option = getLatestValue(DataType.OPTION, security, asOf);
+
+    // Confirm the cached value was used and the plug-in was not called again.
+    Assert.assertNotNull("Failed to find record", option.getName());
+    hitCount = plugin.getlatestPredicateHitCount();
+    Assert.assertEquals("Called plugin for cached value", 1, hitCount);
+
+  }
+
+  private void findEndOfDayOptionRecord(String ric, LocalDate date) {
+
+    initialiseQueryService();
+
+    // Get a reference to the option plug-in.
+    OptionContractPluginImpl plugin = getOptionPlugin();
+
+    // Construct a security predicate.
+    SecurityIdentifier security;
+    security = new SecurityIdentifier(IdentifierScheme.RIC, ric);
+
+    // Construct a intra-day predicate.
+    LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+
+    // Search for the latest dividend record at time predicate.
+    OptionContract option;
+    option = getEndOfDayValue(DataType.OPTION, security, twoWeeksAgo);
+
+    // Confirm the plug-in was called.
+    long hitCount = plugin.getEndOfDayHitCount();
+    Assert.assertEquals("Failed to call plugin", 1, hitCount);
+
+    // Confirm the record was found.
+    Assert.assertNotNull("Failed to find record", option);
+
+    // Search again.
+    option = null;
+    option = getEndOfDayValue(DataType.OPTION, security, twoWeeksAgo);
+
+    // Confirm the cached value was used and the plug-in was not called again.
+    Assert.assertNotNull("Failed to find record", option.getName());
+
+    hitCount = plugin.getEndOfDayHitCount();
+    Assert.assertEquals("Called plugin for cached value", 1, hitCount);
+
   }
 
   private void initialiseQueryService() {

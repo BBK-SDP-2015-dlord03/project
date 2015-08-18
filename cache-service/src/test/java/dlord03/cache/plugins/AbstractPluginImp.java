@@ -52,19 +52,21 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
   @Override
   public T getLatestValue(SecurityIdentifier security) {
     latestHitCount++;
-    return getRecord(intraDayRecords, ZonedDateTime.now().plusYears(1000));
+    return getRecord(intraDayRecords, security, ZonedDateTime.now().plusYears(1000));
   }
 
   @Override
   public T getLatestValue(SecurityIdentifier security, Instant before) {
     latestPredicateHitCount++;
-    return getRecord(intraDayRecords, before.atZone(ZoneId.systemDefault()));
+    ZonedDateTime predicate = before.atZone(ZoneId.systemDefault());
+    return getRecord(intraDayRecords, security, predicate);
   }
 
   @Override
   public T getEndOfDayValue(SecurityIdentifier security, LocalDate date) {
     endOfDayHitCount++;
-    return getRecord(intraDayRecords, date.atStartOfDay(ZoneId.systemDefault()));
+    ZonedDateTime predicate = date.atStartOfDay(ZoneId.systemDefault());
+    return getRecord(endOfDayRecords, security, predicate);
   }
 
   @Override
@@ -111,17 +113,16 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
 
   abstract protected void doClose();
 
-  protected T getRecord(List<T> list, ZonedDateTime before) {
+  protected T getRecord(List<T> list, SecurityIdentifier security, ZonedDateTime before) {
 
     T latest = null;
-    for (T option : list) {
-
-      if (option.getUpdatedAt().isBefore(before)) {
-        if (latest == null || option.getUpdatedAt().isAfter(latest.getUpdatedAt())) {
-          latest = option;
+    for (T record : list) {
+      if (record.getSecurityIdentifier().equals(security)
+        && record.getUpdatedAt().isBefore(before)) {
+        if (latest == null || record.getUpdatedAt().isAfter(latest.getUpdatedAt())) {
+          latest = record;
         }
       }
-
     }
 
     return latest;

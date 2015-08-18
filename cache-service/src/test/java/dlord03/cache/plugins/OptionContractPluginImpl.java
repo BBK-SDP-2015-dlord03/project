@@ -28,9 +28,22 @@ public class OptionContractPluginImpl extends AbstractPluginImp<OptionContract> 
   @Override
   public void doOpen(Properties properties) {
 
-    String ric = "BT.L";
-    String name = "British Telecom";
-    String expiry = "2016-08-01";
+    addSomeRecords("BT.L", "BT Group Plc", "2016-08-01");
+    addSomeRecords("VOD.L", "Vodafone Group Plc", "2018-08-01");
+    addSomeRecords("LGEN.L", "Legal & General Group Plc", "2020-08-01");
+    addSomeRecords("ULVR.L", "Unilever plc", "2017-08-01");
+
+    LOG.debug("Optino plugin opened");
+
+  }
+
+  @Override
+  public void doClose() {
+    LOG.debug("Option plugin closed");
+  }
+
+  private void addSomeRecords(String ric, String name, String expiry) {
+
     si = new SecurityIdentifier(IdentifierScheme.RIC, ric);
     OptionContractImpl option;
 
@@ -50,13 +63,6 @@ public class OptionContractPluginImpl extends AbstractPluginImp<OptionContract> 
       intraDayRecords.add(option);
     }
 
-    LOG.debug("Optino plugin opened");
-
-  }
-
-  @Override
-  public void doClose() {
-    LOG.debug("Option plugin closed");
   }
 
 }

@@ -7,9 +7,6 @@ import java.util.Properties;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import dlord03.cache.CacheController;
 import dlord03.cache.PluginController;
 import dlord03.cache.QueryService;
@@ -29,7 +26,6 @@ import dlord03.plugin.api.event.InvalidationReport;
 
 public class QueryServiceImpl implements QueryService, PluginInvalidationReportHandler {
 
-  private final static Logger LOG = LoggerFactory.getLogger(QueryServiceImpl.class);
   private CacheManager cacheManager;
   private Properties properties;
   private PluginController pluginController;
@@ -157,8 +153,43 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
   @Override
   public SecurityData getEndOfDayValue(DataType type, SecurityIdentifier security,
     LocalDate date) {
-    // TODO Auto-generated method stub
-    return null;
+
+    SecurityData result = null;
+
+    // Get the intra-day cache.
+    Cache<TemporalKey, SecurityData> cache = cacheController.getDatedCache();
+
+    // Generate the index key for this request
+    IndexKey indexKey = IndexKeyGenerator.generate(IndexType.ENDOFDAY, type, security);
+
+    // Get the index for this request.
+    Index index = getIndex(indexKey);
+
+    // Do we have a key in the index?
+    TemporalKey foundKey = index.getEndOfDayKey(date);
+
+    // If we don't then look up the data from the plug-in;
+    if (foundKey == null) {
+
+      result = pluginController.getPlugin(type).getEndOfDayValue(security, date);
+      if (result != null) {
+
+        // If the plug-in returned data then add its key to the index
+        foundKey = TemporalKeyGenerator.generate(type, result);
+        addIndexEndOfDayKey(indexKey, foundKey, date);
+
+        // And add the data to the cache.
+        cache.put(foundKey, result);
+      }
+
+    } else {
+
+      result = cache.get(foundKey);
+
+    }
+
+    return result;
+
   }
 
   @Override
@@ -201,10 +232,24 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
   }
 
-  private void putIndex(IndexKey key, Index index) {
+  private boolean addIndexEndOfDayKey(IndexKey key, TemporalKey dataKey, LocalDate date) {
+
+    final int maximumAttempts = 10;
+    boolean success = false;
 
     Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
-    indexCache.put(key, index);
+    Index originalIndex;
+    Index updatedIndex;
+
+    for (int i = 0; !success && i < maximumAttempts; i++) {
+      originalIndex = getIndex(key);
+      updatedIndex = getIndex(key);
+      updatedIndex.addEndOfDayKey(dataKey, date);
+      success = indexCache.replace(key, originalIndex, updatedIndex);
+
+    }
+
+    return success;
 
   }
 
