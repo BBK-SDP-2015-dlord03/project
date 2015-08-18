@@ -8,13 +8,11 @@ public class SecurityIdentifier implements Serializable {
 
   private final IdentifierScheme scheme;
   private final String symbol;
-  private final int hashCode;
 
   public SecurityIdentifier(IdentifierScheme scheme, String symbol) {
     super();
     this.scheme = scheme;
     this.symbol = symbol;
-    this.hashCode = 31 * scheme.hashCode() + symbol.hashCode();
   }
 
   public IdentifierScheme getScheme() {
@@ -27,7 +25,10 @@ public class SecurityIdentifier implements Serializable {
 
   @Override
   public int hashCode() {
-    return hashCode;
+    int result = 17;
+    result = 31 * result + scheme.hashCode();
+    result = 31 * result + symbol.hashCode();
+    return result;
   }
 
   @Override
