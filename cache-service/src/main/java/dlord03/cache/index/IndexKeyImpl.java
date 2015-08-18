@@ -38,4 +38,10 @@ public class IndexKeyImpl extends SimplKeyImpl implements IndexKey {
     return result;
   }
 
+  @Override
+  public String toString() {
+    return String.format("IndexKeyImpl(dataType=%s,securityIdentifier=%s,indexType=%s)",
+      getDataType(), getSecurityIdentifier(), indexType);
+  }
+
 }

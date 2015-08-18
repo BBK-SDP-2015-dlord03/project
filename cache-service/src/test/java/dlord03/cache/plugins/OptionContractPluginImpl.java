@@ -34,27 +34,29 @@ public class OptionContractPluginImpl extends AbstractPluginImp<OptionContract> 
     si = new SecurityIdentifier(IdentifierScheme.RIC, ric);
     OptionContractImpl option;
 
-    // Add some representative fixing records.
-    ZonedDateTime start = ZonedDateTime.parse("2015-08-01T00:00:00.000Z");
-    for (int i = 0; i < 20; i++) {
-      option = new OptionContractImpl(si, start.plusHours(i), "PUT", expiry, 25.5D, name);
-      fixingRecords.add(option);
+    // Add some representative end of day records.
+    ZonedDateTime monthAgo = getOneMonthAgo();
+    for (int i = 0; i < 28; i++) {
+      option =
+        new OptionContractImpl(si, monthAgo.plusDays(i), "PUT", expiry, 25.5D, name);
+      endOfDayRecords.add(option);
     }
 
     // Add some representative intra-day records.
-    start = ZonedDateTime.parse("2015-07-01T17:00:00.000Z");
+    ZonedDateTime dayAgo = getOneDayAgo();
     for (int i = 0; i < 20; i++) {
-      option = new OptionContractImpl(si, start.plusDays(i), "PUT", expiry, 25.5D, name);
+      option =
+        new OptionContractImpl(si, dayAgo.plusHours(i), "PUT", expiry, 25.5D, name);
       intraDayRecords.add(option);
     }
 
-    LOG.debug("Opened");
+    LOG.debug("Optino plugin opened");
 
   }
 
   @Override
   public void doClose() {
-    LOG.debug("Closed");
+    LOG.debug("Option plugin closed");
   }
 
 }

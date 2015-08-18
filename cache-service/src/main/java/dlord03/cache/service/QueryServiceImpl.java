@@ -16,6 +16,13 @@ import dlord03.cache.QueryService;
 import dlord03.cache.data.DataType;
 import dlord03.cache.data.SimpleKey;
 import dlord03.cache.data.SimpleKeyGenerator;
+import dlord03.cache.data.TemporalKey;
+import dlord03.cache.data.TemporalKeyGenerator;
+import dlord03.cache.index.Index;
+import dlord03.cache.index.IndexImpl;
+import dlord03.cache.index.IndexKey;
+import dlord03.cache.index.IndexKeyGenerator;
+import dlord03.cache.index.IndexType;
 import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReport;
@@ -84,7 +91,7 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
   @Override
   public SecurityData getLatestValue(DataType type, SecurityIdentifier security) {
 
-    // Get the key for the requested data.
+    // Generate the key for the requested data.
     SimpleKey key = SimpleKeyGenerator.generate(type, security);
 
     // Get the latest cache.
@@ -108,8 +115,43 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
   @Override
   public SecurityData getLatestValue(DataType type, SecurityIdentifier security,
     Instant before) {
-    // TODO Auto-generated method stub
-    return null;
+
+    SecurityData result = null;
+
+    // Get the intra-day cache.
+    Cache<TemporalKey, SecurityData> cache = cacheController.getTimestampedCache();
+
+    // Generate the index key for this request
+    IndexKey indexKey = IndexKeyGenerator.generate(IndexType.INTRADAY, type, security);
+
+    // Get the index for this request.
+    Index index = getIndex(indexKey);
+
+    // Do we have a key in the index?
+    TemporalKey foundKey = index.getLatestKey(before);
+
+    // If we don't then look up the data from the plug-in;
+    if (foundKey == null) {
+
+      result = pluginController.getPlugin(type).getLatestValue(security, before);
+      if (result != null) {
+
+        // If the plug-in returned data then add its key to the index
+        foundKey = TemporalKeyGenerator.generate(type, result);
+        addIndexLatestKey(indexKey, foundKey, before);
+
+        // And add the data to the cache.
+        cache.put(foundKey, result);
+      }
+
+    } else {
+
+      result = cache.get(foundKey);
+
+    }
+
+    return result;
+
   }
 
   @Override
@@ -122,6 +164,48 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
   @Override
   public void handleInvalidationReport(DataType type, InvalidationReport report) {
     // TODO Auto-generated method stub
+  }
+
+  private Index getIndex(IndexKey key) {
+
+    Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
+    Index index = indexCache.get(key);
+    if (index == null) {
+      index = new IndexImpl(key.getDataType(), key.getSecurityIdentifier());
+      if (!indexCache.putIfAbsent(key, index)) {
+        index = indexCache.get(key);
+      };
+    }
+    return index;
+
+  }
+
+  private boolean addIndexLatestKey(IndexKey key, TemporalKey dataKey, Instant before) {
+
+    final int maximumAttempts = 10;
+    boolean success = false;
+
+    Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
+    Index originalIndex;
+    Index updatedIndex;
+
+    for (int i = 0; !success && i < maximumAttempts; i++) {
+      originalIndex = getIndex(key);
+      updatedIndex = getIndex(key);
+      updatedIndex.addLatestKey(dataKey, before);
+      success = indexCache.replace(key, originalIndex, updatedIndex);
+
+    }
+
+    return success;
+
+  }
+
+  private void putIndex(IndexKey key, Index index) {
+
+    Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
+    indexCache.put(key, index);
+
   }
 
   private void loadPlugins() {

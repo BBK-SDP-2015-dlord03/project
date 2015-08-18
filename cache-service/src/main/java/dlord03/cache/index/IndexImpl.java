@@ -36,6 +36,10 @@ public class IndexImpl implements Index {
     this.datedKeys = new ConcurrentSkipListSet<>();
   }
 
+  public IndexImpl(Index index) {
+    this(index.getDataType(), index.getSecurityIdentifier());
+  }
+
   @Override
   public DataType getDataType() {
     return dataType;
@@ -57,7 +61,7 @@ public class IndexImpl implements Index {
     IndexRecord<Instant> predicate = new IndexRecord<>(predicateKey, before);
     IndexRecord<Instant> record;
     record = timestampedKeys.floor(predicate);
-    if (record != null && record.getPredicate().isAfter(before))
+    if (record != null && record.getPredicate().compareTo(before) >= 0)
       return record.getKey();
     return null;
   }
@@ -75,7 +79,7 @@ public class IndexImpl implements Index {
     IndexRecord<LocalDate> predicate = new IndexRecord<>(predicateKey, date);
     IndexRecord<LocalDate> record;
     record = datedKeys.floor(predicate);
-    if (record != null && record.getPredicate().isAfter(date))
+    if (record != null && record.getPredicate().compareTo(date) >= 0)
       return record.getKey();
     return null;
   }

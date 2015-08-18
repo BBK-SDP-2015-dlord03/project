@@ -9,16 +9,24 @@ import dlord03.plugin.api.data.VolatilitySurface;
  * 
  * Represents the different types of data held in a cache and the classes that represent them.
  * 
- * @author david
+ * @author David Lord
+ * @formatter:off
  *
  */
 public enum DataType {
 
-  // @formatter:off
+  /**
+   * Option contract details.
+   */
   OPTION("option", OptionContract.class), 
+  /**
+   * Dividend schedule.
+   */
   DIVIDEND("dividend", DividendSchedule.class), 
+  /**
+   * Volatility surface.
+   */
   VOLATILITY("volatility", VolatilitySurface.class);
-  // @formatter:on
 
   final private String name;
   final private Class<? extends SecurityData> valueClass;

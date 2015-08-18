@@ -19,7 +19,7 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
 
   protected boolean isOpen = false;
   protected InvalidationReportHandler handler;
-  protected final List<T> fixingRecords;
+  protected final List<T> endOfDayRecords;
   protected final List<T> intraDayRecords;
   protected SecurityIdentifier si;
   protected long latestHitCount = 0;
@@ -28,7 +28,7 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
 
   public AbstractPluginImp() {
     super();
-    fixingRecords = new ArrayList<>();
+    endOfDayRecords = new ArrayList<>();
     intraDayRecords = new ArrayList<>();
   }
 
@@ -126,6 +126,17 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
 
     return latest;
 
+  }
+
+  protected ZonedDateTime getOneDayAgo() {
+    ZonedDateTime now = ZonedDateTime.now();
+    return now.minusDays(1);
+
+  }
+
+  protected ZonedDateTime getOneMonthAgo() {
+    ZonedDateTime now = ZonedDateTime.now();
+    return now.minusMonths(1);
   }
 
 }
