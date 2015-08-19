@@ -35,7 +35,7 @@ public interface QueryService {
    * @param security the security for which the data is required.
    * @return the latest version of the data or {@code null} if none exists.
    */
-  SecurityData getLatestValue(DataType type, SecurityIdentifier security);
+  <T extends SecurityData> T getLatestValue(DataType type, SecurityIdentifier security);
 
   /**
    * Return the latest intra-day value of record's data type as it was at a particular
@@ -46,7 +46,8 @@ public interface QueryService {
    * @param before the predicate before which the data must exist.
    * @return the latest version of the data or {@code null} if none exists.
    */
-  SecurityData getLatestValue(DataType type, SecurityIdentifier security, Instant before);
+  <T extends SecurityData> T getLatestValue(DataType type, SecurityIdentifier security,
+    Instant before);
 
   /**
    * Return the end-of-day value of record's data type as it was on a particular date.
@@ -56,7 +57,7 @@ public interface QueryService {
    * @param date the predicate date on which the data existed.
    * @return the version of the data for that day or {@code null} if none exists.
    */
-  SecurityData getEndOfDayValue(DataType type, SecurityIdentifier security,
+  <T extends SecurityData> T getEndOfDayValue(DataType type, SecurityIdentifier security,
     LocalDate date);
 
 }

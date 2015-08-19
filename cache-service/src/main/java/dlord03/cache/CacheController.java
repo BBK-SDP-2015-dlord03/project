@@ -22,10 +22,10 @@ public interface CacheController {
 
   Cache<IndexKey, Index> getIndexCache();
 
-  Cache<SimpleKey, SecurityData> getLatestCache();
+  <T extends SecurityData> Cache<SimpleKey, T> getLatestCache();
 
-  Cache<TemporalKey, SecurityData> getTimestampedCache();
+  <T extends SecurityData> Cache<TemporalKey, T> getTimestampedCache();
 
-  Cache<TemporalKey, SecurityData> getDatedCache();
+  <T extends SecurityData> Cache<TemporalKey, T> getDatedCache();
 
 }

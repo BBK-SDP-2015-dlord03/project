@@ -20,6 +20,7 @@ import dlord03.cache.index.IndexImpl;
 import dlord03.cache.index.IndexKey;
 import dlord03.cache.index.IndexKeyGenerator;
 import dlord03.cache.index.IndexType;
+import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReport;
@@ -84,21 +85,23 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
       pluginController.close();
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public SecurityData getLatestValue(DataType type, SecurityIdentifier security) {
+  public <T extends SecurityData> T getLatestValue(DataType type,
+    SecurityIdentifier security) {
 
     // Generate the key for the requested data.
     SimpleKey key = SimpleKeyGenerator.generate(type, security);
 
     // Get the latest cache.
-    Cache<SimpleKey, SecurityData> cache = cacheController.getLatestCache();
+    Cache<SimpleKey, T> cache = cacheController.getLatestCache();
 
     // Is the record in the latest cache?
-    SecurityData result = cache.get(key);
+    T result = cache.get(key);
 
     // If it wasn't then ask the relevant plug-in for it.
     if (result == null) {
-      result = pluginController.getPlugin(type).getLatestValue(security);
+      result = (T) getPlugin(type).getLatestValue(security);
       // If the plug-in returned it then add it to the cache.
       if (result != null) {
         cache.put(key, result);
@@ -108,11 +111,12 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
     return result;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public SecurityData getLatestValue(DataType type, SecurityIdentifier security,
-    Instant before) {
+  public <T extends SecurityData> T getLatestValue(DataType type,
+    SecurityIdentifier security, Instant before) {
 
-    SecurityData result = null;
+    T result = null;
 
     // Get the intra-day cache.
     Cache<TemporalKey, SecurityData> cache = cacheController.getTimestampedCache();
@@ -129,7 +133,7 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
     // If we don't then look up the data from the plug-in;
     if (foundKey == null) {
 
-      result = pluginController.getPlugin(type).getLatestValue(security, before);
+      result = (T) getPlugin(type).getLatestValue(security, before);
       if (result != null) {
 
         // If the plug-in returned data then add its key to the index
@@ -142,7 +146,7 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
     } else {
 
-      result = cache.get(foundKey);
+      result = (T) cache.get(foundKey);
 
     }
 
@@ -150,11 +154,12 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public SecurityData getEndOfDayValue(DataType type, SecurityIdentifier security,
-    LocalDate date) {
+  public <T extends SecurityData> T getEndOfDayValue(DataType type,
+    SecurityIdentifier security, LocalDate date) {
 
-    SecurityData result = null;
+    T result = null;
 
     // Get the intra-day cache.
     Cache<TemporalKey, SecurityData> cache = cacheController.getDatedCache();
@@ -171,7 +176,7 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
     // If we don't then look up the data from the plug-in;
     if (foundKey == null) {
 
-      result = pluginController.getPlugin(type).getEndOfDayValue(security, date);
+      result = (T) getPlugin(type).getEndOfDayValue(security, date);
       if (result != null) {
 
         // If the plug-in returned data then add its key to the index
@@ -184,7 +189,7 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
     } else {
 
-      result = cache.get(foundKey);
+      result = (T) cache.get(foundKey);
 
     }
 
@@ -196,6 +201,10 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
   public <T extends SecurityData> void handleInvalidationReport(Class<T> type,
     InvalidationReport report) {
     // TODO Auto-generated method stub
+  }
+
+  private Plugin<? extends SecurityData> getPlugin(DataType type) {
+    return pluginController.getPlugin(type.getValueClass());
   }
 
   private Index getIndex(IndexKey key) {
