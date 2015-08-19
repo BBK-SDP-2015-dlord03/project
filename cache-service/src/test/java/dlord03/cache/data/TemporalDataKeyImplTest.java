@@ -49,11 +49,13 @@ public class TemporalDataKeyImplTest {
 
   @Test
   public void testObjectInequalityFromInstant() {
-    final ZonedDateTime dayBefore = ZonedDateTime.parse(UPDATED_TIME).minusDays(1);
+    final ZonedDateTime dayBefore =
+      ZonedDateTime.parse(UPDATED_TIME).minusDays(1);
     TemporalKeyImpl key1;
     key1 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedTime);
     TemporalKeyImpl key2;
-    key2 = new TemporalKeyImpl(DataType.DIVIDEND, security, dayBefore.toInstant());
+    key2 =
+      new TemporalKeyImpl(DataType.DIVIDEND, security, dayBefore.toInstant());
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1, key2);
@@ -72,11 +74,13 @@ public class TemporalDataKeyImplTest {
 
   @Test
   public void testHashInequalityFromInstant() {
-    final ZonedDateTime dayBefore = ZonedDateTime.parse(UPDATED_TIME).minusDays(1);
+    final ZonedDateTime dayBefore =
+      ZonedDateTime.parse(UPDATED_TIME).minusDays(1);
     TemporalKeyImpl key1;
     key1 = new TemporalKeyImpl(DataType.DIVIDEND, security, updatedTime);
     TemporalKeyImpl key2;
-    key2 = new TemporalKeyImpl(DataType.DIVIDEND, security, dayBefore.toInstant());
+    key2 =
+      new TemporalKeyImpl(DataType.DIVIDEND, security, dayBefore.toInstant());
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1.hashCode(), key2.hashCode());

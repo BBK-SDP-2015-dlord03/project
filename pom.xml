@@ -187,15 +187,9 @@
                 <linkXRef>true</linkXRef>
                 <verbose>true</verbose>
                 <targetJdk>${jdk.version}</targetJdk>
-                <!--
-                <rulesets>
-                  <ruleset>/rulesets/maven.xml</ruleset>
-                  <ruleset>/rulesets/migrating_to_junit4.xml</ruleset>
-                  <ruleset>/rulesets/design.xml</ruleset>
-                  <ruleset>/rulesets/unusedcode.xml</ruleset>
-                  <ruleset>/rulesets/typeresolution.xml</ruleset>
-                </rulesets>
-                -->
+                <!-- <rulesets> <ruleset>/rulesets/maven.xml</ruleset> <ruleset>/rulesets/migrating_to_junit4.xml</ruleset> 
+                  <ruleset>/rulesets/design.xml</ruleset> <ruleset>/rulesets/unusedcode.xml</ruleset> 
+                  <ruleset>/rulesets/typeresolution.xml</ruleset> </rulesets> -->
               </configuration>
             </plugin>
             <plugin>

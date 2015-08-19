@@ -37,13 +37,15 @@ public class OptionContractPlugin implements Plugin<OptionContract> {
   }
 
   @Override
-  public OptionContract getLatestValue(SecurityIdentifier security, Instant before) {
+  public OptionContract getLatestValue(SecurityIdentifier security,
+    Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public OptionContract getEndOfDayValue(SecurityIdentifier security, LocalDate date) {
+  public OptionContract getEndOfDayValue(SecurityIdentifier security,
+    LocalDate date) {
     // TODO Auto-generated method stub
     return null;
   }

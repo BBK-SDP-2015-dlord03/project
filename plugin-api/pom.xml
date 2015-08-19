@@ -14,10 +14,10 @@
 
   <artifactId>plugin-api</artifactId>
   <name>Plugin API</name>
-  
+
   <dependencies>
-  
-      <!-- Testing -->
+
+    <!-- Testing -->
 
     <dependency>
       <groupId>junit</groupId>
@@ -27,6 +27,6 @@
     </dependency>
 
   </dependencies>
-  
+
 
 </project>

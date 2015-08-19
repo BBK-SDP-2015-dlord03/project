@@ -16,7 +16,8 @@ import dlord03.plugin.api.data.security.SecurityIdentifier;
  * @author David Lord
  *
  */
-public class OptionContractPluginImpl extends AbstractPluginImp<OptionContract> {
+public class OptionContractPluginImpl
+  extends AbstractPluginImp<OptionContract> {
 
   private final static Logger LOG =
     LoggerFactory.getLogger(OptionContractPluginImpl.class);
@@ -48,18 +49,18 @@ public class OptionContractPluginImpl extends AbstractPluginImp<OptionContract> 
     OptionContractImpl option;
 
     // Add some representative end of day records.
-    ZonedDateTime monthAgo = getOneMonthAgo();
+    final ZonedDateTime monthAgo = getOneMonthAgo();
     for (int i = 0; i < 28; i++) {
-      option =
-        new OptionContractImpl(si, monthAgo.plusDays(i), "PUT", expiry, 25.5D, name);
+      option = new OptionContractImpl(si, monthAgo.plusDays(i), "PUT", expiry,
+        25.5D, name);
       endOfDayRecords.add(option);
     }
 
     // Add some representative intra-day records.
-    ZonedDateTime dayAgo = getOneDayAgo();
+    final ZonedDateTime dayAgo = getOneDayAgo();
     for (int i = 0; i < 20; i++) {
-      option =
-        new OptionContractImpl(si, dayAgo.plusHours(i), "PUT", expiry, 25.5D, name);
+      option = new OptionContractImpl(si, dayAgo.plusHours(i), "PUT", expiry,
+        25.5D, name);
       intraDayRecords.add(option);
     }
 

@@ -9,8 +9,8 @@ import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 /**
- * The primary interface used for querying the underlying data systems. Users of the
- * system typically retrieve a reference to this interface by calling
+ * The primary interface used for querying the underlying data systems. Users of
+ * the system typically retrieve a reference to this interface by calling
  * {@link QueryServiceFactory#createService}.
  * 
  * @author David Lord
@@ -19,7 +19,8 @@ import dlord03.plugin.api.data.security.SecurityIdentifier;
 public interface QueryService {
 
   /**
-   * Start the service. Calls to other methods will fail before this method is called.
+   * Start the service. Calls to other methods will fail before this method is
+   * called.
    */
   void start();
 
@@ -35,29 +36,32 @@ public interface QueryService {
    * @param security the security for which the data is required.
    * @return the latest version of the data or {@code null} if none exists.
    */
-  <T extends SecurityData> T getLatestValue(DataType type, SecurityIdentifier security);
+  <T extends SecurityData> T getLatestValue(DataType type,
+    SecurityIdentifier security);
 
   /**
-   * Return the latest intra-day value of record's data type as it was at a particular
-   * instant.
+   * Return the latest intra-day value of record's data type as it was at a
+   * particular instant.
    *
    * @param type the type of data required.
    * @param security the security for which the data is required.
    * @param before the predicate before which the data must exist.
    * @return the latest version of the data or {@code null} if none exists.
    */
-  <T extends SecurityData> T getLatestValue(DataType type, SecurityIdentifier security,
-    Instant before);
+  <T extends SecurityData> T getLatestValue(DataType type,
+    SecurityIdentifier security, Instant before);
 
   /**
-   * Return the end-of-day value of record's data type as it was on a particular date.
+   * Return the end-of-day value of record's data type as it was on a particular
+   * date.
    * 
    * @param type the type of data required.
    * @param security the security for which the data is required.
    * @param date the predicate date on which the data existed.
-   * @return the version of the data for that day or {@code null} if none exists.
+   * @return the version of the data for that day or {@code null} if none
+   *         exists.
    */
-  <T extends SecurityData> T getEndOfDayValue(DataType type, SecurityIdentifier security,
-    LocalDate date);
+  <T extends SecurityData> T getEndOfDayValue(DataType type,
+    SecurityIdentifier security, LocalDate date);
 
 }

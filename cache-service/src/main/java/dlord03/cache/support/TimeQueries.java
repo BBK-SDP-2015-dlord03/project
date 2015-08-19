@@ -21,7 +21,8 @@ public class TimeQueries {
    * Compares two {@link TemporalAccessor} objects with different precision.
    * 
    * @param other the other object to compare with.
-   * @return 0, -1 or 1 if the other object is equal, less than, or equal respectively.
+   * @return 0, -1 or 1 if the other object is equal, less than, or equal
+   *         respectively.
    * 
    */
   public static TemporalQuery<Integer> compareTo(TemporalAccessor other) {
@@ -29,8 +30,8 @@ public class TimeQueries {
 
       @Override
       public Integer queryFrom(TemporalAccessor temporal) {
-        long thisOne = getTimestamp(temporal);
-        long otherOne = getTimestamp(other);
+        final long thisOne = getTimestamp(temporal);
+        final long otherOne = getTimestamp(other);
         return Long.compare(thisOne, otherOne);
       }
 
@@ -39,7 +40,7 @@ public class TimeQueries {
   }
 
   /**
-   * @return 
+   * @return
    */
   public static TemporalQuery<Long> getTimestamp() {
     return new TemporalQuery<Long>() {
@@ -55,7 +56,7 @@ public class TimeQueries {
 
   private static long getTimestamp(TemporalAccessor temporal) {
 
-    TemporalUnit precision = temporal.query(TemporalQueries.precision());
+    final TemporalUnit precision = temporal.query(TemporalQueries.precision());
     long milliseconds = 0;
 
     if (precision == ChronoUnit.NANOS) {

@@ -25,7 +25,8 @@ import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReport;
 
-public class QueryServiceImpl implements QueryService, PluginInvalidationReportHandler {
+public class QueryServiceImpl
+  implements QueryService, PluginInvalidationReportHandler {
 
   private CacheManager cacheManager;
   private Properties properties;
@@ -64,14 +65,17 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
   public void start() {
 
     // Validate provided context.
-    if (cacheManager == null)
+    if (cacheManager == null) {
       throw new IllegalStateException("cacheManager can not be null");
-    if (properties == null)
+    }
+    if (properties == null) {
       throw new IllegalStateException("properties can not be null");
+    }
 
     loadPlugins();
-    if (pluginController.getPlugins().size() == 0)
+    if (pluginController.getPlugins().size() == 0) {
       throw new IllegalStateException("no plugins loaded");
+    }
 
     createCache();
 
@@ -79,10 +83,12 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
   @Override
   public void stop() {
-    if (cacheController != null)
+    if (cacheController != null) {
       cacheController.close();
-    if (pluginController != null)
+    }
+    if (pluginController != null) {
       pluginController.close();
+    }
   }
 
   @SuppressWarnings("unchecked")
@@ -91,10 +97,10 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
     SecurityIdentifier security) {
 
     // Generate the key for the requested data.
-    SimpleKey key = SimpleKeyGenerator.generate(type, security);
+    final SimpleKey key = SimpleKeyGenerator.generate(type, security);
 
     // Get the latest cache.
-    Cache<SimpleKey, T> cache = cacheController.getLatestCache();
+    final Cache<SimpleKey, T> cache = cacheController.getLatestCache();
 
     // Is the record in the latest cache?
     T result = cache.get(key);
@@ -119,13 +125,15 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
     T result = null;
 
     // Get the intra-day cache.
-    Cache<TemporalKey, SecurityData> cache = cacheController.getTimestampedCache();
+    final Cache<TemporalKey, SecurityData> cache =
+      cacheController.getTimestampedCache();
 
     // Generate the index key for this request
-    IndexKey indexKey = IndexKeyGenerator.generate(IndexType.INTRADAY, type, security);
+    final IndexKey indexKey =
+      IndexKeyGenerator.generate(IndexType.INTRADAY, type, security);
 
     // Get the index for this request.
-    Index index = getIndex(indexKey);
+    final Index index = getIndex(indexKey);
 
     // Do we have a key in the index?
     TemporalKey foundKey = index.getLatestKey(before);
@@ -162,13 +170,15 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
     T result = null;
 
     // Get the intra-day cache.
-    Cache<TemporalKey, SecurityData> cache = cacheController.getDatedCache();
+    final Cache<TemporalKey, SecurityData> cache =
+      cacheController.getDatedCache();
 
     // Generate the index key for this request
-    IndexKey indexKey = IndexKeyGenerator.generate(IndexType.ENDOFDAY, type, security);
+    final IndexKey indexKey =
+      IndexKeyGenerator.generate(IndexType.ENDOFDAY, type, security);
 
     // Get the index for this request.
-    Index index = getIndex(indexKey);
+    final Index index = getIndex(indexKey);
 
     // Do we have a key in the index?
     TemporalKey foundKey = index.getEndOfDayKey(date);
@@ -209,7 +219,7 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
   private Index getIndex(IndexKey key) {
 
-    Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
+    final Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
     Index index = indexCache.get(key);
     if (index == null) {
       index = new IndexImpl(key.getDataType(), key.getSecurityIdentifier());
@@ -221,12 +231,13 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
   }
 
-  private boolean addIndexLatestKey(IndexKey key, TemporalKey dataKey, Instant before) {
+  private boolean addIndexLatestKey(IndexKey key, TemporalKey dataKey,
+    Instant before) {
 
     final int maximumAttempts = 10;
     boolean success = false;
 
-    Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
+    final Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
     Index originalIndex;
     Index updatedIndex;
 
@@ -242,12 +253,13 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
   }
 
-  private boolean addIndexEndOfDayKey(IndexKey key, TemporalKey dataKey, LocalDate date) {
+  private boolean addIndexEndOfDayKey(IndexKey key, TemporalKey dataKey,
+    LocalDate date) {
 
     final int maximumAttempts = 10;
     boolean success = false;
 
-    Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
+    final Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
     Index originalIndex;
     Index updatedIndex;
 

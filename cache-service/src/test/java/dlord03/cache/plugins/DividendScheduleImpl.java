@@ -16,7 +16,7 @@ public class DividendScheduleImpl implements DividendSchedule {
 
   private final SecurityIdentifier si;
   private final ZonedDateTime updatedAt;
-  private String currency;
+  private final String currency;
   private final List<Dividend> dividends;
 
   public DividendScheduleImpl(SecurityIdentifier si, ZonedDateTime updatedAt,

@@ -22,8 +22,8 @@ public class OptionContractImpl implements OptionContract {
   private final Double strikePrice;
 
   public OptionContractImpl(SecurityIdentifier securityIdentifier,
-    ZonedDateTime updatedAt, String intrumentType, String expiryDate, Double strikePrice,
-    String name) {
+    ZonedDateTime updatedAt, String intrumentType, String expiryDate,
+    Double strikePrice, String name) {
     super();
     this.securityIdentifier = securityIdentifier;
     this.updatedAt = updatedAt;

@@ -20,8 +20,8 @@ public class CacheQueryService {
   public CacheQueryService() {
     super();
     System.setProperty("hazelcast.logging.type", "slf4j");
-    CachingProvider cachingProvider = Caching.getCachingProvider();
-    CacheManager cacheManager = cachingProvider.getCacheManager();
+    final CachingProvider cachingProvider = Caching.getCachingProvider();
+    final CacheManager cacheManager = cachingProvider.getCacheManager();
     this.queryService = QueryServiceFactory.createService(cacheManager, null);
     this.queryService.start();
   }
@@ -30,7 +30,7 @@ public class CacheQueryService {
   @Path("squareRoot")
   @Produces(MediaType.APPLICATION_JSON)
   public Result squareRoot(@QueryParam("input") double input) {
-    Result result = new Result("Square Root");
+    final Result result = new Result("Square Root");
     result.setInput(input);
     result.setOutput(Math.sqrt(result.getInput()));
     return result;
@@ -40,7 +40,7 @@ public class CacheQueryService {
   @Path("square")
   @Produces(MediaType.APPLICATION_JSON)
   public Result square(@QueryParam("input") double input) {
-    Result result = new Result("Square");
+    final Result result = new Result("Square");
     result.setInput(input);
     result.setOutput(result.getInput() * result.getInput());
     return result;

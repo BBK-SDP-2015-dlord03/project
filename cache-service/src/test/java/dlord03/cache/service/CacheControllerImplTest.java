@@ -47,23 +47,25 @@ public class CacheControllerImplTest {
   @Test
   public void createIndexCache() {
 
-    DataType dt = DataType.OPTION;
-    SecurityIdentifier si = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
-    IndexKey key = new IndexKeyImpl(IndexType.INTRADAY, dt, si);
-    Index index = new IndexImpl(dt, si);
+    final DataType dt = DataType.OPTION;
+    final SecurityIdentifier si =
+      new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+    final IndexKey key = new IndexKeyImpl(IndexType.INTRADAY, dt, si);
+    final Index index = new IndexImpl(dt, si);
 
     // Add an entry
-    Instant queryAge = ZonedDateTime.now().minusHours(2).toInstant();
-    ZonedDateTime dataAge = ZonedDateTime.now().minusHours(12);
-    TemporalKey storedKey = new TemporalKeyImpl(dt, si, dataAge.toInstant());
+    final Instant queryAge = ZonedDateTime.now().minusHours(2).toInstant();
+    final ZonedDateTime dataAge = ZonedDateTime.now().minusHours(12);
+    final TemporalKey storedKey =
+      new TemporalKeyImpl(dt, si, dataAge.toInstant());
     // This record is 12 hours old but satisfied a query for 2 hour old data.
     index.addLatestKey(storedKey, queryAge);
 
-    Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
+    final Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
     indexCache.put(key, index);
 
-    IndexKey searchKey = new IndexKeyImpl(IndexType.INTRADAY, dt, si);
-    Index foundIndex = indexCache.get(searchKey);
+    final IndexKey searchKey = new IndexKeyImpl(IndexType.INTRADAY, dt, si);
+    final Index foundIndex = indexCache.get(searchKey);
 
     // The retrieved index is the same one we put in?
     Assert.assertTrue("Records not equal", foundIndex.equals(index));
@@ -72,8 +74,8 @@ public class CacheControllerImplTest {
     Assert.assertFalse(index == foundIndex);
 
     // We can still find the entries.
-    Instant twoHoursAgo = ZonedDateTime.now().minusHours(2).toInstant();
-    Instant threeHoursAgo = ZonedDateTime.now().minusHours(3).toInstant();
+    final Instant twoHoursAgo = ZonedDateTime.now().minusHours(2).toInstant();
+    final Instant threeHoursAgo = ZonedDateTime.now().minusHours(3).toInstant();
     TemporalKey foundKey = foundIndex.getLatestKey(threeHoursAgo);
     Assert.assertTrue("Records not equal", foundKey.equals(storedKey));
 
@@ -84,25 +86,28 @@ public class CacheControllerImplTest {
 
   @Test
   public void verifyIndexCache() {
-    Cache<IndexKey, Index> cache = cacheController.getIndexCache();
+    final Cache<IndexKey, Index> cache = cacheController.getIndexCache();
     Assert.assertEquals("indexCache", cache.getName());
   }
 
   @Test
   public void verifyLatestCache() {
-    Cache<SimpleKey, SecurityData> cache = cacheController.getLatestCache();
+    final Cache<SimpleKey, SecurityData> cache =
+      cacheController.getLatestCache();
     Assert.assertEquals("latestCache", cache.getName());
   }
 
   @Test
   public void verifyTimestampedCache() {
-    Cache<TemporalKey, SecurityData> cache = cacheController.getTimestampedCache();
+    final Cache<TemporalKey, SecurityData> cache =
+      cacheController.getTimestampedCache();
     Assert.assertEquals("timestampedCache", cache.getName());
   }
 
   @Test
   public void verifyDatedCache() {
-    Cache<TemporalKey, SecurityData> cache = cacheController.getDatedCache();
+    final Cache<TemporalKey, SecurityData> cache =
+      cacheController.getDatedCache();
     Assert.assertEquals("datedCache", cache.getName());
   }
 

@@ -6,8 +6,9 @@ import java.time.temporal.TemporalAccessor;
 import dlord03.cache.data.TemporalKey;
 
 /**
- * An object used to store details of a found key in the cache. It provides details of the
- * found key together with the predicate that was used to find it.
+ * An object used to store details of a found key in the cache. It provides
+ * details of the found key together with the predicate that was used to find
+ * it.
  * 
  * @author David Lord
  * 
@@ -35,8 +36,9 @@ public class IndexRecord<T extends TemporalAccessor>
 
   @Override
   public int compareTo(IndexRecord<TemporalAccessor> o) {
-    if (this == o)
+    if (this == o) {
       return 0;
+    }
     return this.dataKey.getTimestamp().compareTo(o.dataKey.getTimestamp());
   }
 
@@ -58,12 +60,15 @@ public class IndexRecord<T extends TemporalAccessor>
   @SuppressWarnings("rawtypes")
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (!(obj instanceof IndexRecord))
+    }
+    if (!(obj instanceof IndexRecord)) {
       return false;
+    }
     final IndexRecord other = (IndexRecord) obj;
-    return (this.dataKey.equals(other.dataKey) && this.predicate.equals(other.predicate));
+    return (this.dataKey.equals(other.dataKey)
+      && this.predicate.equals(other.predicate));
   }
 
 }

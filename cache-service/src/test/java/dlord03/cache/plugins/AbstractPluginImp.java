@@ -15,7 +15,8 @@ import dlord03.plugin.api.data.security.SecurityIdentifier;
 import dlord03.plugin.api.event.InvalidationReport;
 import dlord03.plugin.api.event.InvalidationReportHandler;
 
-public abstract class AbstractPluginImp<T extends SecurityData> implements Plugin<T> {
+public abstract class AbstractPluginImp<T extends SecurityData>
+  implements Plugin<T> {
 
   protected boolean isOpen = false;
   protected InvalidationReportHandler handler;
@@ -52,20 +53,21 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
   @Override
   public T getLatestValue(SecurityIdentifier security) {
     latestHitCount++;
-    return getRecord(intraDayRecords, security, ZonedDateTime.now().plusYears(1000));
+    return getRecord(intraDayRecords, security,
+      ZonedDateTime.now().plusYears(1000));
   }
 
   @Override
   public T getLatestValue(SecurityIdentifier security, Instant before) {
     latestPredicateHitCount++;
-    ZonedDateTime predicate = before.atZone(ZoneId.systemDefault());
+    final ZonedDateTime predicate = before.atZone(ZoneId.systemDefault());
     return getRecord(intraDayRecords, security, predicate);
   }
 
   @Override
   public T getEndOfDayValue(SecurityIdentifier security, LocalDate date) {
     endOfDayHitCount++;
-    ZonedDateTime predicate = date.atStartOfDay(ZoneId.systemDefault());
+    final ZonedDateTime predicate = date.atStartOfDay(ZoneId.systemDefault());
     return getRecord(endOfDayRecords, security, predicate);
   }
 
@@ -96,9 +98,10 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
   }
 
   public void invalidateLatest() {
-    if (handler == null)
+    if (handler == null) {
       return;
-    InvalidationReport report = new InvalidationReport() {
+    }
+    final InvalidationReport report = new InvalidationReport() {
 
       @Override
       public SecurityIdentifier getInvalidatedSecurity() {
@@ -113,13 +116,15 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
 
   abstract protected void doClose();
 
-  protected T getRecord(List<T> list, SecurityIdentifier security, ZonedDateTime before) {
+  protected T getRecord(List<T> list, SecurityIdentifier security,
+    ZonedDateTime before) {
 
     T latest = null;
-    for (T record : list) {
+    for (final T record : list) {
       if (record.getSecurityIdentifier().equals(security)
         && record.getUpdatedAt().isBefore(before)) {
-        if (latest == null || record.getUpdatedAt().isAfter(latest.getUpdatedAt())) {
+        if (latest == null
+          || record.getUpdatedAt().isAfter(latest.getUpdatedAt())) {
           latest = record;
         }
       }
@@ -130,13 +135,13 @@ public abstract class AbstractPluginImp<T extends SecurityData> implements Plugi
   }
 
   protected ZonedDateTime getOneDayAgo() {
-    ZonedDateTime now = ZonedDateTime.now();
+    final ZonedDateTime now = ZonedDateTime.now();
     return now.minusDays(1);
 
   }
 
   protected ZonedDateTime getOneMonthAgo() {
-    ZonedDateTime now = ZonedDateTime.now();
+    final ZonedDateTime now = ZonedDateTime.now();
     return now.minusMonths(1);
   }
 

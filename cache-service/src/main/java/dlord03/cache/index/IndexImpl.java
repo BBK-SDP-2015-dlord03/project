@@ -11,9 +11,9 @@ import dlord03.cache.data.TemporalKeyImpl;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 /**
- * Provides a index of cache keys allowing for them to be searched from one record in the
- * cache rather than needing to rely on the underlying cache's implementation of a search
- * which may involve querying many distributed nodes.
+ * Provides a index of cache keys allowing for them to be searched from one
+ * record in the cache rather than needing to rely on the underlying cache's
+ * implementation of a search which may involve querying many distributed nodes.
  * 
  * @author David Lord
  *
@@ -26,7 +26,7 @@ public class IndexImpl implements Index {
   private final SecurityIdentifier securityIdentifier;
   private final NavigableSet<IndexRecord<Instant>> timestampedKeys;
   private final NavigableSet<IndexRecord<LocalDate>> datedKeys;
-  private TemporalKey latestKey = null;
+  private final TemporalKey latestKey = null;
 
   public IndexImpl(DataType dataType, SecurityIdentifier securityIdentifier) {
     super();
@@ -57,37 +57,43 @@ public class IndexImpl implements Index {
 
   @Override
   public TemporalKey getLatestKey(Instant before) {
-    TemporalKey predicateKey = new TemporalKeyImpl(dataType, securityIdentifier, before);
-    IndexRecord<Instant> predicate = new IndexRecord<>(predicateKey, before);
+    final TemporalKey predicateKey =
+      new TemporalKeyImpl(dataType, securityIdentifier, before);
+    final IndexRecord<Instant> predicate =
+      new IndexRecord<>(predicateKey, before);
     IndexRecord<Instant> record;
     record = timestampedKeys.floor(predicate);
-    if (record != null && record.getPredicate().compareTo(before) >= 0)
+    if (record != null && record.getPredicate().compareTo(before) >= 0) {
       return record.getKey();
+    }
     return null;
   }
 
   @Override
   public void addLatestKey(TemporalKey dataKey, Instant before) {
     validateKey(dataKey);
-    IndexRecord<Instant> foundKey = new IndexRecord<>(dataKey, before);
+    final IndexRecord<Instant> foundKey = new IndexRecord<>(dataKey, before);
     timestampedKeys.add(foundKey);
   }
 
   @Override
   public TemporalKey getEndOfDayKey(LocalDate date) {
-    TemporalKey predicateKey = new TemporalKeyImpl(dataType, securityIdentifier, date);
-    IndexRecord<LocalDate> predicate = new IndexRecord<>(predicateKey, date);
+    final TemporalKey predicateKey =
+      new TemporalKeyImpl(dataType, securityIdentifier, date);
+    final IndexRecord<LocalDate> predicate =
+      new IndexRecord<>(predicateKey, date);
     IndexRecord<LocalDate> record;
     record = datedKeys.floor(predicate);
-    if (record != null && record.getPredicate().compareTo(date) >= 0)
+    if (record != null && record.getPredicate().compareTo(date) >= 0) {
       return record.getKey();
+    }
     return null;
   }
 
   @Override
   public void addEndOfDayKey(TemporalKey dataKey, LocalDate date) {
     validateKey(dataKey);
-    IndexRecord<LocalDate> foundKey = new IndexRecord<>(dataKey, date);
+    final IndexRecord<LocalDate> foundKey = new IndexRecord<>(dataKey, date);
     datedKeys.add(foundKey);
   }
 
@@ -104,23 +110,28 @@ public class IndexImpl implements Index {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (!(obj instanceof IndexImpl))
+    }
+    if (!(obj instanceof IndexImpl)) {
       return false;
+    }
     final IndexImpl other = (IndexImpl) obj;
     return (this.dataType.equals(other.dataType)
       && this.securityIdentifier.equals(other.securityIdentifier)
       && this.datedKeys.equals(other.datedKeys)
-      && this.timestampedKeys.equals(other.timestampedKeys) && (latestKey == null
-        ? other.latestKey == null : this.latestKey.equals(other.latestKey)));
+      && this.timestampedKeys.equals(other.timestampedKeys)
+      && (latestKey == null ? other.latestKey == null
+        : this.latestKey.equals(other.latestKey)));
   }
 
   private void validateKey(TemporalKey dataKey) {
-    if (!dataKey.getDataType().equals(dataType))
+    if (!dataKey.getDataType().equals(dataType)) {
       throw new IllegalArgumentException();
-    if (!dataKey.getSecurityIdentifier().equals(securityIdentifier))
+    }
+    if (!dataKey.getSecurityIdentifier().equals(securityIdentifier)) {
       throw new IllegalArgumentException();
+    }
   }
 
 }

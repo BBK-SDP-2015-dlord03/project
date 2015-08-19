@@ -87,7 +87,7 @@ public class QueryServiceImplTest {
     initialiseQueryService();
 
     // Get a reference to the dividend plug-in.
-    DividendSchedulePluginImpl plugin = getDividendPlugin();
+    final DividendSchedulePluginImpl plugin = getDividendPlugin();
 
     // Construct a predicate.
     SecurityIdentifier security;
@@ -109,10 +109,11 @@ public class QueryServiceImplTest {
 
     // Confirm the cached value was used and the plug-in was not called again.
     Assert.assertNotNull("Failed to find record", dividends);
-    Assert.assertEquals("Called plugin for cached value", 1, plugin.getLatestHitCount());
+    Assert.assertEquals("Called plugin for cached value", 1,
+      plugin.getLatestHitCount());
 
     int dividendCount = 0;
-    for (Dividend dividend : dividends) {
+    for (final Dividend dividend : dividends) {
       Assert.assertNotNull(dividend.getAmount());
       dividendCount++;
     }
@@ -123,25 +124,25 @@ public class QueryServiceImplTest {
 
   @Test
   public void testGetIntraDayDividendRecord() {
-    Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
+    final Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
     findIntraDayDividendRecord("BT.L", twoHoursAgo);
   }
 
   @Test(expected = java.lang.AssertionError.class)
   public void testGetMissingIntraDayDividendRecord() {
-    Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
+    final Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
     findIntraDayDividendRecord("SLET.L", twoHoursAgo);
   }
 
   @Test
   public void testGetEndOfDayDividendRecord() {
-    LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+    final LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
     findEndOfDayDividendRecord("BT.L", twoWeeksAgo);
   }
 
   @Test(expected = java.lang.AssertionError.class)
   public void testGetMissingEndOfDayDividendRecord() {
-    LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+    final LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
     findEndOfDayDividendRecord("SLET.L", twoWeeksAgo);
   }
 
@@ -174,31 +175,32 @@ public class QueryServiceImplTest {
 
     // Confirm the cached value was used and the plug-in was not called again.
     Assert.assertEquals("BT Group Plc", optionContract.getName());
-    Assert.assertEquals("Called plugin for cached value", 1, plugin.getLatestHitCount());
+    Assert.assertEquals("Called plugin for cached value", 1,
+      plugin.getLatestHitCount());
 
   }
 
   @Test
   public void testGetIntraDayOptionRecord() {
-    Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
+    final Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
     findIntraDayOptionRecord("BT.L", twoHoursAgo);
   }
 
   @Test(expected = java.lang.AssertionError.class)
   public void testGetMissingIntraDayOptionRecord() {
-    Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
+    final Instant twoHoursAgo = Instant.now().minusSeconds(2 * 60 * 60);
     findIntraDayOptionRecord("SLET.L", twoHoursAgo);
   }
 
   @Test
   public void testGetEndOfDayOptionRecord() {
-    LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+    final LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
     findEndOfDayOptionRecord("BT.L", twoWeeksAgo);
   }
 
   @Test(expected = java.lang.AssertionError.class)
   public void testGetMissingEndOfDayOptionRecord() {
-    LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+    final LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
     findEndOfDayOptionRecord("SLET.L", twoWeeksAgo);
   }
 
@@ -228,10 +230,11 @@ public class QueryServiceImplTest {
     security = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
 
     IndexKey key;
-    key = IndexKeyGenerator.generate(IndexType.ENDOFDAY, DataType.DIVIDEND, security);
+    key = IndexKeyGenerator.generate(IndexType.ENDOFDAY, DataType.DIVIDEND,
+      security);
 
-    Object result1 = Whitebox.invokeMethod(service, "getIndex", key);
-    Object result2 = Whitebox.invokeMethod(service, "getIndex", key);
+    final Object result1 = Whitebox.invokeMethod(service, "getIndex", key);
+    final Object result2 = Whitebox.invokeMethod(service, "getIndex", key);
 
     Assert.assertTrue(result1 instanceof IndexImpl);
     Assert.assertTrue(result2 instanceof IndexImpl);
@@ -262,7 +265,7 @@ public class QueryServiceImplTest {
     initialiseQueryService();
 
     // Get a reference to the dividend plug-in.
-    DividendSchedulePluginImpl plugin = getDividendPlugin();
+    final DividendSchedulePluginImpl plugin = getDividendPlugin();
 
     // Construct a security predicate.
     SecurityIdentifier security;
@@ -285,7 +288,7 @@ public class QueryServiceImplTest {
 
     // Confirm the cached value was used and the plug-in was not called again.
     int dividendCount = 0;
-    for (Dividend dividend : dividends) {
+    for (final Dividend dividend : dividends) {
       Assert.assertNotNull(dividend.getAmount());
       dividendCount++;
     }
@@ -301,7 +304,7 @@ public class QueryServiceImplTest {
     initialiseQueryService();
 
     // Get a reference to the dividend plug-in.
-    DividendSchedulePluginImpl plugin = getDividendPlugin();
+    final DividendSchedulePluginImpl plugin = getDividendPlugin();
 
     // Construct a security predicate.
     SecurityIdentifier security;
@@ -324,7 +327,7 @@ public class QueryServiceImplTest {
 
     // Confirm the cached value was used and the plug-in was not called again.
     int dividendCount = 0;
-    for (Dividend dividend : dividends) {
+    for (final Dividend dividend : dividends) {
       Assert.assertNotNull(dividend.getAmount());
       dividendCount++;
     }
@@ -340,7 +343,7 @@ public class QueryServiceImplTest {
     initialiseQueryService();
 
     // Get a reference to the option plug-in.
-    OptionContractPluginImpl plugin = getOptionPlugin();
+    final OptionContractPluginImpl plugin = getOptionPlugin();
 
     // Construct a security predicate.
     SecurityIdentifier security;
@@ -373,14 +376,14 @@ public class QueryServiceImplTest {
     initialiseQueryService();
 
     // Get a reference to the option plug-in.
-    OptionContractPluginImpl plugin = getOptionPlugin();
+    final OptionContractPluginImpl plugin = getOptionPlugin();
 
     // Construct a security predicate.
     SecurityIdentifier security;
     security = new SecurityIdentifier(IdentifierScheme.RIC, ric);
 
     // Construct a intra-day predicate.
-    LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+    final LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
 
     // Search for the latest dividend record at time predicate.
     OptionContract option;

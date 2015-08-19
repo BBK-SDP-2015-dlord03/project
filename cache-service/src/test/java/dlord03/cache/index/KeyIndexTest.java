@@ -13,7 +13,8 @@ public class KeyIndexTest {
   @Test
   public void testInstant() {
     final TemporalAccessor now = Instant.now();
-    Assert.assertFalse("EPOCH_DAY is supported", now.isSupported(ChronoField.EPOCH_DAY));
+    Assert.assertFalse("EPOCH_DAY is supported",
+      now.isSupported(ChronoField.EPOCH_DAY));
     Assert.assertTrue("INSTANT_SECONDS not supported",
       now.isSupported(ChronoField.INSTANT_SECONDS));
     Assert.assertTrue("MILLI_OF_SECOND not supported",
@@ -37,7 +38,8 @@ public class KeyIndexTest {
       date.isSupported(ChronoField.INSTANT_SECONDS));
     Assert.assertFalse("MILLI_OF_SECOND is supported",
       date.isSupported(ChronoField.MILLI_OF_SECOND));
-    Assert.assertTrue("EPOCH_DAY not supported", date.isSupported(ChronoField.EPOCH_DAY));
+    Assert.assertTrue("EPOCH_DAY not supported",
+      date.isSupported(ChronoField.EPOCH_DAY));
   }
 
 }

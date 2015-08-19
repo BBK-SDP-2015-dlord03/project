@@ -16,7 +16,8 @@ public class PluginControllerImplTest {
 
   @Before
   public void setUp() {
-    pluginInvalidationReportHandler = mock(PluginInvalidationReportHandler.class);
+    pluginInvalidationReportHandler =
+      mock(PluginInvalidationReportHandler.class);
   }
 
   @Test
@@ -29,9 +30,11 @@ public class PluginControllerImplTest {
 
   @Test(expected = ClassCastException.class)
   public void testServiceStartWithInvalidPlugin() {
-    Properties properties = new Properties();
-    properties.put("option.plugin.classname", "dlord03.cache.plugins.InvalidPlugin");
-    properties.put("invalidationReportHandler", pluginInvalidationReportHandler);
+    final Properties properties = new Properties();
+    properties.put("option.plugin.classname",
+      "dlord03.cache.plugins.InvalidPlugin");
+    properties.put("invalidationReportHandler",
+      pluginInvalidationReportHandler);
     PluginController pluginController;
     pluginController = new PluginControllerImpl(properties);
     pluginController.open();
@@ -39,10 +42,11 @@ public class PluginControllerImplTest {
 
   @Test
   public void testServiceStartWithValidPlugin() {
-    Properties properties = new Properties();
+    final Properties properties = new Properties();
     properties.put("option.plugin.classname",
       "dlord03.cache.plugins.OptionContractPluginImpl");
-    properties.put("invalidationReportHandler", pluginInvalidationReportHandler);
+    properties.put("invalidationReportHandler",
+      pluginInvalidationReportHandler);
     PluginController pluginController;
     pluginController = new PluginControllerImpl(properties);
     pluginController.open();
@@ -51,12 +55,13 @@ public class PluginControllerImplTest {
 
   @Test
   public void testServiceStartWithMultipleValidPlugins() {
-    Properties properties = new Properties();
+    final Properties properties = new Properties();
     properties.put("option.plugin.classname",
       "dlord03.cache.plugins.OptionContractPluginImpl");
     properties.put("dividend.plugin.classname",
       "dlord03.cache.plugins.DividendSchedulePluginImpl");
-    properties.put("invalidationReportHandler", pluginInvalidationReportHandler);
+    properties.put("invalidationReportHandler",
+      pluginInvalidationReportHandler);
     PluginController pluginController;
     pluginController = new PluginControllerImpl(properties);
     pluginController.open();

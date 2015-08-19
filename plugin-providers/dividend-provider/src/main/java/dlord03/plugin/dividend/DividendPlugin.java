@@ -37,13 +37,15 @@ public class DividendPlugin implements Plugin<DividendSchedule> {
   }
 
   @Override
-  public DividendSchedule getLatestValue(SecurityIdentifier security, Instant before) {
+  public DividendSchedule getLatestValue(SecurityIdentifier security,
+    Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public DividendSchedule getEndOfDayValue(SecurityIdentifier security, LocalDate date) {
+  public DividendSchedule getEndOfDayValue(SecurityIdentifier security,
+    LocalDate date) {
     // TODO Auto-generated method stub
     return null;
   }

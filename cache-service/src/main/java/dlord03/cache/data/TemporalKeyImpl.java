@@ -32,16 +32,19 @@ public class TemporalKeyImpl extends SimplKeyImpl implements TemporalKey {
 
   @Override
   public String toString() {
-    return String.format("SimpleCacheKey(dataType=%s,securityIdentifier=%s,updatedAt=%s)",
+    return String.format(
+      "SimpleCacheKey(dataType=%s,securityIdentifier=%s,updatedAt=%s)",
       getDataType(), getSecurityIdentifier(), timestamp);
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (!(obj instanceof TemporalKeyImpl))
+    }
+    if (!(obj instanceof TemporalKeyImpl)) {
       return false;
+    }
     final TemporalKeyImpl other = (TemporalKeyImpl) obj;
     return (super.equals(obj) && this.timestamp.equals(other.timestamp));
   }

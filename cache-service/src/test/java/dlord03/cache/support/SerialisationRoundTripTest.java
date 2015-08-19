@@ -27,7 +27,7 @@ import dlord03.plugin.api.data.security.SecurityIdentifier;
 @RunWith(Parameterized.class)
 public class SerialisationRoundTripTest {
 
-  private Object key;
+  private final Object key;
   private final static String UPDATED_AT = "2015-08-02T14:49:56.025Z";
 
   @Parameters
@@ -40,17 +40,19 @@ public class SerialisationRoundTripTest {
   }
 
   @Test
-  public void testRoundTripSerialisation() throws IOException, ClassNotFoundException {
+  public void testRoundTripSerialisation()
+    throws IOException, ClassNotFoundException {
     // Write the key object to a byte array.
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    ObjectOutputStream oos = new ObjectOutputStream(baos);
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ObjectOutputStream oos = new ObjectOutputStream(baos);
     oos.writeObject(key);
     oos.close();
     baos.close();
     // Read the key object from the byte array.
-    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-    ObjectInputStream ois = new ObjectInputStream(bais);
-    Object roundTrippedObject = ois.readObject();
+    final ByteArrayInputStream bais =
+      new ByteArrayInputStream(baos.toByteArray());
+    final ObjectInputStream ois = new ObjectInputStream(bais);
+    final Object roundTrippedObject = ois.readObject();
     ois.close();
     bais.close();
     // Verify that the read object is equal to the written one.
@@ -59,20 +61,24 @@ public class SerialisationRoundTripTest {
 
   @Test
   public void testRoundTrip() {
-    Object roundTrippedObject = SerialisationUtils.serializeRoundTrip(key);
+    final Object roundTrippedObject =
+      SerialisationUtils.serializeRoundTrip(key);
     Assert.assertEquals(key, roundTrippedObject);
   }
 
   private static TemporalKey createDataKey() {
-    SecurityIdentifier security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
-    ZonedDateTime updatedTime = ZonedDateTime.parse(UPDATED_AT);
-    return new TemporalKeyImpl(DataType.DIVIDEND, security, updatedTime.toInstant());
+    final SecurityIdentifier security =
+      new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
+    final ZonedDateTime updatedTime = ZonedDateTime.parse(UPDATED_AT);
+    return new TemporalKeyImpl(DataType.DIVIDEND, security,
+      updatedTime.toInstant());
   }
 
   private static IndexKey createIndexKey() {
-    SecurityIdentifier security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
-    IndexType indexType = IndexType.INTRADAY;
-    DataType dataType = DataType.DIVIDEND;
+    final SecurityIdentifier security =
+      new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
+    final IndexType indexType = IndexType.INTRADAY;
+    final DataType dataType = DataType.DIVIDEND;
     return new IndexKeyImpl(indexType, dataType, security);
   }
 

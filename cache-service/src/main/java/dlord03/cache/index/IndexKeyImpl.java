@@ -23,10 +23,12 @@ public class IndexKeyImpl extends SimplKeyImpl implements IndexKey {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (!(obj instanceof IndexKeyImpl))
+    }
+    if (!(obj instanceof IndexKeyImpl)) {
       return false;
+    }
     final IndexKeyImpl other = (IndexKeyImpl) obj;
     return (super.equals(obj) && this.indexType.equals(other.indexType));
   }
@@ -40,7 +42,8 @@ public class IndexKeyImpl extends SimplKeyImpl implements IndexKey {
 
   @Override
   public String toString() {
-    return String.format("IndexKeyImpl(dataType=%s,securityIdentifier=%s,indexType=%s)",
+    return String.format(
+      "IndexKeyImpl(dataType=%s,securityIdentifier=%s,indexType=%s)",
       getDataType(), getSecurityIdentifier(), indexType);
   }
 

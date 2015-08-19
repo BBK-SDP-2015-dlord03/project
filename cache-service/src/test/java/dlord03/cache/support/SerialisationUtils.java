@@ -23,13 +23,14 @@ public class SerialisationUtils {
   public static <T> T serializeRoundTrip(T object) {
     Object roundTrippedObject = null;
     try {
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      ObjectOutputStream oos = new ObjectOutputStream(baos);
+      final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      final ObjectOutputStream oos = new ObjectOutputStream(baos);
       oos.writeObject(object);
       oos.close();
       baos.close();
-      ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-      ObjectInputStream ois = new ObjectInputStream(bais);
+      final ByteArrayInputStream bais =
+        new ByteArrayInputStream(baos.toByteArray());
+      final ObjectInputStream ois = new ObjectInputStream(bais);
       roundTrippedObject = ois.readObject();
       ois.close();
       bais.close();

@@ -7,14 +7,15 @@ import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 public class TemporalKeyGenerator {
 
-  public static TemporalKey generate(DataType dataType, SecurityIdentifier security,
-    TemporalAccessor timestamp) {
+  public static TemporalKey generate(DataType dataType,
+    SecurityIdentifier security, TemporalAccessor timestamp) {
 
     return new TemporalKeyImpl(dataType, security, timestamp);
 
   }
 
-  public static TemporalKey generate(DataType dataType, SecurityData securityData) {
+  public static TemporalKey generate(DataType dataType,
+    SecurityData securityData) {
 
     final SecurityIdentifier security = securityData.getSecurityIdentifier();
     final TemporalAccessor timestamp = securityData.getUpdatedAt();

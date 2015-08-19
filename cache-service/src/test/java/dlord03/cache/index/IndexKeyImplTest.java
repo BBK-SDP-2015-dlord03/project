@@ -37,7 +37,8 @@ public class IndexKeyImplTest {
     IndexKeyImpl key1;
     key1 = new IndexKeyImpl(IndexType.ENDOFDAY, DataType.DIVIDEND, security);
     IndexKeyImpl key2;
-    key2 = new IndexKeyImpl(IndexType.ENDOFDAY, DataType.DIVIDEND, differentSecurity);
+    key2 = new IndexKeyImpl(IndexType.ENDOFDAY, DataType.DIVIDEND,
+      differentSecurity);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1, key2);
@@ -81,7 +82,8 @@ public class IndexKeyImplTest {
     IndexKeyImpl key1;
     key1 = new IndexKeyImpl(IndexType.ENDOFDAY, DataType.DIVIDEND, security);
     IndexKeyImpl key2;
-    key2 = new IndexKeyImpl(IndexType.ENDOFDAY, DataType.DIVIDEND, differentSecurity);
+    key2 = new IndexKeyImpl(IndexType.ENDOFDAY, DataType.DIVIDEND,
+      differentSecurity);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1.hashCode(), key2.hashCode());

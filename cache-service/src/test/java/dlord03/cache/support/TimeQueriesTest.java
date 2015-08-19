@@ -32,14 +32,16 @@ public class TimeQueriesTest {
 
   @Test
   public void instantToTimestamp() {
-    Long expected = Long.valueOf(1438526996025L);
-    Assert.assertEquals("Wrong instant", expected, now.query(TimeQueries.getTimestamp()));
+    final Long expected = Long.valueOf(1438526996025L);
+    Assert.assertEquals("Wrong instant", expected,
+      now.query(TimeQueries.getTimestamp()));
   }
 
   @Test
   public void localDateTimestamp() {
-    Long expected = Long.valueOf(1438473600000L);
-    Assert.assertEquals("Wrong date", expected, today.query(TimeQueries.getTimestamp()));
+    final Long expected = Long.valueOf(1438473600000L);
+    Assert.assertEquals("Wrong date", expected,
+      today.query(TimeQueries.getTimestamp()));
   }
 
   @Test
@@ -49,27 +51,32 @@ public class TimeQueriesTest {
 
   @Test
   public void compareInstantsGreaterThan() {
-    Assert.assertEquals(1, now.query(TimeQueries.compareTo(justNow)).intValue());
+    Assert.assertEquals(1,
+      now.query(TimeQueries.compareTo(justNow)).intValue());
   }
 
   @Test
   public void compareInstantsLessThan() {
-    Assert.assertEquals(-1, justNow.query(TimeQueries.compareTo(now)).intValue());
+    Assert.assertEquals(-1,
+      justNow.query(TimeQueries.compareTo(now)).intValue());
   }
 
   @Test
   public void compareLocaDateSame() {
-    Assert.assertEquals(0, today.query(TimeQueries.compareTo(today)).intValue());
+    Assert.assertEquals(0,
+      today.query(TimeQueries.compareTo(today)).intValue());
   }
 
   @Test
   public void compareLocaDateGreaterThan() {
-    Assert.assertEquals(-1, yesterday.query(TimeQueries.compareTo(today)).intValue());
+    Assert.assertEquals(-1,
+      yesterday.query(TimeQueries.compareTo(today)).intValue());
   }
 
   @Test
   public void compareLocaDateLessThan() {
-    Assert.assertEquals(1, today.query(TimeQueries.compareTo(yesterday)).intValue());
+    Assert.assertEquals(1,
+      today.query(TimeQueries.compareTo(yesterday)).intValue());
   }
 
   @Test
@@ -79,7 +86,8 @@ public class TimeQueriesTest {
 
   @Test
   public void crossCompareGreaterThan() {
-    Assert.assertEquals(1, justNow.query(TimeQueries.compareTo(today)).intValue());
+    Assert.assertEquals(1,
+      justNow.query(TimeQueries.compareTo(today)).intValue());
   }
 
   /*
@@ -88,7 +96,8 @@ public class TimeQueriesTest {
   @Test
   public void testInstant() {
     final TemporalAccessor now = Instant.now();
-    Assert.assertFalse("EPOCH_DAY is supported", now.isSupported(ChronoField.EPOCH_DAY));
+    Assert.assertFalse("EPOCH_DAY is supported",
+      now.isSupported(ChronoField.EPOCH_DAY));
     Assert.assertTrue("INSTANT_SECONDS not supported",
       now.isSupported(ChronoField.INSTANT_SECONDS));
     Assert.assertTrue("MILLI_OF_SECOND not supported",
@@ -112,20 +121,21 @@ public class TimeQueriesTest {
       date.isSupported(ChronoField.INSTANT_SECONDS));
     Assert.assertFalse("MILLI_OF_SECOND is supported",
       date.isSupported(ChronoField.MILLI_OF_SECOND));
-    Assert.assertTrue("EPOCH_DAY not supported", date.isSupported(ChronoField.EPOCH_DAY));
+    Assert.assertTrue("EPOCH_DAY not supported",
+      date.isSupported(ChronoField.EPOCH_DAY));
   }
 
   @Test
   public void testLocalDatePrecision() {
     final TemporalAccessor date = LocalDate.now();
-    TemporalUnit unit = date.query(TemporalQueries.precision());
+    final TemporalUnit unit = date.query(TemporalQueries.precision());
     Assert.assertEquals(unit, ChronoUnit.DAYS);
   }
 
   @Test
   public void testInstantPrecision() {
     final TemporalAccessor instant = Instant.now();;
-    TemporalUnit unit = instant.query(TemporalQueries.precision());
+    final TemporalUnit unit = instant.query(TemporalQueries.precision());
     Assert.assertEquals(unit, ChronoUnit.NANOS);
   }
 

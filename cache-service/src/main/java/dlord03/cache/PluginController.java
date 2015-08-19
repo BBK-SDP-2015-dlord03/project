@@ -7,7 +7,8 @@ import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.SecurityData;
 
 /**
- * Central controller for configuring and accessing underlying plug-in implementations.
+ * Central controller for configuring and accessing underlying plug-in
+ * implementations.
  * 
  * @author David Lord
  *

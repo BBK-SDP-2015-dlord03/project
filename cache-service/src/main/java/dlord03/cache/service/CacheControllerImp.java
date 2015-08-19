@@ -14,7 +14,8 @@ import dlord03.cache.index.IndexKey;
 import dlord03.plugin.api.data.SecurityData;
 
 /**
- * Object for creating and managing access to the underlying cache implementations.
+ * Object for creating and managing access to the underlying cache
+ * implementations.
  * 
  * @author David Lord
  *
@@ -37,8 +38,10 @@ public class CacheControllerImp implements CacheController {
 
     // configure the index cache
     final MutableConfiguration<IndexKey, Index> indexConfig =
-      new MutableConfiguration<IndexKey, Index>().setTypes(IndexKey.class, Index.class)
-        .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
+      new MutableConfiguration<IndexKey, Index>()
+        .setTypes(IndexKey.class, Index.class)
+        .setExpiryPolicyFactory(
+          AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
         .setStatisticsEnabled(true);
 
     // create the index cache
@@ -48,7 +51,8 @@ public class CacheControllerImp implements CacheController {
     final MutableConfiguration<SimpleKey, SecurityData> latestConfig =
       new MutableConfiguration<SimpleKey, SecurityData>()
         .setTypes(SimpleKey.class, SecurityData.class)
-        .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
+        .setExpiryPolicyFactory(
+          AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
         .setStatisticsEnabled(true);
 
     // create the latest cache
@@ -58,17 +62,20 @@ public class CacheControllerImp implements CacheController {
     final MutableConfiguration<TemporalKey, SecurityData> timestampedConfig =
       new MutableConfiguration<TemporalKey, SecurityData>()
         .setTypes(TemporalKey.class, SecurityData.class)
-        .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
+        .setExpiryPolicyFactory(
+          AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
         .setStatisticsEnabled(true);
 
     // create the time stamped cache
-    timestampedCache = cacheManager.createCache("timestampedCache", timestampedConfig);
+    timestampedCache =
+      cacheManager.createCache("timestampedCache", timestampedConfig);
 
     // configure the dated cache
     final MutableConfiguration<TemporalKey, SecurityData> datedConfig =
       new MutableConfiguration<TemporalKey, SecurityData>()
         .setTypes(TemporalKey.class, SecurityData.class)
-        .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
+        .setExpiryPolicyFactory(
+          AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
         .setStatisticsEnabled(true);
 
     // create the dated cache

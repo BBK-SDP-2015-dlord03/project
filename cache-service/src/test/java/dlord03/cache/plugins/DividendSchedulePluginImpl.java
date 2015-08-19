@@ -16,7 +16,8 @@ import dlord03.plugin.api.data.security.SecurityIdentifier;
  * @author David Lord
  *
  */
-public class DividendSchedulePluginImpl extends AbstractPluginImp<DividendSchedule> {
+public class DividendSchedulePluginImpl
+  extends AbstractPluginImp<DividendSchedule> {
 
   private final static Logger LOG =
     LoggerFactory.getLogger(DividendSchedulePluginImpl.class);
@@ -24,13 +25,13 @@ public class DividendSchedulePluginImpl extends AbstractPluginImp<DividendSchedu
   @Override
   protected void doOpen(Properties properties) {
 
-    String ric = "BT.L";
+    final String ric = "BT.L";
     si = new SecurityIdentifier(IdentifierScheme.RIC, ric);
 
     DividendSchedule schedule;
 
     // Add some representative end of day records.
-    ZonedDateTime monthAgo = getOneMonthAgo();
+    final ZonedDateTime monthAgo = getOneMonthAgo();
     for (int i = 0; i < 28; i++) {
       schedule = new DividendScheduleImpl(si, monthAgo.plusDays(i), "GBP",
         monthAgo.toLocalDate(), 234.0d, 1.05d);
@@ -38,7 +39,7 @@ public class DividendSchedulePluginImpl extends AbstractPluginImp<DividendSchedu
     }
 
     // Add some representative intra-day records.
-    ZonedDateTime dayAgo = getOneDayAgo();
+    final ZonedDateTime dayAgo = getOneDayAgo();
     for (int i = 0; i < 20; i++) {
       schedule = new DividendScheduleImpl(si, dayAgo.plusHours(i), "GBP",
         dayAgo.toLocalDate(), 150.0d, 1.05d);

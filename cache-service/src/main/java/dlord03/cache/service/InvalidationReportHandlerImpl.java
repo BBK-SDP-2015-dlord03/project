@@ -17,6 +17,7 @@ public class InvalidationReportHandlerImpl<T extends SecurityData>
     this.handler = handler;
   }
 
+  @Override
   public void invalidate(InvalidationReport report) {
     handler.handleInvalidationReport(dataType, report);
   }

@@ -9,7 +9,8 @@ public class SimplKeyImpl implements SimpleKey {
   private final DataType dataType;
   private final SecurityIdentifier securityIdentifier;
 
-  public SimplKeyImpl(DataType dataType, SecurityIdentifier securityIdentifier) {
+  public SimplKeyImpl(DataType dataType,
+    SecurityIdentifier securityIdentifier) {
     super();
     this.dataType = dataType;
     this.securityIdentifier = securityIdentifier;
@@ -35,16 +36,18 @@ public class SimplKeyImpl implements SimpleKey {
 
   @Override
   public String toString() {
-    return String.format("SimpleCacheKey(dataType=%s,securityIdentifier=%s)", dataType,
-      securityIdentifier);
+    return String.format("SimpleCacheKey(dataType=%s,securityIdentifier=%s)",
+      dataType, securityIdentifier);
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (!(obj instanceof SimplKeyImpl))
+    }
+    if (!(obj instanceof SimplKeyImpl)) {
       return false;
+    }
     final SimplKeyImpl other = (SimplKeyImpl) obj;
     return (this.securityIdentifier.equals(other.securityIdentifier)
       && this.dataType.equals(other.dataType));

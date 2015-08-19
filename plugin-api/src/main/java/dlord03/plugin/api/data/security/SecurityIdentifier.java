@@ -33,17 +33,21 @@ public class SecurityIdentifier implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("SecurityIdentifier(scheme=%s,symbol=%s)", scheme, symbol);
+    return String.format("SecurityIdentifier(scheme=%s,symbol=%s)", scheme,
+      symbol);
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (!(obj instanceof SecurityIdentifier))
+    }
+    if (!(obj instanceof SecurityIdentifier)) {
       return false;
+    }
     final SecurityIdentifier other = (SecurityIdentifier) obj;
-    return (this.scheme.equals(other.scheme) && this.symbol.equals(other.symbol));
+    return (this.scheme.equals(other.scheme)
+      && this.symbol.equals(other.symbol));
   }
 
 }
