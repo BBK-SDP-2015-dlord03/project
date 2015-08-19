@@ -20,6 +20,8 @@ public interface PluginController {
 
   Plugin<? extends SecurityData> getPlugin(DataType dataType);
 
+  Plugin<? extends SecurityData> getPlugin(Class<? extends SecurityData> clazz);
+
   Collection<Plugin<? extends SecurityData>> getPlugins();
 
 }

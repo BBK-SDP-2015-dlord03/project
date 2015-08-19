@@ -193,7 +193,8 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
   }
 
   @Override
-  public void handleInvalidationReport(DataType type, InvalidationReport report) {
+  public <T extends SecurityData> void handleInvalidationReport(Class<T> type,
+    InvalidationReport report) {
     // TODO Auto-generated method stub
   }
 

@@ -18,7 +18,7 @@ public class PluginControllerImpl implements PluginController {
   private final static Logger LOG = LoggerFactory.getLogger(PluginControllerImpl.class);
 
   private final Properties properties;
-  private final Map<String, Plugin<? extends SecurityData>> plugins;
+  private final Map<Class<? extends SecurityData>, Plugin<? extends SecurityData>> plugins;
   private PluginInvalidationReportHandler invalidationHandler;
 
   public PluginControllerImpl(Properties properties) {
@@ -39,19 +39,60 @@ public class PluginControllerImpl implements PluginController {
 
     // Attempt to load each plug-in if available.
     for (final DataType dataType : DataType.values()) {
-      final String pluginType = dataType.getName();
-      final String propertyName = String.format("%s.plugin.classname", pluginType);
-      final String className = properties.getProperty(propertyName);
-      LOG.debug("Checking for '{}' plugin provider property {}={}", pluginType,
-        propertyName, className);
-      final Plugin<? extends SecurityData> plugin = loadPlugin(className, dataType);
+
+      final Class<? extends SecurityData> pluginType = dataType.getValueClass();
+      final String pluginName = dataType.getName();
+
+      final String implementingClassPropertyValue;
+      implementingClassPropertyValue = String.format("%s.plugin.classname", pluginName);
+
+      final String implementingClassName;
+      implementingClassName = properties.getProperty(implementingClassPropertyValue);
+
+      if (implementingClassName == null) {
+        LOG.debug("No '{}' plugin provider property {}", pluginName,
+          implementingClassPropertyValue);
+        continue;
+      } else {
+        LOG.debug("Checking for '{}' plugin provider property {}={}", pluginName,
+          implementingClassPropertyValue, implementingClassName);
+      }
+
+      final Plugin<? extends SecurityData> plugin;
+      plugin = loadPlugin(implementingClassName, pluginType);
+
       if (plugin != null) {
         plugins.put(pluginType, plugin);
-        LOG.debug("Plugin provider loaded {}={}", pluginType, className);
+        LOG.debug("Plugin provider loaded {}={}", pluginType, implementingClassName);
       } else {
         LOG.debug("No plugin provider loaded for '{}'", pluginType);
       }
+
     }
+
+  }
+
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  private Plugin<? extends SecurityData> loadPlugin(String implementingClassName,
+    Class<? extends SecurityData> pluginType) {
+
+    Plugin<? extends SecurityData> plugin = null;
+
+    try {
+
+      Class<?> pluginClass = Class.forName(implementingClassName);
+      plugin = (Plugin<? extends SecurityData>) pluginClass.newInstance();
+
+      InvalidationReportHandlerImpl reportHandler;
+      reportHandler = new InvalidationReportHandlerImpl(invalidationHandler, pluginType);
+      plugin.registerInvalidationHandler(reportHandler);
+      plugin.open(properties);
+
+    } catch (final ReflectiveOperationException e) {
+      LOG.warn("Can not create plugin : {}", implementingClassName, e);
+    }
+
+    return plugin;
 
   }
 
@@ -65,33 +106,17 @@ public class PluginControllerImpl implements PluginController {
 
   @Override
   public Plugin<? extends SecurityData> getPlugin(DataType dataType) {
-    return plugins.get(dataType.getName());
+    return plugins.get(dataType.getValueClass());
+  }
+
+  @Override
+  public Plugin<? extends SecurityData> getPlugin(Class<? extends SecurityData> clazz) {
+    return plugins.get(clazz);
   }
 
   @Override
   public Collection<Plugin<? extends SecurityData>> getPlugins() {
     return plugins.values();
-  }
-
-  @SuppressWarnings("unchecked")
-  private <T extends SecurityData> Plugin<T> loadPlugin(String className,
-    DataType dataType) {
-
-    if (className == null)
-      return null;
-    Class<T> pluginClass = null;
-    Plugin<T> plugin = null;
-    try {
-      pluginClass = (Class<T>) Class.forName(className);
-      plugin = (Plugin<T>) pluginClass.newInstance();
-      InvalidationReportHandlerImpl reportHandler;
-      reportHandler = new InvalidationReportHandlerImpl(invalidationHandler, dataType);
-      plugin.registerInvalidationHandler(reportHandler);
-      plugin.open(properties);
-    } catch (final ReflectiveOperationException e) {
-      LOG.warn("Can not create plugin : {}", className, e);
-    }
-    return plugin;
   }
 
 }

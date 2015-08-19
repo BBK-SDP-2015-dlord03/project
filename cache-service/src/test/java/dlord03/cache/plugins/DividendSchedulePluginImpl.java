@@ -3,6 +3,9 @@ package dlord03.cache.plugins;
 import java.time.ZonedDateTime;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dlord03.plugin.api.data.DividendSchedule;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
@@ -14,6 +17,9 @@ import dlord03.plugin.api.data.security.SecurityIdentifier;
  *
  */
 public class DividendSchedulePluginImpl extends AbstractPluginImp<DividendSchedule> {
+
+  private final static Logger LOG =
+    LoggerFactory.getLogger(DividendSchedulePluginImpl.class);
 
   @Override
   protected void doOpen(Properties properties) {
@@ -39,10 +45,14 @@ public class DividendSchedulePluginImpl extends AbstractPluginImp<DividendSchedu
       intraDayRecords.add(schedule);
     }
 
+    LOG.debug("Dividend plugin opened");
+
   }
 
   @Override
   protected void doClose() {
+
+    LOG.debug("Dividend plugin closed");
 
   }
 

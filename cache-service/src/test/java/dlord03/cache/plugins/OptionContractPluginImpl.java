@@ -33,7 +33,7 @@ public class OptionContractPluginImpl extends AbstractPluginImp<OptionContract> 
     addSomeRecords("LGEN.L", "Legal & General Group Plc", "2020-08-01");
     addSomeRecords("ULVR.L", "Unilever plc", "2017-08-01");
 
-    LOG.debug("Optino plugin opened");
+    LOG.debug("Option plugin opened");
 
   }
 
