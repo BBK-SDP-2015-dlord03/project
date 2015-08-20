@@ -23,6 +23,7 @@ import dlord03.cache.index.IndexKeyImpl;
 import dlord03.cache.index.IndexType;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
+import dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 @RunWith(Parameterized.class)
 public class SerialisationRoundTripTest {
@@ -68,7 +69,7 @@ public class SerialisationRoundTripTest {
 
   private static TemporalKey createDataKey() {
     final SecurityIdentifier security =
-      new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
+      new SimpleSecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     final ZonedDateTime updatedTime = ZonedDateTime.parse(UPDATED_AT);
     return new TemporalKeyImpl(DataType.DIVIDEND, security,
       updatedTime.toInstant());
@@ -76,7 +77,7 @@ public class SerialisationRoundTripTest {
 
   private static IndexKey createIndexKey() {
     final SecurityIdentifier security =
-      new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
+      new SimpleSecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     final IndexType indexType = IndexType.INTRADAY;
     final DataType dataType = DataType.DIVIDEND;
     return new IndexKeyImpl(indexType, dataType, security);

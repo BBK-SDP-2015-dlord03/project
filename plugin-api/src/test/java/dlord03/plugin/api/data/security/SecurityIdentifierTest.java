@@ -11,8 +11,10 @@ public class SecurityIdentifierTest {
     final IdentifierScheme scheme = IdentifierScheme.RIC;
     final String symbol = "BT.L";
 
-    final SecurityIdentifier security1 = new SecurityIdentifier(scheme, symbol);
-    final SecurityIdentifier security2 = new SecurityIdentifier(scheme, symbol);
+    final SecurityIdentifier security1 =
+      new SimpleSecurityIdentifier(scheme, symbol);
+    final SecurityIdentifier security2 =
+      new SimpleSecurityIdentifier(scheme, symbol);
 
     Assert.assertEquals(security1, security2);
 
@@ -26,9 +28,9 @@ public class SecurityIdentifierTest {
     final String symbol2 = "VOD.L";
 
     final SecurityIdentifier security1 =
-      new SecurityIdentifier(scheme, symbol1);
+      new SimpleSecurityIdentifier(scheme, symbol1);
     final SecurityIdentifier security2 =
-      new SecurityIdentifier(scheme, symbol2);
+      new SimpleSecurityIdentifier(scheme, symbol2);
 
     Assert.assertNotEquals(security1, security2);
 
@@ -42,9 +44,9 @@ public class SecurityIdentifierTest {
     final String symbol = "BT.L";
 
     final SecurityIdentifier security1 =
-      new SecurityIdentifier(scheme1, symbol);
+      new SimpleSecurityIdentifier(scheme1, symbol);
     final SecurityIdentifier security2 =
-      new SecurityIdentifier(scheme2, symbol);
+      new SimpleSecurityIdentifier(scheme2, symbol);
 
     Assert.assertNotEquals(security1, security2);
 

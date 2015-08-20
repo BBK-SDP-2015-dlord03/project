@@ -14,6 +14,7 @@ import dlord03.cache.data.TemporalKeyImpl;
 import dlord03.cache.support.SerialisationUtils;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
+import dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 public class IndexImplTest {
 
@@ -23,7 +24,7 @@ public class IndexImplTest {
 
   @Before
   public void setUp() {
-    identifier = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+    identifier = new SimpleSecurityIdentifier(IdentifierScheme.RIC, "BT.L");
     dataType = DataType.OPTION;
     index = new IndexImpl(dataType, identifier);
   }
@@ -39,7 +40,8 @@ public class IndexImplTest {
   @Test(expected = IllegalArgumentException.class)
   public void checkIdentifier() {
     SecurityIdentifier wrongIdentifier;
-    wrongIdentifier = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
+    wrongIdentifier =
+      new SimpleSecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     final ZonedDateTime now = ZonedDateTime.now();
     final TemporalKeyImpl key = new TemporalKeyImpl(dataType, wrongIdentifier,
       now.minusHours(1).toInstant());

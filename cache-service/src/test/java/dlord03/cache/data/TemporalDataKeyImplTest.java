@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
+import dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 public class TemporalDataKeyImplTest {
 
@@ -23,7 +24,7 @@ public class TemporalDataKeyImplTest {
 
   @Before
   public void setUp() {
-    security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
+    security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     updatedTime = ZonedDateTime.parse(UPDATED_TIME).toInstant();
     updatedDate = LocalDate.parse(UPDATED_DATE);
   }

@@ -26,6 +26,7 @@ import dlord03.plugin.api.data.DividendSchedule;
 import dlord03.plugin.api.data.OptionContract;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
+import dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 public class QueryServiceImplTest {
 
@@ -91,7 +92,7 @@ public class QueryServiceImplTest {
 
     // Construct a predicate.
     SecurityIdentifier security;
-    security = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+    security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, "BT.L");
 
     // Search for the latest dividend record.
     DividendSchedule dividends;
@@ -157,7 +158,7 @@ public class QueryServiceImplTest {
 
     // Construct a predicate.
     SecurityIdentifier security;
-    security = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+    security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, "BT.L");
 
     // Search for the latest dividend record.
     OptionContract optionContract;
@@ -227,7 +228,7 @@ public class QueryServiceImplTest {
     initialiseQueryService();
 
     SecurityIdentifier security;
-    security = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+    security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, "BT.L");
 
     IndexKey key;
     key = IndexKeyGenerator.generate(IndexType.ENDOFDAY, DataType.DIVIDEND,
@@ -269,7 +270,7 @@ public class QueryServiceImplTest {
 
     // Construct a security predicate.
     SecurityIdentifier security;
-    security = new SecurityIdentifier(IdentifierScheme.RIC, ric);
+    security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, ric);
 
     // Search for the latest dividend record at time predicate.
     DividendSchedule dividends;
@@ -308,7 +309,7 @@ public class QueryServiceImplTest {
 
     // Construct a security predicate.
     SecurityIdentifier security;
-    security = new SecurityIdentifier(IdentifierScheme.RIC, ric);
+    security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, ric);
 
     // Search for the latest dividend record at time predicate.
     DividendSchedule dividends;
@@ -347,7 +348,7 @@ public class QueryServiceImplTest {
 
     // Construct a security predicate.
     SecurityIdentifier security;
-    security = new SecurityIdentifier(IdentifierScheme.RIC, ric);
+    security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, ric);
 
     // Search for the latest dividend record at time predicate.
     OptionContract option;
@@ -380,7 +381,7 @@ public class QueryServiceImplTest {
 
     // Construct a security predicate.
     SecurityIdentifier security;
-    security = new SecurityIdentifier(IdentifierScheme.RIC, ric);
+    security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, ric);
 
     // Construct a intra-day predicate.
     final LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import dlord03.plugin.api.data.DividendSchedule;
 import dlord03.plugin.api.data.security.IdentifierScheme;
-import dlord03.plugin.api.data.security.SecurityIdentifier;
+import dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 /**
  * Example of an simple plug-in which returns {@link DividendSchedule} objects.
@@ -26,7 +26,7 @@ public class DividendSchedulePluginImpl
   protected void doOpen(Properties properties) {
 
     final String ric = "BT.L";
-    si = new SecurityIdentifier(IdentifierScheme.RIC, ric);
+    si = new SimpleSecurityIdentifier(IdentifierScheme.RIC, ric);
 
     DividendSchedule schedule;
 

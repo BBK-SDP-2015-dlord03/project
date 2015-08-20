@@ -25,6 +25,7 @@ import dlord03.cache.index.IndexType;
 import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
+import dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 public class CacheControllerImplTest {
 
@@ -49,7 +50,7 @@ public class CacheControllerImplTest {
 
     final DataType dt = DataType.OPTION;
     final SecurityIdentifier si =
-      new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+      new SimpleSecurityIdentifier(IdentifierScheme.RIC, "BT.L");
     final IndexKey key = new IndexKeyImpl(IndexType.INTRADAY, dt, si);
     final Index index = new IndexImpl(dt, si);
 

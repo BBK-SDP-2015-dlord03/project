@@ -9,6 +9,7 @@ import org.junit.Test;
 import dlord03.cache.data.DataType;
 import dlord03.plugin.api.data.security.IdentifierScheme;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
+import dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 public class IndexKeyImplTest {
 
@@ -17,8 +18,9 @@ public class IndexKeyImplTest {
 
   @Before
   public void setUp() {
-    security = new SecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
-    differentSecurity = new SecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+    security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
+    differentSecurity =
+      new SimpleSecurityIdentifier(IdentifierScheme.RIC, "BT.L");
   }
 
   @Test

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import dlord03.plugin.api.data.OptionContract;
 import dlord03.plugin.api.data.security.IdentifierScheme;
-import dlord03.plugin.api.data.security.SecurityIdentifier;
+import dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 /**
  * Example of an simple plug-in which returns {@link OptionContract} objects.
@@ -45,7 +45,7 @@ public class OptionContractPluginImpl
 
   private void addSomeRecords(String ric, String name, String expiry) {
 
-    si = new SecurityIdentifier(IdentifierScheme.RIC, ric);
+    si = new SimpleSecurityIdentifier(IdentifierScheme.RIC, ric);
     OptionContractImpl option;
 
     // Add some representative end of day records.
