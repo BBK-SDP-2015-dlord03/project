@@ -1,5 +1,7 @@
 package dlord03.rest;
 
+import java.util.Properties;
+
 import javax.cache.CacheManager;
 import javax.cache.Caching;
 import javax.cache.spi.CachingProvider;
@@ -22,7 +24,8 @@ public class CacheQueryService {
     System.setProperty("hazelcast.logging.type", "slf4j");
     final CachingProvider cachingProvider = Caching.getCachingProvider();
     final CacheManager cacheManager = cachingProvider.getCacheManager();
-    this.queryService = QueryServiceFactory.createService(cacheManager, null);
+    final Properties props = getProperties();
+    this.queryService = QueryServiceFactory.createService(cacheManager, props);
     this.queryService.start();
   }
 
@@ -44,6 +47,22 @@ public class CacheQueryService {
     result.setInput(input);
     result.setOutput(result.getInput() * result.getInput());
     return result;
+  }
+
+  private Properties getProperties() {
+
+    Properties p = new Properties();
+
+    p.setProperty("option.plugin.classname",
+      "dlord03.plugin.instrument.OptionContractPlugin");
+
+    p.setProperty("dividend.plugin.classname",
+      "dlord03.plugin.dividend.DividendPlugin");
+
+    p.setProperty("volatility.plugin.classname",
+      "dlord03.plugin.volatility.VolatilityPlugin");
+
+    return p;
   }
 
   static class Result {
