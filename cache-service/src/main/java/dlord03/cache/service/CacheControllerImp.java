@@ -20,6 +20,7 @@ import dlord03.plugin.api.data.SecurityData;
  * @author David Lord
  *
  */
+@SuppressWarnings("unchecked")
 public class CacheControllerImp implements CacheController {
 
   private final CacheManager cacheManager;
