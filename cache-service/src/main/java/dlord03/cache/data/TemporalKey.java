@@ -3,8 +3,7 @@ package dlord03.cache.data;
 import java.time.Instant;
 
 /**
- * A data key for caching values from the plug-ins based on their time-stamped
- * version.
+ * A data key for caching values from the plug-ins based on their time-stamp.
  * 
  * @author David Lord
  *
