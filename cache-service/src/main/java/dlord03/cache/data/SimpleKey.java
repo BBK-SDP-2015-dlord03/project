@@ -5,7 +5,7 @@ import java.io.Serializable;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 
 /**
- * A simple data key for caching values from the plug-ins.
+ * A simple key for caching values from the plug-ins.
  * 
  * @author David Lord
  *
