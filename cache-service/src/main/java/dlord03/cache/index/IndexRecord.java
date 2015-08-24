@@ -6,9 +6,8 @@ import java.time.temporal.TemporalAccessor;
 import dlord03.cache.data.TemporalKey;
 
 /**
- * An object used to store details of a found key in the cache. It provides
- * details of the found key together with the predicate that was used to find
- * it.
+ * An object to index keys in the cache. It provides details of the key together
+ * with the predicate that was used to find it.
  * 
  * @author David Lord
  * 
