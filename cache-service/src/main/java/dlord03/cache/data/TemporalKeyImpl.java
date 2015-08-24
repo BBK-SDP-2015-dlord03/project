@@ -33,7 +33,7 @@ public class TemporalKeyImpl extends SimplKeyImpl implements TemporalKey {
   @Override
   public String toString() {
     return String.format(
-      "SimpleCacheKey(dataType=%s,securityIdentifier=%s,updatedAt=%s)",
+      "TemporalKeyImpl(dataType=%s,securityIdentifier=%s,updatedAt=%s)",
       getDataType(), getSecurityIdentifier(), timestamp);
   }
 
