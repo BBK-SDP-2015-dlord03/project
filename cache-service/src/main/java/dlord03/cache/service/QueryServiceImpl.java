@@ -133,7 +133,7 @@ public class QueryServiceImpl
       IndexKeyGenerator.generate(IndexType.INTRADAY, type, security);
 
     // Get the index for this request.
-    final Index index = getIndex(indexKey);
+    final Index index = getOrCreateIndex(indexKey);
 
     // Do we have a key in the index?
     TemporalKey foundKey = index.getLatestKey(before);
@@ -178,7 +178,7 @@ public class QueryServiceImpl
       IndexKeyGenerator.generate(IndexType.ENDOFDAY, type, security);
 
     // Get the index for this request.
-    final Index index = getIndex(indexKey);
+    final Index index = getOrCreateIndex(indexKey);
 
     // Do we have a key in the index?
     TemporalKey foundKey = index.getEndOfDayKey(date);
@@ -217,7 +217,7 @@ public class QueryServiceImpl
     return pluginController.getPlugin(type.getValueClass());
   }
 
-  private Index getIndex(IndexKey key) {
+  private Index getOrCreateIndex(IndexKey key) {
 
     final Cache<IndexKey, Index> indexCache = cacheController.getIndexCache();
     Index index = indexCache.get(key);
@@ -242,8 +242,8 @@ public class QueryServiceImpl
     Index updatedIndex;
 
     for (int i = 0; !success && i < maximumAttempts; i++) {
-      originalIndex = getIndex(key);
-      updatedIndex = getIndex(key);
+      originalIndex = getOrCreateIndex(key);
+      updatedIndex = getOrCreateIndex(key);
       updatedIndex.addLatestKey(dataKey, before);
       success = indexCache.replace(key, originalIndex, updatedIndex);
 
@@ -264,8 +264,8 @@ public class QueryServiceImpl
     Index updatedIndex;
 
     for (int i = 0; !success && i < maximumAttempts; i++) {
-      originalIndex = getIndex(key);
-      updatedIndex = getIndex(key);
+      originalIndex = getOrCreateIndex(key);
+      updatedIndex = getOrCreateIndex(key);
       updatedIndex.addEndOfDayKey(dataKey, date);
       success = indexCache.replace(key, originalIndex, updatedIndex);
 
