@@ -84,4 +84,22 @@ public class IndexImplTest {
     Assert.assertEquals(keyIn, keyOut);
   }
 
+  @Test
+  public void testEquals() {
+    Assert.assertNull(index.getLatestKey());
+    Index otherIndex = new IndexImpl(dataType, identifier);
+    Assert.assertEquals(index, otherIndex);
+  }
+
+  @Test
+  public void testNotEquals() {
+    Assert.assertNull(index.getLatestKey());
+    final ZonedDateTime now = ZonedDateTime.now();
+    final TemporalKeyImpl keyIn =
+      new TemporalKeyImpl(dataType, identifier, now.minusHours(1).toInstant());
+    index.addLatestKey(keyIn, now.minusMinutes(10).toInstant());
+    Index otherIndex = new IndexImpl(dataType, identifier);
+    Assert.assertNotEquals(index, otherIndex);
+  }
+
 }
