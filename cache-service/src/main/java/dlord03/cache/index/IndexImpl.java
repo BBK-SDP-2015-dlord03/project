@@ -57,16 +57,21 @@ public class IndexImpl implements Index {
 
   @Override
   public TemporalKey getLatestKey(Instant before) {
-    final TemporalKey predicateKey =
-      new TemporalKeyImpl(dataType, securityIdentifier, before);
-    final IndexRecord<Instant> predicate =
-      new IndexRecord<>(predicateKey, before);
+
+    final TemporalKey predicateKey;
+    predicateKey = new TemporalKeyImpl(dataType, securityIdentifier, before);
+
+    final IndexRecord<Instant> predicate;
+    predicate = new IndexRecord<>(predicateKey, before);
+
     IndexRecord<Instant> record;
     record = timestampedKeys.floor(predicate);
     if (record != null && record.getPredicate().compareTo(before) >= 0) {
       return record.getKey();
     }
+
     return null;
+
   }
 
   @Override
@@ -78,16 +83,21 @@ public class IndexImpl implements Index {
 
   @Override
   public TemporalKey getEndOfDayKey(LocalDate date) {
-    final TemporalKey predicateKey =
-      new TemporalKeyImpl(dataType, securityIdentifier, date);
-    final IndexRecord<LocalDate> predicate =
-      new IndexRecord<>(predicateKey, date);
+
+    final TemporalKey predicateKey;
+    predicateKey = new TemporalKeyImpl(dataType, securityIdentifier, date);
+
+    final IndexRecord<LocalDate> predicate;
+    predicate = new IndexRecord<>(predicateKey, date);
+
     IndexRecord<LocalDate> record;
     record = datedKeys.floor(predicate);
     if (record != null && record.getPredicate().compareTo(date) >= 0) {
       return record.getKey();
     }
+
     return null;
+
   }
 
   @Override
@@ -104,7 +114,7 @@ public class IndexImpl implements Index {
     result = 31 * result + securityIdentifier.hashCode();
     result = 31 * result + datedKeys.hashCode();
     result = 31 * result + timestampedKeys.hashCode();
-    result = 31 * result + latestKey.hashCode();
+    result = 31 * result + (latestKey == null ? 0 : latestKey.hashCode());
     return result;
   }
 
