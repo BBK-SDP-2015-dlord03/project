@@ -2,7 +2,7 @@ package dlord03.plugin.api.data.security;
 
 /**
  * 
- * Simple utility implementation bean of SecuiryIdentifier.
+ * Simple utility implementation bean of {@linkplain SecurityIdentifier}.
  * 
  * @author David Lord
  *
