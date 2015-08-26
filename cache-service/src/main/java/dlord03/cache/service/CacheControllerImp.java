@@ -42,7 +42,7 @@ public class CacheControllerImp implements CacheController {
       new MutableConfiguration<IndexKey, Index>()
         .setTypes(IndexKey.class, Index.class)
         .setExpiryPolicyFactory(
-          AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
+          AccessedExpiryPolicy.factoryOf(Duration.ONE_DAY))
         .setStatisticsEnabled(true);
 
     // create the index cache
@@ -53,7 +53,7 @@ public class CacheControllerImp implements CacheController {
       new MutableConfiguration<SimpleKey, SecurityData>()
         .setTypes(SimpleKey.class, SecurityData.class)
         .setExpiryPolicyFactory(
-          AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
+          AccessedExpiryPolicy.factoryOf(Duration.ONE_DAY))
         .setStatisticsEnabled(true);
 
     // create the latest cache
@@ -64,7 +64,7 @@ public class CacheControllerImp implements CacheController {
       new MutableConfiguration<TemporalKey, SecurityData>()
         .setTypes(TemporalKey.class, SecurityData.class)
         .setExpiryPolicyFactory(
-          AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
+          AccessedExpiryPolicy.factoryOf(Duration.ONE_DAY))
         .setStatisticsEnabled(true);
 
     // create the time stamped cache
@@ -76,7 +76,7 @@ public class CacheControllerImp implements CacheController {
       new MutableConfiguration<TemporalKey, SecurityData>()
         .setTypes(TemporalKey.class, SecurityData.class)
         .setExpiryPolicyFactory(
-          AccessedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
+          AccessedExpiryPolicy.factoryOf(Duration.ONE_DAY))
         .setStatisticsEnabled(true);
 
     // create the dated cache
