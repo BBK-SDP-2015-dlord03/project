@@ -11,8 +11,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import dlord03.cache.QueryService;
-import dlord03.cache.service.QueryServiceFactory;
+import uk.ac.bbk.dlord03.cache.QueryService;
+import uk.ac.bbk.dlord03.cache.service.QueryServiceFactory;
 
 @Path("cache")
 public class CacheQueryService {
