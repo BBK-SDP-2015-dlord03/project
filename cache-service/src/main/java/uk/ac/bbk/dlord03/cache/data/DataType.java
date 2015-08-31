@@ -28,8 +28,8 @@ public enum DataType {
    */
   VOLATILITY("volatility", VolatilitySurface.class);
 
-  final private String name;
-  final private Class<? extends SecurityData> valueClass;
+  private final String name;
+  private final Class<? extends SecurityData> valueClass;
 
   private DataType(String name, Class<? extends SecurityData> clazz) {
     this.name = name;

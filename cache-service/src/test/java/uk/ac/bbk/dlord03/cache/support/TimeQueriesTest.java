@@ -14,8 +14,8 @@ import org.junit.Test;
 
 public class TimeQueriesTest {
 
-  private final static String NOW = "2015-08-02T14:49:56.025Z";
-  private final static String TODAY = "2015-08-02";
+  private static final String NOW = "2015-08-02T14:49:56.025Z";
+  private static final String TODAY = "2015-08-02";
 
   private TemporalAccessor now;
   private TemporalAccessor justNow;

@@ -19,7 +19,7 @@ import dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 public class OptionContractPluginImpl
       extends AbstractPluginImp<OptionContract> {
 
-  private final static Logger LOG =
+  private static final Logger LOG =
         LoggerFactory.getLogger(OptionContractPluginImpl.class);
 
   public OptionContractPluginImpl() {

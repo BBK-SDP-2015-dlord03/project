@@ -19,8 +19,8 @@ public class TemporalDataKeyImplTest {
   private SecurityIdentifier security;
   private Instant updatedTime;
   private LocalDate updatedDate;
-  private final static String UPDATED_TIME = "2015-08-02T14:49:56.025Z";
-  private final static String UPDATED_DATE = "2015-08-02";
+  private static final String UPDATED_TIME = "2015-08-02T14:49:56.025Z";
+  private static final String UPDATED_DATE = "2015-08-02";
 
   @Before
   public void setUp() {

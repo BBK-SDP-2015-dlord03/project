@@ -114,9 +114,9 @@ public abstract class AbstractPluginImp<T extends SecurityData>
     handler.invalidate(report);
   }
 
-  abstract protected void doOpen(Properties properties);
+  protected abstract void doOpen(Properties properties);
 
-  abstract protected void doClose();
+  protected abstract void doClose();
 
   protected T getRecord(List<T> list, SecurityIdentifier security,
         ZonedDateTime before) {

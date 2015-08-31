@@ -7,8 +7,8 @@ import dlord03.plugin.api.event.InvalidationReportHandler;
 public class InvalidationReportHandlerImpl<T extends SecurityData>
       implements InvalidationReportHandler {
 
-  final private Class<T> dataType;
-  final private PluginInvalidationReportHandler handler;
+  private final Class<T> dataType;
+  private final PluginInvalidationReportHandler handler;
 
   public InvalidationReportHandlerImpl(PluginInvalidationReportHandler handler,
         Class<T> dataType) {

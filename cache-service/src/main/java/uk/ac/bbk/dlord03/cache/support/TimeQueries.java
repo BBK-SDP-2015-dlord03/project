@@ -9,8 +9,8 @@ import java.time.temporal.TemporalUnit;
 
 public class TimeQueries {
 
-  private final static long MILLIS_IN_A_SECOND = 1000;
-  private final static long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
+  private static final long MILLIS_IN_A_SECOND = 1000;
+  private static final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
   /**
    * Private constructor since this is a utility class.

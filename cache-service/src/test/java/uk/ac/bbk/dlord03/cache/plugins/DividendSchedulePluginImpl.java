@@ -19,7 +19,7 @@ import dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 public class DividendSchedulePluginImpl
       extends AbstractPluginImp<DividendSchedule> {
 
-  private final static Logger LOG =
+  private static final Logger LOG =
         LoggerFactory.getLogger(DividendSchedulePluginImpl.class);
 
   @Override

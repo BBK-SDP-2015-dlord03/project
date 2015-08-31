@@ -15,7 +15,7 @@ import uk.ac.bbk.dlord03.cache.data.DataType;
 
 public class PluginControllerImpl implements PluginController {
 
-  private final static Logger LOG =
+  private static final Logger LOG =
         LoggerFactory.getLogger(PluginControllerImpl.class);
 
   private final Properties properties;

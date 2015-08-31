@@ -28,8 +28,8 @@ import uk.ac.bbk.dlord03.cache.index.IndexType;
 @RunWith(Parameterized.class)
 public class SerialisationRoundTripTest {
 
+  private static final String UPDATED_AT = "2015-08-02T14:49:56.025Z";
   private final Object key;
-  private final static String UPDATED_AT = "2015-08-02T14:49:56.025Z";
 
   @Parameters
   public static Collection<Object> data() {

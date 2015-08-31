@@ -225,7 +225,7 @@ public class QueryServiceImpl
       index = new IndexImpl(key.getDataType(), key.getSecurityIdentifier());
       if (!indexCache.putIfAbsent(key, index)) {
         index = indexCache.get(key);
-      };
+      }
     }
     return index;
 
