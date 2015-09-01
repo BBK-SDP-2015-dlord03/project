@@ -10,7 +10,7 @@ import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.data.DataType;
-import uk.ac.bbk.dlord03.cache.data.SimplKeyImpl;
+import uk.ac.bbk.dlord03.cache.data.SimpleKeyImpl;
 
 public class SimpleDataKeyImplTest {
 
@@ -26,10 +26,10 @@ public class SimpleDataKeyImplTest {
 
   @Test
   public void testObjectEquality() {
-    SimplKeyImpl key1;
-    key1 = new SimplKeyImpl(DataType.DIVIDEND, security);
-    SimplKeyImpl key2;
-    key2 = new SimplKeyImpl(DataType.DIVIDEND, security);
+    SimpleKeyImpl key1;
+    key1 = new SimpleKeyImpl(DataType.DIVIDEND, security);
+    SimpleKeyImpl key2;
+    key2 = new SimpleKeyImpl(DataType.DIVIDEND, security);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertEquals(key1, key2);
@@ -37,10 +37,10 @@ public class SimpleDataKeyImplTest {
 
   @Test
   public void testObjectInequalityOnSecurity() {
-    SimplKeyImpl key1;
-    key1 = new SimplKeyImpl(DataType.DIVIDEND, security);
-    SimplKeyImpl key2;
-    key2 = new SimplKeyImpl(DataType.DIVIDEND, differentSecurity);
+    SimpleKeyImpl key1;
+    key1 = new SimpleKeyImpl(DataType.DIVIDEND, security);
+    SimpleKeyImpl key2;
+    key2 = new SimpleKeyImpl(DataType.DIVIDEND, differentSecurity);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1, key2);
@@ -48,10 +48,10 @@ public class SimpleDataKeyImplTest {
 
   @Test
   public void testObjectInequalityOnDataType() {
-    SimplKeyImpl key1;
-    key1 = new SimplKeyImpl(DataType.DIVIDEND, security);
-    SimplKeyImpl key2;
-    key2 = new SimplKeyImpl(DataType.VOLATILITY, security);
+    SimpleKeyImpl key1;
+    key1 = new SimpleKeyImpl(DataType.DIVIDEND, security);
+    SimpleKeyImpl key2;
+    key2 = new SimpleKeyImpl(DataType.VOLATILITY, security);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1, key2);
@@ -59,10 +59,10 @@ public class SimpleDataKeyImplTest {
 
   @Test
   public void testHashEquality() {
-    SimplKeyImpl key1;
-    key1 = new SimplKeyImpl(DataType.DIVIDEND, security);
-    SimplKeyImpl key2;
-    key2 = new SimplKeyImpl(DataType.DIVIDEND, security);
+    SimpleKeyImpl key1;
+    key1 = new SimpleKeyImpl(DataType.DIVIDEND, security);
+    SimpleKeyImpl key2;
+    key2 = new SimpleKeyImpl(DataType.DIVIDEND, security);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertEquals(key1, key2);
@@ -70,10 +70,10 @@ public class SimpleDataKeyImplTest {
 
   @Test
   public void testHashInequalityOnSecurity() {
-    SimplKeyImpl key1;
-    key1 = new SimplKeyImpl(DataType.DIVIDEND, security);
-    SimplKeyImpl key2;
-    key2 = new SimplKeyImpl(DataType.DIVIDEND, differentSecurity);
+    SimpleKeyImpl key1;
+    key1 = new SimpleKeyImpl(DataType.DIVIDEND, security);
+    SimpleKeyImpl key2;
+    key2 = new SimpleKeyImpl(DataType.DIVIDEND, differentSecurity);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1.hashCode(), key2.hashCode());
@@ -81,10 +81,10 @@ public class SimpleDataKeyImplTest {
 
   @Test
   public void testHashInequalityOnDataType() {
-    SimplKeyImpl key1;
-    key1 = new SimplKeyImpl(DataType.DIVIDEND, security);
-    SimplKeyImpl key2;
-    key2 = new SimplKeyImpl(DataType.VOLATILITY, security);
+    SimpleKeyImpl key1;
+    key1 = new SimpleKeyImpl(DataType.DIVIDEND, security);
+    SimpleKeyImpl key2;
+    key2 = new SimpleKeyImpl(DataType.VOLATILITY, security);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1.hashCode(), key2.hashCode());

@@ -2,9 +2,9 @@ package uk.ac.bbk.dlord03.cache.index;
 
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.data.DataType;
-import uk.ac.bbk.dlord03.cache.data.SimplKeyImpl;
+import uk.ac.bbk.dlord03.cache.data.SimpleKeyImpl;
 
-public class IndexKeyImpl extends SimplKeyImpl implements IndexKey {
+public class IndexKeyImpl extends SimpleKeyImpl implements IndexKey {
 
   private static final long serialVersionUID = -6938651146376002358L;
 

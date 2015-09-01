@@ -7,7 +7,7 @@ public class SimpleKeyGenerator {
   public static SimpleKey generate(DataType dataType,
         SecurityIdentifier securityIdentifier) {
 
-    return new SimplKeyImpl(dataType, securityIdentifier);
+    return new SimpleKeyImpl(dataType, securityIdentifier);
 
   }
 

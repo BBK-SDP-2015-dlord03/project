@@ -6,7 +6,7 @@ import uk.ac.bbk.dlord03.cache.support.TimeQueries;
 import java.time.Instant;
 import java.time.temporal.TemporalAccessor;
 
-public class TemporalKeyImpl extends SimplKeyImpl implements TemporalKey {
+public class TemporalKeyImpl extends SimpleKeyImpl implements TemporalKey {
 
   private static final long serialVersionUID = -8580381668516461833L;
 

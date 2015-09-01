@@ -2,14 +2,14 @@ package uk.ac.bbk.dlord03.cache.data;
 
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 
-public class SimplKeyImpl implements SimpleKey {
+public class SimpleKeyImpl implements SimpleKey {
 
   private static final long serialVersionUID = -2427181751666407572L;
 
   private final DataType dataType;
   private final SecurityIdentifier securityIdentifier;
 
-  public SimplKeyImpl(DataType dataType,
+  public SimpleKeyImpl(DataType dataType,
         SecurityIdentifier securityIdentifier) {
     super();
     this.dataType = dataType;
@@ -45,10 +45,10 @@ public class SimplKeyImpl implements SimpleKey {
     if (this == obj) {
       return true;
     }
-    if (!(obj instanceof SimplKeyImpl)) {
+    if (!(obj instanceof SimpleKeyImpl)) {
       return false;
     }
-    final SimplKeyImpl other = (SimplKeyImpl) obj;
+    final SimpleKeyImpl other = (SimpleKeyImpl) obj;
     return (this.securityIdentifier.equals(other.securityIdentifier)
           && this.dataType.equals(other.dataType));
   }
