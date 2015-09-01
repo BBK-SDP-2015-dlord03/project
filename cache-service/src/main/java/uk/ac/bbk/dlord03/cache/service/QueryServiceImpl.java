@@ -1,9 +1,5 @@
 package uk.ac.bbk.dlord03.cache.service;
 
-import uk.ac.bbk.dlord03.plugin.api.Plugin;
-import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
-import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
-import uk.ac.bbk.dlord03.plugin.api.event.InvalidationReport;
 import uk.ac.bbk.dlord03.cache.CacheController;
 import uk.ac.bbk.dlord03.cache.PluginController;
 import uk.ac.bbk.dlord03.cache.QueryService;
@@ -17,6 +13,10 @@ import uk.ac.bbk.dlord03.cache.index.IndexImpl;
 import uk.ac.bbk.dlord03.cache.index.IndexKey;
 import uk.ac.bbk.dlord03.cache.index.IndexKeyGenerator;
 import uk.ac.bbk.dlord03.cache.index.IndexType;
+import uk.ac.bbk.dlord03.plugin.api.Plugin;
+import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.event.InvalidationReport;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -41,24 +41,15 @@ public class QueryServiceImpl
     this.cacheManager = cacheManager;
   }
 
-  public CacheManager getCacheManager() {
-    return this.cacheManager;
-  }
-
   public PluginController getPluginController() {
     return this.pluginController;
   }
 
-  public CacheController getCacheController() {
-    return this.cacheController;
-  }
-
-  public void setProperties(Properties properties) {
-    this.properties = new Properties(properties);
-  }
-
-  public Properties getProperties() {
-    return properties;
+  public void setProperties(final Properties properties) {
+    this.properties = new Properties();
+    if (properties != null && properties.size() > 0) {
+      this.properties.putAll(properties);
+    }
   }
 
   @Override
@@ -210,7 +201,39 @@ public class QueryServiceImpl
   @Override
   public <T extends SecurityData> void handleInvalidationReport(Class<T> type,
         InvalidationReport report) {
-    // TODO Auto-generated method stub
+
+    // Generate the simple key for the invalidated data.
+    SecurityIdentifier security = report.getInvalidatedSecurity();
+    SimpleKey key =
+          SimpleKeyGenerator.generate(DataType.valueOf(type), security);
+    DataType dataType = DataType.valueOf(type);
+
+    // Get the latest data cache and remove this value if it is there.
+    final Cache<SimpleKey, T> latestCache = cacheController.getLatestCache();
+    T latestEntry = latestCache.getAndRemove(key);
+
+    // If it was there now add it to the intra-day cache.
+    if (latestEntry != null) {
+      final Cache<TemporalKey, SecurityData> intraDayCache;
+      intraDayCache = cacheController.getTimestampedCache();
+
+      // If the plug-in returned data then add its key to the index
+      TemporalKey newKey = TemporalKeyGenerator.generate(dataType, latestEntry);
+
+      // Generate the index key for this request
+      final IndexKey indexKey =
+            IndexKeyGenerator.generate(IndexType.INTRADAY, dataType, security);
+
+      // The predicate for the intra-day value is now as it was valid until now.
+      Instant predicate = Instant.now();
+
+      addIndexLatestKey(indexKey, newKey, predicate);
+
+      // And add the data to the intra-day cache.
+      intraDayCache.put(newKey, latestEntry);
+
+    }
+
   }
 
   private Plugin<? extends SecurityData> getPlugin(DataType type) {

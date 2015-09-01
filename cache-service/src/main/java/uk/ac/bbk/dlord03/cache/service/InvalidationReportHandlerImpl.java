@@ -12,8 +12,17 @@ public class InvalidationReportHandlerImpl<T extends SecurityData>
 
   public InvalidationReportHandlerImpl(PluginInvalidationReportHandler handler,
         Class<T> dataType) {
+
     super();
+
+    if (dataType == null)
+      throw new IllegalArgumentException("Invalid Data Type");
+
+    if (handler == null)
+      throw new IllegalArgumentException("Invalid Handler");
+
     this.dataType = dataType;
+
     this.handler = handler;
   }
 

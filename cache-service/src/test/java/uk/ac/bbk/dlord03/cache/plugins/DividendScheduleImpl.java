@@ -59,4 +59,26 @@ public class DividendScheduleImpl implements DividendSchedule {
     return currency;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof DividendScheduleImpl)) {
+      return false;
+    }
+    DividendScheduleImpl other = (DividendScheduleImpl) obj;
+    if (!this.si.equals(other.si))
+      return false;
+    if (!this.currency.equals(other.currency))
+      return false;
+    if (!this.updatedAt.equals(other.updatedAt))
+      return false;
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return String.format(
+          "DividendScheduleImpl[Security=%s,Currency=%s,UpdatedAt=%s]", si,
+          currency, updatedAt);
+  }
+
 }

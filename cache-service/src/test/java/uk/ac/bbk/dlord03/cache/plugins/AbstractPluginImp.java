@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -26,6 +27,7 @@ public abstract class AbstractPluginImp<T extends SecurityData>
   protected long latestHitCount = 0;
   protected long latestPredicateHitCount = 0;
   protected long endOfDayHitCount = 0;
+  private T latestRecord = null;
 
   public AbstractPluginImp() {
     super();
@@ -52,9 +54,14 @@ public abstract class AbstractPluginImp<T extends SecurityData>
 
   @Override
   public T getLatestValue(SecurityIdentifier security) {
+
     latestHitCount++;
-    return getRecord(intraDayRecords, security,
-          ZonedDateTime.now().plusYears(1000));
+
+    if (latestRecord == null)
+      latestRecord = createLatest(security);
+
+    return latestRecord;
+
   }
 
   @Override
@@ -98,12 +105,13 @@ public abstract class AbstractPluginImp<T extends SecurityData>
   }
 
   public void invalidateLatest() {
+
+    latestRecord = null;
+
     if (handler == null) {
       return;
     }
     final InvalidationReport report = new InvalidationReport() {
-
-      ;
 
       @Override
       public SecurityIdentifier getInvalidatedSecurity() {
@@ -118,21 +126,13 @@ public abstract class AbstractPluginImp<T extends SecurityData>
 
   protected abstract void doClose();
 
+  protected abstract T createLatest(SecurityIdentifier security);
+
   protected T getRecord(List<T> list, SecurityIdentifier security,
         ZonedDateTime before) {
 
-    T latest = null;
-    for (final T record : list) {
-      if (record.getSecurityIdentifier().equals(security)
-            && record.getUpdatedAt().isBefore(before)) {
-        if (latest == null
-              || record.getUpdatedAt().isAfter(latest.getUpdatedAt())) {
-          latest = record;
-        }
-      }
-    }
-
-    return latest;
+    return list.stream().filter(p -> p.getSecurityIdentifier().equals(security))
+          .sorted(new SecurityDataComparator()).findFirst().orElse(null);
 
   }
 
@@ -145,6 +145,16 @@ public abstract class AbstractPluginImp<T extends SecurityData>
   protected ZonedDateTime getOneMonthAgo() {
     final ZonedDateTime now = ZonedDateTime.now();
     return now.minusMonths(1);
+  }
+
+  static private class SecurityDataComparator
+        implements Comparator<SecurityData> {
+
+    @Override
+    public int compare(SecurityData o1, SecurityData o2) {
+      return o1.getUpdatedAt().compareTo(o2.getUpdatedAt());
+    }
+
   }
 
 }

@@ -43,5 +43,13 @@ public enum DataType {
   public Class<? extends SecurityData> getValueClass() {
     return valueClass;
   }
+  
+  public static DataType valueOf(Class<? extends SecurityData> valueClass) {
+    if (valueClass.equals(OptionContract.class)) return OPTION;
+    if (valueClass.equals(DividendSchedule.class)) return DIVIDEND;
+    if (valueClass.equals(VolatilitySurface.class)) return VOLATILITY;
+    return null;
+    
+  }
 
 }

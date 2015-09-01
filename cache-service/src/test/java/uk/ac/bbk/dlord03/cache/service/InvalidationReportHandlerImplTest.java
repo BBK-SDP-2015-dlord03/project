@@ -44,11 +44,6 @@ public class InvalidationReportHandlerImplTest {
 
   }
 
-  @Test
-  public void testInvalidate() {
-    // fail("Not yet implemented");
-  }
-
   private static class InvalidationHandler
         implements PluginInvalidationReportHandler {
 

@@ -3,10 +3,10 @@ package uk.ac.bbk.dlord03.cache.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.ac.bbk.dlord03.plugin.api.Plugin;
-import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
 import uk.ac.bbk.dlord03.cache.PluginController;
 import uk.ac.bbk.dlord03.cache.data.DataType;
+import uk.ac.bbk.dlord03.plugin.api.Plugin;
+import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
 
 import java.util.Collection;
 import java.util.Map;
@@ -22,12 +22,19 @@ public class PluginControllerImpl implements PluginController {
   private final Map<Class<? extends SecurityData>, Plugin<? extends SecurityData>> plugins;
   private PluginInvalidationReportHandler invalidationHandler;
 
-  public PluginControllerImpl(Properties properties) {
+  public PluginControllerImpl(final Properties properties) {
+
     super();
-    this.properties = new Properties(properties);
+
     this.plugins = new ConcurrentHashMap<>();
+    this.properties = new Properties();
+    if (properties != null && properties.size() > 0) {
+      this.properties.putAll(properties);
+    }
+
     final Object reportHandler =
           this.properties.get("invalidationReportHandler");
+
     if (reportHandler != null
           && reportHandler instanceof PluginInvalidationReportHandler) {
       this.invalidationHandler =

@@ -6,12 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
 
-import uk.ac.bbk.dlord03.plugin.api.data.Dividend;
-import uk.ac.bbk.dlord03.plugin.api.data.DividendSchedule;
-import uk.ac.bbk.dlord03.plugin.api.data.OptionContract;
-import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
-import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
-import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.PluginController;
 import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.cache.index.IndexImpl;
@@ -20,6 +14,13 @@ import uk.ac.bbk.dlord03.cache.index.IndexKeyGenerator;
 import uk.ac.bbk.dlord03.cache.index.IndexType;
 import uk.ac.bbk.dlord03.cache.plugins.DividendSchedulePluginImpl;
 import uk.ac.bbk.dlord03.cache.plugins.OptionContractPluginImpl;
+import uk.ac.bbk.dlord03.cache.support.SerialisationUtils;
+import uk.ac.bbk.dlord03.plugin.api.data.Dividend;
+import uk.ac.bbk.dlord03.plugin.api.data.DividendSchedule;
+import uk.ac.bbk.dlord03.plugin.api.data.OptionContract;
+import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -203,6 +204,85 @@ public class QueryServiceImplTest {
   public void testGetMissingEndOfDayOptionRecord() {
     final LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
     findEndOfDayOptionRecord("SLET.L", twoWeeksAgo);
+  }
+
+  @Test
+  public void testInvalidationReport() {
+
+    initialiseQueryService();
+
+    // Get a reference to the dividend plug-in.
+    final DividendSchedulePluginImpl plugin = getDividendPlugin();
+
+    // Construct a predicate.
+    SecurityIdentifier security;
+    security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+
+    // Search for the latest dividend record.
+    DividendSchedule dividends;
+    dividends = getLatestValue(DataType.DIVIDEND, security);
+
+    // Confirm the plug-in WAS called.
+    Assert.assertEquals("Failed to call plugin", 1, plugin.getLatestHitCount());
+
+    // Confirm the record was found.
+    Assert.assertNotNull("Failed to find record", dividends);
+
+    // Make a copy for later comparison.
+    DividendSchedule orginal = SerialisationUtils.serializeRoundTrip(dividends);
+    Assert.assertEquals(orginal, dividends);
+
+    // Search again.
+    dividends = null;
+    dividends = getLatestValue(DataType.DIVIDEND, security);
+
+    // Confirm the cached value was used and the plug-in was not called again.
+    Assert.assertNotNull("Failed to find record", dividends);
+    Assert.assertEquals("Called plugin for cached value", 1,
+          plugin.getLatestHitCount());
+
+    // Found record was the same as the original one.
+    Assert.assertEquals(orginal, dividends);
+
+    // Search for it in the intra-day cache.
+    dividends = null;
+    dividends = getLatestValue(DataType.DIVIDEND, security,
+          Instant.now().minusSeconds(10));
+
+    // Found record was NOT the same as the original one.
+    Assert.assertNotEquals(orginal, dividends);
+
+    // Invalidate the latest record.
+    plugin.invalidateLatest();
+
+    // Search for it in the intra-day cache.
+    dividends = null;
+    dividends = getLatestValue(DataType.DIVIDEND, security,
+          Instant.now().minusSeconds(10));
+
+    // Confirm that it was found.
+    Assert.assertNotNull("Failed to find record", dividends);
+
+    // Found record was the same as the original one.
+    Assert.assertEquals(orginal, dividends);
+
+    // Confirm the plug-in WAS NOT called.
+    Assert.assertEquals("Called plugin for cached value", 1,
+          plugin.getLatestHitCount());
+
+    // Search for latest again.
+    dividends = null;
+    dividends = getLatestValue(DataType.DIVIDEND, security);
+
+    // Confirm the plug-in WAS called.
+    Assert.assertEquals("Failed to call plugin", 2, plugin.getLatestHitCount());
+
+    // Confirm that the latest record was re-found.
+    Assert.assertNotNull("Failed to find record", dividends);
+
+    // The new latest value is NOT the same as the original one.
+    Assert.assertNotEquals(orginal, dividends);
+
   }
 
   @SuppressWarnings("unchecked")
