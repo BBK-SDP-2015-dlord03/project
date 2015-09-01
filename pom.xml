@@ -10,7 +10,7 @@
   <artifactId>root</artifactId>
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>Project Root</name>
+  <name>Cache Plugin Project</name>
 
   <modules>
     <module>plugin-api</module>
