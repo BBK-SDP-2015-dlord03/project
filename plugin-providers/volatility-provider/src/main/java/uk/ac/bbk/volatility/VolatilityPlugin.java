@@ -1,7 +1,7 @@
-package dlord03.plugin.dividend;
+package uk.ac.bbk.volatility;
 
 import uk.ac.bbk.dlord03.plugin.api.Plugin;
-import uk.ac.bbk.dlord03.plugin.api.data.DividendSchedule;
+import uk.ac.bbk.dlord03.plugin.api.data.VolatilitySurface;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.plugin.api.event.InvalidationReportHandler;
 
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.Properties;
 
-public class DividendPlugin implements Plugin<DividendSchedule> {
+public class VolatilityPlugin implements Plugin<VolatilitySurface> {
 
   @Override
   public void open(Properties properties) {
@@ -31,20 +31,20 @@ public class DividendPlugin implements Plugin<DividendSchedule> {
   }
 
   @Override
-  public DividendSchedule getLatestValue(SecurityIdentifier security) {
+  public VolatilitySurface getLatestValue(SecurityIdentifier security) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public DividendSchedule getLatestValue(SecurityIdentifier security,
+  public VolatilitySurface getLatestValue(SecurityIdentifier security,
         Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public DividendSchedule getEndOfDayValue(SecurityIdentifier security,
+  public VolatilitySurface getEndOfDayValue(SecurityIdentifier security,
         LocalDate date) {
     // TODO Auto-generated method stub
     return null;

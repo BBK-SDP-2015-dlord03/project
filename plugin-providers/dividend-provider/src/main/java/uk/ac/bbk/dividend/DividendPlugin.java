@@ -1,7 +1,7 @@
-package dlord03.plugin.instrument;
+package uk.ac.bbk.dividend;
 
 import uk.ac.bbk.dlord03.plugin.api.Plugin;
-import uk.ac.bbk.dlord03.plugin.api.data.OptionContract;
+import uk.ac.bbk.dlord03.plugin.api.data.DividendSchedule;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.plugin.api.event.InvalidationReportHandler;
 
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.Properties;
 
-public class OptionContractPlugin implements Plugin<OptionContract> {
+public class DividendPlugin implements Plugin<DividendSchedule> {
 
   @Override
   public void open(Properties properties) {
@@ -31,20 +31,20 @@ public class OptionContractPlugin implements Plugin<OptionContract> {
   }
 
   @Override
-  public OptionContract getLatestValue(SecurityIdentifier security) {
+  public DividendSchedule getLatestValue(SecurityIdentifier security) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public OptionContract getLatestValue(SecurityIdentifier security,
+  public DividendSchedule getLatestValue(SecurityIdentifier security,
         Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public OptionContract getEndOfDayValue(SecurityIdentifier security,
+  public DividendSchedule getEndOfDayValue(SecurityIdentifier security,
         LocalDate date) {
     // TODO Auto-generated method stub
     return null;

@@ -1,7 +1,7 @@
-package dlord03.plugin.volatility;
+package uk.ac.bbk.instrument;
 
 import uk.ac.bbk.dlord03.plugin.api.Plugin;
-import uk.ac.bbk.dlord03.plugin.api.data.VolatilitySurface;
+import uk.ac.bbk.dlord03.plugin.api.data.OptionContract;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.plugin.api.event.InvalidationReportHandler;
 
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.Properties;
 
-public class VolatilityPlugin implements Plugin<VolatilitySurface> {
+public class OptionContractPlugin implements Plugin<OptionContract> {
 
   @Override
   public void open(Properties properties) {
@@ -31,20 +31,20 @@ public class VolatilityPlugin implements Plugin<VolatilitySurface> {
   }
 
   @Override
-  public VolatilitySurface getLatestValue(SecurityIdentifier security) {
+  public OptionContract getLatestValue(SecurityIdentifier security) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public VolatilitySurface getLatestValue(SecurityIdentifier security,
+  public OptionContract getLatestValue(SecurityIdentifier security,
         Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public VolatilitySurface getEndOfDayValue(SecurityIdentifier security,
+  public OptionContract getEndOfDayValue(SecurityIdentifier security,
         LocalDate date) {
     // TODO Auto-generated method stub
     return null;
