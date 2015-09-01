@@ -1,10 +1,10 @@
 package uk.ac.bbk.dlord03.cache.service;
 
+import uk.ac.bbk.dlord03.cache.QueryService;
+
 import java.util.Properties;
 
 import javax.cache.CacheManager;
-
-import uk.ac.bbk.dlord03.cache.QueryService;
 
 public class QueryServiceFactory {
 

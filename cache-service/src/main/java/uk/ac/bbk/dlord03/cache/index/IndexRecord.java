@@ -1,9 +1,9 @@
 package uk.ac.bbk.dlord03.cache.index;
 
+import uk.ac.bbk.dlord03.cache.data.TemporalKey;
+
 import java.io.Serializable;
 import java.time.temporal.TemporalAccessor;
-
-import uk.ac.bbk.dlord03.cache.data.TemporalKey;
 
 /**
  * An object to index keys in the cache. It provides details of the key together

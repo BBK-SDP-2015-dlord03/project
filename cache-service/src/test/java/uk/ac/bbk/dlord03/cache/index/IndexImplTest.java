@@ -1,9 +1,5 @@
 package uk.ac.bbk.dlord03.cache.index;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +11,10 @@ import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
 import uk.ac.bbk.dlord03.cache.data.TemporalKeyImpl;
 import uk.ac.bbk.dlord03.cache.support.SerialisationUtils;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 public class IndexImplTest {
 
@@ -50,13 +50,21 @@ public class IndexImplTest {
 
   @Test
   public void refindEndOfDayKey() {
-    final ZonedDateTime now = ZonedDateTime.now();
-    final LocalDate date = LocalDate.from(now);
-    final Instant recordDate = now.minusDays(7).toInstant();
-    TemporalKey keyIn;
-    keyIn = new TemporalKeyImpl(dataType, identifier, recordDate);
-    index.addEndOfDayKey(keyIn, date);
-    final TemporalKey keyOut = index.getEndOfDayKey(date.minusDays(1));
+
+    // Create required variables.
+    final LocalDate today = LocalDate.from(ZonedDateTime.now());
+    final Instant weekAgo = ZonedDateTime.now().minusDays(7).toInstant();
+
+    // Create a week old key.
+    TemporalKey keyIn = new TemporalKeyImpl(dataType, identifier, weekAgo);
+
+    // Add this key to the index with a predicate of today.
+    index.addEndOfDayKey(keyIn, today);
+
+    // Get the latest key as of yesterday.
+    final TemporalKey keyOut = index.getEndOfDayKey(today.minusDays(1));
+
+    // Assert that the index found the same key.
     Assert.assertEquals(keyIn, keyOut);
   }
 

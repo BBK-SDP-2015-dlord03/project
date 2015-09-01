@@ -1,12 +1,12 @@
 package uk.ac.bbk.dlord03.cache.index;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 public class KeyIndexTest {
 

@@ -1,10 +1,10 @@
 package uk.ac.bbk.dlord03.cache.data;
 
-import java.time.Instant;
-import java.time.temporal.TemporalAccessor;
-
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.support.TimeQueries;
+
+import java.time.Instant;
+import java.time.temporal.TemporalAccessor;
 
 public class TemporalKeyImpl extends SimplKeyImpl implements TemporalKey {
 

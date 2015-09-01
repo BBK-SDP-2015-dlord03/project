@@ -1,12 +1,5 @@
 package uk.ac.bbk.dlord03.cache.service;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Properties;
-
-import javax.cache.Cache;
-import javax.cache.CacheManager;
-
 import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.SecurityData;
 import dlord03.plugin.api.data.security.SecurityIdentifier;
@@ -24,6 +17,13 @@ import uk.ac.bbk.dlord03.cache.index.IndexImpl;
 import uk.ac.bbk.dlord03.cache.index.IndexKey;
 import uk.ac.bbk.dlord03.cache.index.IndexKeyGenerator;
 import uk.ac.bbk.dlord03.cache.index.IndexType;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Properties;
+
+import javax.cache.Cache;
+import javax.cache.CacheManager;
 
 public class QueryServiceImpl
       implements QueryService, PluginInvalidationReportHandler {

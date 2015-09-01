@@ -1,5 +1,9 @@
 package uk.ac.bbk.dlord03.cache.support;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
@@ -7,10 +11,6 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQueries;
 import java.time.temporal.TemporalUnit;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 public class TimeQueriesTest {
 

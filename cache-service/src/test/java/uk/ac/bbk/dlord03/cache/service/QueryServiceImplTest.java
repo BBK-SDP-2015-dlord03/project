@@ -1,12 +1,5 @@
 package uk.ac.bbk.dlord03.cache.service;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Properties;
-
-import javax.cache.CacheManager;
-import javax.cache.Caching;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,6 +20,13 @@ import uk.ac.bbk.dlord03.cache.index.IndexKeyGenerator;
 import uk.ac.bbk.dlord03.cache.index.IndexType;
 import uk.ac.bbk.dlord03.cache.plugins.DividendSchedulePluginImpl;
 import uk.ac.bbk.dlord03.cache.plugins.OptionContractPluginImpl;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Properties;
+
+import javax.cache.CacheManager;
+import javax.cache.Caching;
 
 public class QueryServiceImplTest {
 

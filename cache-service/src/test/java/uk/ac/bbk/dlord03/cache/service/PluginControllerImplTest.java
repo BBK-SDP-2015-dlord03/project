@@ -2,13 +2,13 @@ package uk.ac.bbk.dlord03.cache.service;
 
 import static org.mockito.Mockito.mock;
 
-import java.util.Properties;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import uk.ac.bbk.dlord03.cache.PluginController;
+
+import java.util.Properties;
 
 public class PluginControllerImplTest {
 

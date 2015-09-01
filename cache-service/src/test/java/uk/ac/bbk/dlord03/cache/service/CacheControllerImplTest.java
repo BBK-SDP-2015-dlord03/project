@@ -1,12 +1,5 @@
 package uk.ac.bbk.dlord03.cache.service;
 
-import java.time.Instant;
-import java.time.ZonedDateTime;
-
-import javax.cache.Cache;
-import javax.cache.CacheManager;
-import javax.cache.Caching;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,6 +19,13 @@ import uk.ac.bbk.dlord03.cache.index.IndexImpl;
 import uk.ac.bbk.dlord03.cache.index.IndexKey;
 import uk.ac.bbk.dlord03.cache.index.IndexKeyImpl;
 import uk.ac.bbk.dlord03.cache.index.IndexType;
+
+import java.time.Instant;
+import java.time.ZonedDateTime;
+
+import javax.cache.Cache;
+import javax.cache.CacheManager;
+import javax.cache.Caching;
 
 public class CacheControllerImplTest {
 

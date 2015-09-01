@@ -1,10 +1,5 @@
 package uk.ac.bbk.dlord03.cache.service;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +7,11 @@ import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.SecurityData;
 import uk.ac.bbk.dlord03.cache.PluginController;
 import uk.ac.bbk.dlord03.cache.data.DataType;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PluginControllerImpl implements PluginController {
 

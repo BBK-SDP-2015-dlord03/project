@@ -1,12 +1,12 @@
 package uk.ac.bbk.dlord03.cache;
 
-import javax.cache.Cache;
-
 import dlord03.plugin.api.data.SecurityData;
 import uk.ac.bbk.dlord03.cache.data.SimpleKey;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
 import uk.ac.bbk.dlord03.cache.index.Index;
 import uk.ac.bbk.dlord03.cache.index.IndexKey;
+
+import javax.cache.Cache;
 
 /**
  * Interface that defines common operations for accessing caches.

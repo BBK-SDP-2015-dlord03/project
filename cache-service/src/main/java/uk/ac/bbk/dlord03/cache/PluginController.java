@@ -1,10 +1,10 @@
 package uk.ac.bbk.dlord03.cache;
 
-import java.util.Collection;
-
 import dlord03.plugin.api.Plugin;
 import dlord03.plugin.api.data.SecurityData;
 import uk.ac.bbk.dlord03.cache.data.DataType;
+
+import java.util.Collection;
 
 /**
  * Central controller for configuring and accessing underlying plug-in

@@ -1,8 +1,8 @@
 package uk.ac.bbk.dlord03.cache.data;
 
-import java.io.Serializable;
-
 import dlord03.plugin.api.data.security.SecurityIdentifier;
+
+import java.io.Serializable;
 
 /**
  * A simple key for caching values from the plug-ins.

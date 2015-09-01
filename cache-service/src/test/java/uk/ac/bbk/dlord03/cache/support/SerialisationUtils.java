@@ -21,7 +21,7 @@ public class SerialisationUtils {
    */
   @SuppressWarnings("unchecked")
   public static <T> T serializeRoundTrip(T object) {
-    Object roundTrippedObject = null;
+    T roundTrippedObject = null;
     try {
       final ByteArrayOutputStream baos = new ByteArrayOutputStream();
       final ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -31,14 +31,14 @@ public class SerialisationUtils {
       final ByteArrayInputStream bais =
             new ByteArrayInputStream(baos.toByteArray());
       final ObjectInputStream ois = new ObjectInputStream(bais);
-      roundTrippedObject = ois.readObject();
+      roundTrippedObject = (T) ois.readObject();
       ois.close();
       bais.close();
 
     } catch (IOException | ClassNotFoundException e) {
       throw new RuntimeException(e);
     }
-    return (T) roundTrippedObject;
+    return roundTrippedObject;
 
   }
 

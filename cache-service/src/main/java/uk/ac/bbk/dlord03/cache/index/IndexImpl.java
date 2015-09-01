@@ -1,14 +1,14 @@
 package uk.ac.bbk.dlord03.cache.index;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.NavigableSet;
-import java.util.concurrent.ConcurrentSkipListSet;
-
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
 import uk.ac.bbk.dlord03.cache.data.TemporalKeyImpl;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.NavigableSet;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * Provides a index of cache keys allowing for them to be searched from one
@@ -128,11 +128,11 @@ public class IndexImpl implements Index {
     }
     final IndexImpl other = (IndexImpl) obj;
     return (this.dataType.equals(other.dataType)
-      && this.securityIdentifier.equals(other.securityIdentifier)
-      && this.datedKeys.equals(other.datedKeys)
-      && this.timestampedKeys.equals(other.timestampedKeys)
-      && (latestKey == null ? other.latestKey == null
-        : this.latestKey.equals(other.latestKey)));
+          && this.securityIdentifier.equals(other.securityIdentifier)
+          && this.datedKeys.equals(other.datedKeys)
+          && this.timestampedKeys.equals(other.timestampedKeys)
+          && (latestKey == null ? other.latestKey == null
+                : this.latestKey.equals(other.latestKey)));
   }
 
   private void validateKey(TemporalKey dataKey) {

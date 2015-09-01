@@ -1,12 +1,12 @@
 package uk.ac.bbk.dlord03.cache.index;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.time.LocalDate;
-
 import dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
+
+import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
 
 /**
  * An interface for classes which provide an index of {@link TemporalKey}

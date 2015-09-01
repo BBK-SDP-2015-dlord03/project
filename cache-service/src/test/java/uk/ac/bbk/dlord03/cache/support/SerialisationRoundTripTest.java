@@ -1,14 +1,5 @@
 package uk.ac.bbk.dlord03.cache.support;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +15,15 @@ import uk.ac.bbk.dlord03.cache.data.TemporalKeyImpl;
 import uk.ac.bbk.dlord03.cache.index.IndexKey;
 import uk.ac.bbk.dlord03.cache.index.IndexKeyImpl;
 import uk.ac.bbk.dlord03.cache.index.IndexType;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public class SerialisationRoundTripTest {
