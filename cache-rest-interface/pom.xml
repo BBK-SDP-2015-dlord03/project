@@ -14,7 +14,7 @@
   </parent>
 
   <artifactId>cache-rest-interface</artifactId>
-  <name>RESTful Cache Front End</name>
+  <name>Web Service</name>
 
   <properties>
     <hazelcast.version>3.5</hazelcast.version>
