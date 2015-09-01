@@ -1,14 +1,14 @@
 package dlord03.plugin.dividend;
 
+import uk.ac.bbk.dlord03.plugin.api.Plugin;
+import uk.ac.bbk.dlord03.plugin.api.data.DividendSchedule;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.event.InvalidationReportHandler;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.Properties;
-
-import dlord03.plugin.api.Plugin;
-import dlord03.plugin.api.data.DividendSchedule;
-import dlord03.plugin.api.data.security.SecurityIdentifier;
-import dlord03.plugin.api.event.InvalidationReportHandler;
 
 public class DividendPlugin implements Plugin<DividendSchedule> {
 
@@ -38,14 +38,14 @@ public class DividendPlugin implements Plugin<DividendSchedule> {
 
   @Override
   public DividendSchedule getLatestValue(SecurityIdentifier security,
-    Instant before) {
+        Instant before) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public DividendSchedule getEndOfDayValue(SecurityIdentifier security,
-    LocalDate date) {
+        LocalDate date) {
     // TODO Auto-generated method stub
     return null;
   }

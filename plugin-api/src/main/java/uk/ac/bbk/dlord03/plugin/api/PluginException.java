@@ -1,4 +1,4 @@
-package dlord03.plugin.api;
+package uk.ac.bbk.dlord03.plugin.api;
 
 public class PluginException extends Exception {
 

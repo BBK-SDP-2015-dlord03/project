@@ -1,6 +1,6 @@
 package uk.ac.bbk.dlord03.cache.service;
 
-import dlord03.plugin.api.data.SecurityData;
+import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
 import uk.ac.bbk.dlord03.cache.CacheController;
 import uk.ac.bbk.dlord03.cache.data.SimpleKey;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;

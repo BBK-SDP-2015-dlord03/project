@@ -6,9 +6,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import dlord03.plugin.api.data.security.IdentifierScheme;
-import dlord03.plugin.api.data.security.SecurityIdentifier;
-import dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 import java.time.Instant;
 import java.time.LocalDate;

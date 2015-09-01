@@ -1,6 +1,6 @@
 package uk.ac.bbk.dlord03.cache.plugins;
 
-import dlord03.plugin.api.data.Dividend;
+import uk.ac.bbk.dlord03.plugin.api.data.Dividend;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package dlord03.plugin.api.event;
+package uk.ac.bbk.dlord03.plugin.api.event;
 
 public interface InvalidationReportHandler {
 

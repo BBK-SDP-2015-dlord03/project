@@ -1,4 +1,4 @@
-package dlord03.plugin.api.data;
+package uk.ac.bbk.dlord03.plugin.api.data;
 
 import java.io.Serializable;
 

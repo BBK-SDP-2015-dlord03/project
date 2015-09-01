@@ -1,4 +1,4 @@
-package dlord03.plugin.api.data.security;
+package uk.ac.bbk.dlord03.plugin.api.data.security;
 
 /**
  * 
@@ -41,7 +41,7 @@ public class SimpleSecurityIdentifier implements SecurityIdentifier {
   @Override
   public String toString() {
     return String.format("SecurityIdentifier(scheme=%s,symbol=%s)", scheme,
-      symbol);
+          symbol);
   }
 
   @Override
@@ -54,7 +54,7 @@ public class SimpleSecurityIdentifier implements SecurityIdentifier {
     }
     final SecurityIdentifier other = (SecurityIdentifier) obj;
     return (this.scheme.equals(other.getScheme())
-      && this.symbol.equals(other.getSymbol()));
+          && this.symbol.equals(other.getSymbol()));
   }
 
 }

@@ -1,9 +1,9 @@
 package uk.ac.bbk.dlord03.cache.service;
 
-import dlord03.plugin.api.Plugin;
-import dlord03.plugin.api.data.SecurityData;
-import dlord03.plugin.api.data.security.SecurityIdentifier;
-import dlord03.plugin.api.event.InvalidationReport;
+import uk.ac.bbk.dlord03.plugin.api.Plugin;
+import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.event.InvalidationReport;
 import uk.ac.bbk.dlord03.cache.CacheController;
 import uk.ac.bbk.dlord03.cache.PluginController;
 import uk.ac.bbk.dlord03.cache.QueryService;

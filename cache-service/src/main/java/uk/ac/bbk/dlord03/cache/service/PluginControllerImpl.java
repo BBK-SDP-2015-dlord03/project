@@ -3,8 +3,8 @@ package uk.ac.bbk.dlord03.cache.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dlord03.plugin.api.Plugin;
-import dlord03.plugin.api.data.SecurityData;
+import uk.ac.bbk.dlord03.plugin.api.Plugin;
+import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
 import uk.ac.bbk.dlord03.cache.PluginController;
 import uk.ac.bbk.dlord03.cache.data.DataType;
 

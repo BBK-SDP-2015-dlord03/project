@@ -1,4 +1,4 @@
-package dlord03.plugin.api.data.security;
+package uk.ac.bbk.dlord03.plugin.api.data.security;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -61,7 +61,7 @@ public class SimpleSecurityIdentifierTest {
   @Test
   public void testToString() {
     Assert.assertEquals(britishTelecom1.toString(),
-      "SecurityIdentifier(scheme=RIC,symbol=BT.L)");
+          "SecurityIdentifier(scheme=RIC,symbol=BT.L)");
   }
 
 }

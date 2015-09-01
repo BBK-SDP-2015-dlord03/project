@@ -1,4 +1,4 @@
-package dlord03.plugin.api.data.security;
+package uk.ac.bbk.dlord03.plugin.api.data.security;
 
 import java.io.Serializable;
 

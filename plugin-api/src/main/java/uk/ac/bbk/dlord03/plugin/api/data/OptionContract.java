@@ -1,6 +1,6 @@
-package dlord03.plugin.api.data;
+package uk.ac.bbk.dlord03.plugin.api.data;
 
-import dlord03.plugin.api.data.security.SecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 
 /**
  * Represents a traded option contract. For an example of the simple
