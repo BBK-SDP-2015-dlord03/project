@@ -1,4 +1,4 @@
-package dlord03.rest;
+package uk.ac.bbk.dlord03.webservice;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
