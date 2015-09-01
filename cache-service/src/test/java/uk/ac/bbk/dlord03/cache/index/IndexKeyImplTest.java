@@ -6,12 +6,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
-import uk.ac.bbk.dlord03.cache.data.DataType;
-import uk.ac.bbk.dlord03.cache.index.IndexKeyImpl;
-import uk.ac.bbk.dlord03.cache.index.IndexType;
 
 public class IndexKeyImplTest {
 
@@ -22,7 +20,14 @@ public class IndexKeyImplTest {
   public void setUp() {
     security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     differentSecurity =
-      new SimpleSecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+          new SimpleSecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+  }
+
+  @Test
+  public void testGetIndexType() {
+    IndexKeyImpl key;
+    key = new IndexKeyImpl(IndexType.ENDOFDAY, DataType.DIVIDEND, security);
+    Assert.assertEquals(IndexType.ENDOFDAY, key.getIndexType());
   }
 
   @Test
@@ -42,7 +47,7 @@ public class IndexKeyImplTest {
     key1 = new IndexKeyImpl(IndexType.ENDOFDAY, DataType.DIVIDEND, security);
     IndexKeyImpl key2;
     key2 = new IndexKeyImpl(IndexType.ENDOFDAY, DataType.DIVIDEND,
-      differentSecurity);
+          differentSecurity);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1, key2);
@@ -87,7 +92,7 @@ public class IndexKeyImplTest {
     key1 = new IndexKeyImpl(IndexType.ENDOFDAY, DataType.DIVIDEND, security);
     IndexKeyImpl key2;
     key2 = new IndexKeyImpl(IndexType.ENDOFDAY, DataType.DIVIDEND,
-      differentSecurity);
+          differentSecurity);
     key1 = serializeRoundTrip(key1);
     key2 = serializeRoundTrip(key2);
     Assert.assertNotEquals(key1.hashCode(), key2.hashCode());

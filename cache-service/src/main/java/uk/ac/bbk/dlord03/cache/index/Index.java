@@ -1,8 +1,8 @@
 package uk.ac.bbk.dlord03.cache.index;
 
-import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -44,7 +44,7 @@ public interface Index extends Serializable {
   /**
    * The latest intra-day key held in this index which refers to a record
    * updated before a specified instant. Note that although the index may hold
-   * many key it does not mean that it will hold a matching one for this
+   * many keys it does not mean that it will hold a matching one for this
    * predicate.
    * 
    * @param before the intra-day instant predicate.

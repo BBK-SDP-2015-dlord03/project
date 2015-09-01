@@ -18,7 +18,7 @@ Author:	      David Lord
 * TODO Add JavaDoc to all classes 
 * TODO Implement plugin providers.
 * TODO Simplify cache interface by removing Jersey?
-* TODO Add instructions for building and running reference implemenation to this README.
+* TODO Add instructions for building and running reference implementation to this README.
 * TODO Add FindBugs report into Maven build and include screen shot in report.
 * TODO Add CheckStyle report into Maven build and include screen shot in report.
 

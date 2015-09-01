@@ -1,9 +1,9 @@
 package uk.ac.bbk.dlord03.cache.index;
 
-import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
 import uk.ac.bbk.dlord03.cache.data.TemporalKeyImpl;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -24,9 +24,8 @@ public class IndexImpl implements Index {
 
   private final DataType dataType;
   private final SecurityIdentifier securityIdentifier;
-  private final NavigableSet<IndexRecord<Instant>> timestampedKeys;
-  private final NavigableSet<IndexRecord<LocalDate>> datedKeys;
-  private final TemporalKey latestKey = null;
+  private final NavigableSet<IndexEntry<Instant>> timestampedKeys;
+  private final NavigableSet<IndexEntry<LocalDate>> datedKeys;
 
   public IndexImpl(DataType dataType, SecurityIdentifier securityIdentifier) {
     super();
@@ -52,7 +51,9 @@ public class IndexImpl implements Index {
 
   @Override
   public TemporalKey getLatestKey() {
-    return latestKey;
+    if (timestampedKeys.isEmpty())
+      return null;
+    return timestampedKeys.last().getKey();
   }
 
   @Override
@@ -61,10 +62,10 @@ public class IndexImpl implements Index {
     final TemporalKey predicateKey;
     predicateKey = new TemporalKeyImpl(dataType, securityIdentifier, before);
 
-    final IndexRecord<Instant> predicate;
-    predicate = new IndexRecord<>(predicateKey, before);
+    final IndexEntry<Instant> predicate;
+    predicate = new IndexEntry<>(predicateKey, before);
 
-    IndexRecord<Instant> record;
+    IndexEntry<Instant> record;
     record = timestampedKeys.floor(predicate);
     if (record != null && record.getPredicate().compareTo(before) >= 0) {
       return record.getKey();
@@ -77,7 +78,7 @@ public class IndexImpl implements Index {
   @Override
   public void addLatestKey(TemporalKey dataKey, Instant before) {
     validateKey(dataKey);
-    final IndexRecord<Instant> foundKey = new IndexRecord<>(dataKey, before);
+    final IndexEntry<Instant> foundKey = new IndexEntry<>(dataKey, before);
     timestampedKeys.add(foundKey);
   }
 
@@ -87,10 +88,10 @@ public class IndexImpl implements Index {
     final TemporalKey predicateKey;
     predicateKey = new TemporalKeyImpl(dataType, securityIdentifier, date);
 
-    final IndexRecord<LocalDate> predicate;
-    predicate = new IndexRecord<>(predicateKey, date);
+    final IndexEntry<LocalDate> predicate;
+    predicate = new IndexEntry<>(predicateKey, date);
 
-    IndexRecord<LocalDate> record;
+    IndexEntry<LocalDate> record;
     record = datedKeys.floor(predicate);
     if (record != null && record.getPredicate().compareTo(date) >= 0) {
       return record.getKey();
@@ -103,7 +104,7 @@ public class IndexImpl implements Index {
   @Override
   public void addEndOfDayKey(TemporalKey dataKey, LocalDate date) {
     validateKey(dataKey);
-    final IndexRecord<LocalDate> foundKey = new IndexRecord<>(dataKey, date);
+    final IndexEntry<LocalDate> foundKey = new IndexEntry<>(dataKey, date);
     datedKeys.add(foundKey);
   }
 
@@ -114,8 +115,14 @@ public class IndexImpl implements Index {
     result = 31 * result + securityIdentifier.hashCode();
     result = 31 * result + datedKeys.hashCode();
     result = 31 * result + timestampedKeys.hashCode();
-    result = 31 * result + (latestKey == null ? 0 : latestKey.hashCode());
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return String.format(
+          "IndexImpl(dataType=%s,securityIdentifier=%s,timestampedKeys=%s,datedKeys=%s)",
+          getDataType(), getSecurityIdentifier(), timestampedKeys, datedKeys);
   }
 
   @Override
@@ -130,9 +137,7 @@ public class IndexImpl implements Index {
     return (this.dataType.equals(other.dataType)
           && this.securityIdentifier.equals(other.securityIdentifier)
           && this.datedKeys.equals(other.datedKeys)
-          && this.timestampedKeys.equals(other.timestampedKeys)
-          && (latestKey == null ? other.latestKey == null
-                : this.latestKey.equals(other.latestKey)));
+          && this.timestampedKeys.equals(other.timestampedKeys));
   }
 
   private void validateKey(TemporalKey dataKey) {

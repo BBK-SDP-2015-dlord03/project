@@ -1,27 +1,32 @@
 package uk.ac.bbk.dlord03.cache.index;
 
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
+import uk.ac.bbk.dlord03.plugin.api.Plugin;
 
 import java.io.Serializable;
 import java.time.temporal.TemporalAccessor;
 
 /**
- * An object to index keys in the cache. It provides details of the key together
- * with the predicate that was used to find it.
+ * An internal entry within an {@link IndexImpl} object used to store references
+ * to a {@link TemporalKey} in the cache and the {@link TemporalAccessor} which
+ * was used as a predicate in the query which retrieved it from the underlying
+ * {@link Plugin} implementation.
  * 
+ * @param <T> the type of predicate used for this index entry.
+ *
  * @author David Lord
  * 
  */
-public class IndexRecord<T extends TemporalAccessor>
-      implements Comparable<IndexRecord<TemporalAccessor>>, Serializable {
+public class IndexEntry<T extends TemporalAccessor>
+      implements Comparable<IndexEntry<TemporalAccessor>>, Serializable {
 
   private static final long serialVersionUID = -258800001073888908L;
   private final TemporalKey dataKey;
   private final T predicate;
 
-  public IndexRecord(TemporalKey dataKey, T predicate) {
+  public IndexEntry(TemporalKey key, T predicate) {
     super();
-    this.dataKey = dataKey;
+    this.dataKey = key;
     this.predicate = predicate;
   }
 
@@ -34,7 +39,7 @@ public class IndexRecord<T extends TemporalAccessor>
   }
 
   @Override
-  public int compareTo(IndexRecord<TemporalAccessor> other) {
+  public int compareTo(IndexEntry<TemporalAccessor> other) {
     if (this == other) {
       return 0;
     }
@@ -62,10 +67,10 @@ public class IndexRecord<T extends TemporalAccessor>
     if (this == obj) {
       return true;
     }
-    if (!(obj instanceof IndexRecord)) {
+    if (!(obj instanceof IndexEntry)) {
       return false;
     }
-    final IndexRecord other = (IndexRecord) obj;
+    final IndexEntry other = (IndexEntry) obj;
     return (this.dataKey.equals(other.dataKey)
           && this.predicate.equals(other.predicate));
   }

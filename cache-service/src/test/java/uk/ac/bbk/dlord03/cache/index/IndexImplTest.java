@@ -4,13 +4,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
-import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
-import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
 import uk.ac.bbk.dlord03.cache.data.TemporalKeyImpl;
 import uk.ac.bbk.dlord03.cache.support.SerialisationUtils;
+import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -30,7 +30,7 @@ public class IndexImplTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void checkCacheType() {
+  public void testCacheType() {
     final ZonedDateTime now = ZonedDateTime.now();
     final TemporalKeyImpl key = new TemporalKeyImpl(DataType.DIVIDEND,
           identifier, now.minusHours(1).toInstant());
@@ -38,7 +38,7 @@ public class IndexImplTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void checkIdentifier() {
+  public void testIdentifier() {
     SecurityIdentifier wrongIdentifier;
     wrongIdentifier =
           new SimpleSecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
@@ -49,7 +49,23 @@ public class IndexImplTest {
   }
 
   @Test
-  public void refindEndOfDayKey() {
+  public void testCreateFromAnother() {
+    Index newIndex = new IndexImpl(index);
+    Assert.assertEquals(index, newIndex);
+  }
+
+  @Test
+  public void testGetSecurityIdentifier() {
+    Assert.assertEquals(identifier, index.getSecurityIdentifier());
+  }
+
+  @Test
+  public void testGetDataType() {
+    Assert.assertEquals(dataType, index.getDataType());
+  }
+
+  @Test
+  public void testRefindEndOfDayKey() {
 
     // Create required variables.
     final LocalDate today = LocalDate.from(ZonedDateTime.now());
@@ -69,7 +85,7 @@ public class IndexImplTest {
   }
 
   @Test
-  public void refindLatestKey() {
+  public void testRefindLatestKey() {
     final ZonedDateTime now = ZonedDateTime.now();
     final TemporalKeyImpl keyIn = new TemporalKeyImpl(dataType, identifier,
           now.minusHours(1).toInstant());
@@ -81,7 +97,7 @@ public class IndexImplTest {
   }
 
   @Test
-  public void refindIntradayKey() {
+  public void testRefindIntradayKey() {
     final ZonedDateTime now = ZonedDateTime.now();
     final TemporalKeyImpl keyIn = new TemporalKeyImpl(dataType, identifier,
           now.minusHours(1).toInstant());
@@ -97,6 +113,69 @@ public class IndexImplTest {
     Assert.assertNull(index.getLatestKey());
     Index otherIndex = new IndexImpl(dataType, identifier);
     Assert.assertEquals(index, otherIndex);
+  }
+
+  @Test
+  public void testEqualLatest() {
+
+    // Create required variables.
+    final Instant weekAgo = ZonedDateTime.now().minusDays(7).toInstant();
+    final Instant now = Instant.now();
+
+    // Create a week old key.
+    TemporalKey key = new TemporalKeyImpl(dataType, identifier, weekAgo);
+
+    index.addLatestKey(key, now);
+    Assert.assertNotNull(index.getLatestKey());
+
+    Index otherIndex = new IndexImpl(dataType, identifier);
+    otherIndex.addLatestKey(key, now);
+    Assert.assertNotNull(otherIndex.getLatestKey());
+
+    Assert.assertEquals(index, otherIndex);
+
+  }
+
+  @Test
+  public void testNotEqualLatest() {
+
+    // Create a day old key.
+    final Instant dayAgo = ZonedDateTime.now().minusDays(1).toInstant();
+    TemporalKey dayOldKey = new TemporalKeyImpl(dataType, identifier, dayAgo);
+
+    // Create a week old key.
+    final Instant weekAgo = ZonedDateTime.now().minusDays(7).toInstant();
+    TemporalKey weekOldKey = new TemporalKeyImpl(dataType, identifier, weekAgo);
+
+    index.addLatestKey(dayOldKey, Instant.now());
+    Assert.assertNotNull(index.getLatestKey());
+
+    Index otherIndex = new IndexImpl(dataType, identifier);
+    otherIndex.addLatestKey(weekOldKey, Instant.now().minusSeconds(10));
+    Assert.assertNotNull(otherIndex.getLatestKey());
+
+    Assert.assertNotEquals(index, otherIndex);
+
+  }
+
+  @Test
+  public void testEqualHashCode() {
+    Assert.assertNull(index.getLatestKey());
+    Index otherIndex = new IndexImpl(dataType, identifier);
+    Assert.assertEquals(index.hashCode(), otherIndex.hashCode());
+  }
+
+  @Test
+  public void testEqualToString() {
+    Assert.assertNull(index.getLatestKey());
+    Index otherIndex = new IndexImpl(dataType, identifier);
+    Assert.assertEquals(index.toString(), otherIndex.toString());
+  }
+
+  @Test
+  public void testNotEqualsDifferentType() {
+    Object otherIndex = new Object();
+    Assert.assertNotEquals(index, otherIndex);
   }
 
   @Test

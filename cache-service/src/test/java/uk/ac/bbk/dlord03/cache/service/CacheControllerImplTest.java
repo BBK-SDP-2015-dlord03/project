@@ -5,10 +5,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
-import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
-import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
-import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.CacheController;
 import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.cache.data.SimpleKey;
@@ -19,6 +15,10 @@ import uk.ac.bbk.dlord03.cache.index.IndexImpl;
 import uk.ac.bbk.dlord03.cache.index.IndexKey;
 import uk.ac.bbk.dlord03.cache.index.IndexKeyImpl;
 import uk.ac.bbk.dlord03.cache.index.IndexType;
+import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
+import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -46,7 +46,7 @@ public class CacheControllerImplTest {
   }
 
   @Test
-  public void createIndexCache() {
+  public void testCreateIndexCache() {
 
     final DataType dt = DataType.OPTION;
     final SecurityIdentifier si =

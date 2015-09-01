@@ -6,21 +6,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
-import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
-import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
 import uk.ac.bbk.dlord03.cache.data.TemporalKeyImpl;
 import uk.ac.bbk.dlord03.cache.index.IndexKey;
 import uk.ac.bbk.dlord03.cache.index.IndexKeyImpl;
 import uk.ac.bbk.dlord03.cache.index.IndexType;
+import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,26 +33,6 @@ public class SerialisationRoundTripTest {
 
   public SerialisationRoundTripTest(Object key) {
     this.key = key;
-  }
-
-  @Test
-  public void testRoundTripSerialisation()
-        throws IOException, ClassNotFoundException {
-    // Write the key object to a byte array.
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    final ObjectOutputStream oos = new ObjectOutputStream(baos);
-    oos.writeObject(key);
-    oos.close();
-    baos.close();
-    // Read the key object from the byte array.
-    final ByteArrayInputStream bais =
-          new ByteArrayInputStream(baos.toByteArray());
-    final ObjectInputStream ois = new ObjectInputStream(bais);
-    final Object roundTrippedObject = ois.readObject();
-    ois.close();
-    bais.close();
-    // Verify that the read object is equal to the written one.
-    Assert.assertEquals(key, roundTrippedObject);
   }
 
   @Test
