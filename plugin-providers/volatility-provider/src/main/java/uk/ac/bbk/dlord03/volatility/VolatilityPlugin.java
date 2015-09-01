@@ -1,4 +1,4 @@
-package uk.ac.bbk.volatility;
+package uk.ac.bbk.dlord03.volatility;
 
 import uk.ac.bbk.dlord03.plugin.api.Plugin;
 import uk.ac.bbk.dlord03.plugin.api.data.VolatilitySurface;
