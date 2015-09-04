@@ -1,6 +1,7 @@
 package uk.ac.bbk.dlord03.cache.plugins;
 
 import uk.ac.bbk.dlord03.plugin.api.data.OptionContract;
+import uk.ac.bbk.dlord03.plugin.api.data.OptionType;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 
 import java.time.ZonedDateTime;
@@ -16,13 +17,13 @@ public class OptionContractImpl implements OptionContract {
   private static final long serialVersionUID = -7179505812155258961L;
   private final SecurityIdentifier securityIdentifier;
   private final ZonedDateTime updatedAt;
-  private final String intrumentType;
+  private final OptionType intrumentType;
   private final String name;
   private final String expiryDate;
   private final Double strikePrice;
 
   public OptionContractImpl(SecurityIdentifier securityIdentifier,
-        ZonedDateTime updatedAt, String intrumentType, String expiryDate,
+        ZonedDateTime updatedAt, OptionType intrumentType, String expiryDate,
         Double strikePrice, String name) {
     super();
     this.securityIdentifier = securityIdentifier;
@@ -44,12 +45,12 @@ public class OptionContractImpl implements OptionContract {
   }
 
   @Override
-  public String getName() {
+  public String getContractName() {
     return name;
   }
 
   @Override
-  public String getIntrumentType() {
+  public OptionType getOptionType() {
     return intrumentType;
   }
 

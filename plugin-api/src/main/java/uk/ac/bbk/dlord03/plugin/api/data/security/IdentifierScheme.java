@@ -29,8 +29,12 @@ public enum IdentifierScheme {
    */
   SEDOL, 
   /**
-   * Bloomberg Global Identifier
+   * Bloomberg Global Identifier.
    */
-  BBGID
+  BBGID,
+  /**
+   * Options Clearing Corporation Symbol.
+   */
+  OCC
 
 }

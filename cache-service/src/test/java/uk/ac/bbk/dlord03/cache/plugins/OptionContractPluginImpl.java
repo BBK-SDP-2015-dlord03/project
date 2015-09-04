@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.ac.bbk.dlord03.plugin.api.data.OptionContract;
+import uk.ac.bbk.dlord03.plugin.api.data.OptionType;
 import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
@@ -27,12 +28,13 @@ public class OptionContractPluginImpl
 
   public OptionContractPluginImpl() {
     super();
-    options =
-          new Option[] {new Option("BT.L", "BT Group Plc", "2016-08-01", "PUT"),
-              new Option("VOD.L", "Vodafone Group Plc", "2018-08-01", "CALL"),
-              new Option("LGEN.L", "Legal & General Group Plc", "2020-08-01",
-                    "PUT"),
-        new Option("ULVR.L", "Unilever plc", "2017-08-01", "CALL")};
+    options = new Option[] {
+        new Option("BT.L", "BT Group Plc", "2016-08-01", OptionType.PUT),
+        new Option("VOD.L", "Vodafone Group Plc", "2018-08-01",
+              OptionType.CALL),
+        new Option("LGEN.L", "Legal & General Group Plc", "2020-08-01",
+              OptionType.PUT),
+        new Option("ULVR.L", "Unilever plc", "2017-08-01", OptionType.CALL)};
   }
 
   @Override
@@ -56,7 +58,7 @@ public class OptionContractPluginImpl
   }
 
   private void addSomeRecords(String ric, String name, String expiry,
-        String type) {
+        OptionType type) {
 
     si = new SimpleSecurityIdentifier(IdentifierScheme.RIC, ric);
     OptionContractImpl option;
@@ -101,9 +103,9 @@ public class OptionContractPluginImpl
     final String symbol;
     final String name;
     final String expiry;
-    final String type;
+    final OptionType type;
 
-    public Option(String symbol, String name, String expiry, String type) {
+    public Option(String symbol, String name, String expiry, OptionType type) {
       super();
       this.symbol = symbol;
       this.name = name;

@@ -1,11 +1,11 @@
 package uk.ac.bbk.dlord03.cache.service;
 
-import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
 import uk.ac.bbk.dlord03.cache.CacheController;
 import uk.ac.bbk.dlord03.cache.data.SimpleKey;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
 import uk.ac.bbk.dlord03.cache.index.Index;
 import uk.ac.bbk.dlord03.cache.index.IndexKey;
+import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -20,7 +20,6 @@ import javax.cache.expiry.Duration;
  * @author David Lord
  *
  */
-@SuppressWarnings("unchecked")
 public class CacheControllerImp implements CacheController {
 
   private final CacheManager cacheManager;

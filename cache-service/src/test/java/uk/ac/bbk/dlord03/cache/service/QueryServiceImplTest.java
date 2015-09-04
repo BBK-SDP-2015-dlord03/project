@@ -176,7 +176,7 @@ public class QueryServiceImplTest {
     optionContract = getLatestValue(DataType.OPTION, security);
 
     // Confirm the cached value was used and the plug-in was not called again.
-    Assert.assertEquals("BT Group Plc", optionContract.getName());
+    Assert.assertEquals("BT Group Plc", optionContract.getContractName());
     Assert.assertEquals("Called plugin for cached value", 1,
           plugin.getLatestHitCount());
 
@@ -448,7 +448,7 @@ public class QueryServiceImplTest {
     option = getLatestValue(DataType.OPTION, security, asOf);
 
     // Confirm the cached value was used and the plug-in was not called again.
-    Assert.assertNotNull("Failed to find record", option.getName());
+    Assert.assertNotNull("Failed to find record", option.getContractName());
     hitCount = plugin.getlatestPredicateHitCount();
     Assert.assertEquals("Called plugin for cached value", 1, hitCount);
 
@@ -484,7 +484,7 @@ public class QueryServiceImplTest {
     option = getEndOfDayValue(DataType.OPTION, security, twoWeeksAgo);
 
     // Confirm the cached value was used and the plug-in was not called again.
-    Assert.assertNotNull("Failed to find record", option.getName());
+    Assert.assertNotNull("Failed to find record", option.getContractName());
 
     hitCount = plugin.getEndOfDayHitCount();
     Assert.assertEquals("Called plugin for cached value", 1, hitCount);

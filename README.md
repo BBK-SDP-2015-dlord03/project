@@ -12,11 +12,11 @@ Supervisor:   Dr Nigel Martin
 Author:	      David Lord
 
 # Task List
-* TODO Add cache invalidation in query service.
-* TODO Add cache invalidation into unit tests and provide example in report.
+* <strike>TODO Add cache invalidation in query service.</strike>
+* <strike>TODO Add cache invalidation into unit tests and provide example in report.</strike>
 * TODO Add JavaDoc coverage policy into this README.
 * TODO Add JavaDoc to all classes 
-* TODO Implement plugin providers.
+* TODO Implement plugin providers and reference implementation with logging.
 * TODO Simplify cache interface by removing Jersey?
 * TODO Add instructions for building and running reference implementation to this README.
 * TODO Add FindBugs report into Maven build and include screen shot in report.
