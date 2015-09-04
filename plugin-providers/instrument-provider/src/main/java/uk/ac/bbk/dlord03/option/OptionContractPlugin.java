@@ -1,4 +1,4 @@
-package uk.ac.bbk.dlord03.instrument;
+package uk.ac.bbk.dlord03.option;
 
 import uk.ac.bbk.dlord03.plugin.api.Plugin;
 import uk.ac.bbk.dlord03.plugin.api.data.OptionContract;
