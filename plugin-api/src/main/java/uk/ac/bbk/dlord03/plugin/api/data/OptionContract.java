@@ -4,9 +4,15 @@ import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 
 /**
- * Represents a traded option contract. For an example of the simple
- * representation of these contracts see Yahoo! Finance's options listing for
- * Vodafone Group PLC (
+ * An option contract is a financial derivative that represents a contract sold
+ * by one party (the option writer) to another party (the option holder). The
+ * contract offers the buyer the right, but not the obligation, to buy (call) or
+ * sell (put) a security or other financial asset at an agreed-upon price (the
+ * strike price) during a certain period of time or on a specific date (expiry
+ * date).
+ * </p>
+ * For an example of the simple representation of these contracts see Yahoo!
+ * Finance's options listing for Vodafone Group PLC (
  * <a href="http://finance.yahoo.com/q/op?s=VOD+Options">VOD</a> ). For the
  * details of an individual option details see the page of the October 2015
  * 37.00 Call (
