@@ -13,7 +13,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>cache-rest-interface</artifactId>
+  <artifactId>web-service</artifactId>
   <name>Web Service</name>
 
   <properties>

@@ -12,9 +12,9 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>instrument-provider</artifactId>
-  <description>An example implmentation the plugin-api for instrument data.</description>
-  <name>Instrument Plugin</name>
+  <artifactId>option-provider</artifactId>
+  <description>An example implmentation the plugin-api for option contract data.</description>
+  <name>Option Plugin</name>
 
   <dependencies>
 

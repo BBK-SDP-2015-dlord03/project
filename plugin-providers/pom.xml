@@ -20,7 +20,7 @@
   <modules>
     <module>dividend-provider</module>
     <module>volatility-provider</module>
-    <module>instrument-provider</module>
+    <module>option-provider</module>
   </modules>
 
 </project>

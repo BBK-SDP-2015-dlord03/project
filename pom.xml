@@ -16,7 +16,7 @@
     <module>plugin-api</module>
     <module>plugin-providers</module>
     <module>cache-service</module>
-    <module>cache-rest-interface</module>
+    <module>web-service</module>
   </modules>
 
   <properties>
