@@ -1,32 +1,16 @@
 package uk.ac.bbk.dlord03.webservice;
 
-import java.util.Properties;
-
-import javax.cache.CacheManager;
-import javax.cache.Caching;
-import javax.cache.spi.CachingProvider;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import uk.ac.bbk.dlord03.cache.QueryService;
-import uk.ac.bbk.dlord03.cache.service.QueryServiceFactory;
-
 @Path("cache")
 public class CacheQueryService {
 
-  final QueryService queryService;
-
   public CacheQueryService() {
     super();
-    System.setProperty("hazelcast.logging.type", "slf4j");
-    final CachingProvider cachingProvider = Caching.getCachingProvider();
-    final CacheManager cacheManager = cachingProvider.getCacheManager();
-    final Properties props = getProperties();
-    this.queryService = QueryServiceFactory.createService(cacheManager, props);
-    this.queryService.start();
   }
 
   @GET
@@ -47,22 +31,6 @@ public class CacheQueryService {
     result.setInput(input);
     result.setOutput(result.getInput() * result.getInput());
     return result;
-  }
-
-  private Properties getProperties() {
-
-    Properties p = new Properties();
-
-    p.setProperty("option.plugin.classname",
-      "dlord03.plugin.instrument.OptionContractPlugin");
-
-    p.setProperty("dividend.plugin.classname",
-      "dlord03.plugin.dividend.DividendPlugin");
-
-    p.setProperty("volatility.plugin.classname",
-      "dlord03.plugin.volatility.VolatilityPlugin");
-
-    return p;
   }
 
   static class Result {

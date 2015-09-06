@@ -41,7 +41,7 @@
 
     <dependency>
       <groupId>uk.ac.bbk.dcs.dlord03</groupId>
-      <artifactId>instrument-provider</artifactId>
+      <artifactId>option-provider</artifactId>
     </dependency>
 
     <dependency>
