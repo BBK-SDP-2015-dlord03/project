@@ -30,6 +30,7 @@ public class ServiceLifecycleManager implements ServletContextListener {
     final Properties props = getProperties();
     this.queryService = QueryServiceFactory.createService(cacheManager, props);
     this.queryService.start();
+    sce.getServletContext().setAttribute("queryService", queryService);
     LOG.info("Query service started.");
   }
 
