@@ -1,10 +1,13 @@
-<configuration>
+<?xml version="1.0"?>
+
+<configuration debug="false">
 
   <appender
     name="STDOUT"
     class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%-17thread] %-5level %logger{36} - %msg%n</pattern>
+      <pattern>%d{ISO8601} %-5level %logger{0} - %msg%n
+      </pattern>
     </encoder>
   </appender>
 
@@ -20,9 +23,15 @@
   <logger
     name="restx.factory.Factory"
     level="WARN" />
+  <logger
+    name="com.hazelcast"
+    level="OFF" />
+  <logger
+    name="org.eclipse.jetty"
+    level="OFF" />
 
   <root level="info">
     <appender-ref ref="STDOUT" />
   </root>
-  
+
 </configuration>

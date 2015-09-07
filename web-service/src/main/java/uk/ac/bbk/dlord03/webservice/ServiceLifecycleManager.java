@@ -23,11 +23,15 @@ public class ServiceLifecycleManager implements ServletContextListener {
 
   @Override
   public void contextInitialized(ServletContextEvent sce) {
-    LOG.info("Query service starting.");
+
+    LOG.info("Initialising Hazelcast cluster...");
     System.setProperty("hazelcast.logging.type", "slf4j");
     final CachingProvider cachingProvider = Caching.getCachingProvider();
     final CacheManager cacheManager = cachingProvider.getCacheManager();
     final Properties props = getProperties();
+    LOG.info("Hazelcast cluster established.");
+
+    LOG.info("Initialising Query Service...");
     this.queryService = QueryServiceFactory.createService(cacheManager, props);
     this.queryService.start();
     sce.getServletContext().setAttribute("queryService", queryService);
@@ -52,7 +56,7 @@ public class ServiceLifecycleManager implements ServletContextListener {
 
   @Override
   public void contextDestroyed(ServletContextEvent sce) {
-    LOG.info("Query service stopping.");
+    LOG.info("Query service stopping...");
     queryService.stop();
     LOG.info("Query service stopped.");
   }

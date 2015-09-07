@@ -1,5 +1,8 @@
 package uk.ac.bbk.dlord03.cache.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.ac.bbk.dlord03.cache.CacheController;
 import uk.ac.bbk.dlord03.cache.PluginController;
 import uk.ac.bbk.dlord03.cache.QueryService;
@@ -27,6 +30,9 @@ import javax.cache.CacheManager;
 
 public class QueryServiceImpl
       implements QueryService, PluginInvalidationReportHandler {
+
+  private static final Logger LOG =
+        LoggerFactory.getLogger(QueryServiceImpl.class);
 
   private CacheManager cacheManager;
   private Properties properties;
@@ -75,10 +81,14 @@ public class QueryServiceImpl
   @Override
   public void stop() {
     if (cacheController != null) {
+      LOG.info("Destroying caches...");
       cacheController.close();
+      LOG.info("Caches destroyed.");
     }
     if (pluginController != null) {
+      LOG.info("Unloading plugins...");
       pluginController.close();
+      LOG.info("Plugins unloaded.");
     }
   }
 
@@ -101,8 +111,11 @@ public class QueryServiceImpl
       result = (T) getPlugin(type).getLatestValue(security);
       // If the plug-in returned it then add it to the cache.
       if (result != null) {
+        LOG.info("Retrieved {} value from plugin.", type.toString());
         cache.put(key, result);
       }
+    } else {
+      LOG.info("Found result in cache.");
     }
 
     return result;
@@ -132,8 +145,13 @@ public class QueryServiceImpl
     // If we don't then look up the data from the plug-in;
     if (foundKey == null) {
 
+      LOG.info("Querying {} plugin for latest value of {} before {}.", type,
+            security, before);
+
       result = (T) getPlugin(type).getLatestValue(security, before);
       if (result != null) {
+
+        LOG.info("Retrieved {} value from plugin.", type.toString());
 
         // If the plug-in returned data then add its key to the index
         foundKey = TemporalKeyGenerator.generate(type, result);
@@ -145,6 +163,8 @@ public class QueryServiceImpl
 
     } else {
 
+      LOG.info("Found qualifying previous {} result in index.",
+            type.toString());
       result = (T) cache.get(foundKey);
 
     }
@@ -180,6 +200,8 @@ public class QueryServiceImpl
       result = (T) getPlugin(type).getEndOfDayValue(security, date);
       if (result != null) {
 
+        LOG.info("Retrieved {} value from plugin.", type.toString());
+
         // If the plug-in returned data then add its key to the index
         foundKey = TemporalKeyGenerator.generate(type, result);
         addIndexEndOfDayKey(indexKey, foundKey, date);
@@ -190,6 +212,8 @@ public class QueryServiceImpl
 
     } else {
 
+      LOG.info("Found qualifying previous {} result in index.",
+            type.toString());
       result = (T) cache.get(foundKey);
 
     }
@@ -299,18 +323,18 @@ public class QueryServiceImpl
   }
 
   private void loadPlugins() {
-
+    LOG.info("Loading plugins...");
     properties.put("invalidationReportHandler", this);
     pluginController = new PluginControllerImpl(properties);
     pluginController.open();
-
+    LOG.info("Plugins loaded.");
   }
 
   private void createCache() {
-
+    LOG.info("Creating caches...");
     cacheController = new CacheControllerImp(cacheManager);
     cacheController.open();
-
+    LOG.info("Caches created.");
   }
 
 }

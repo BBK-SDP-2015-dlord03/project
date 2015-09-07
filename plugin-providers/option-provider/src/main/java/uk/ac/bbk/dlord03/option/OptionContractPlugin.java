@@ -1,65 +1,127 @@
 package uk.ac.bbk.dlord03.option;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.ac.bbk.dlord03.plugin.api.Plugin;
 import uk.ac.bbk.dlord03.plugin.api.data.OptionContract;
+import uk.ac.bbk.dlord03.plugin.api.data.OptionType;
+import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 import uk.ac.bbk.dlord03.plugin.api.event.InvalidationReportHandler;
 
+import java.io.InputStream;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Scanner;
 
+/**
+ * 
+ * A simple plug-in for option contracts. This plug-in is backed by tab
+ * separated text file containing option contract details. On each request the
+ * test file is opened and parsed for records matching the query criteria.
+ * </p>
+ * This implementation is deliberately unoptimised. It reads the text file on
+ * each request. This is to simulate the heavy cost of retrieving data from an
+ * underlying data source.
+ * 
+ * The option data in the test file has no versions. This is typical of some
+ * types of data which don't change over time. In this case there will be only
+ * one record that satisfies all temporal queries. This should be seen in the
+ * query interface by the plug-in only getting called once for each option
+ * contract. After the first request all subsequent queries can be serviced from
+ * the cache.
+ * 
+ * @author David Lord
+ *
+ */
 public class OptionContractPlugin implements Plugin<OptionContract> {
+
+  private final static Logger LOG =
+        LoggerFactory.getLogger(OptionContractPlugin.class);
+
+  private boolean isOpen = false;
+  private InvalidationReportHandler handler;
 
   @Override
   public void open(Properties properties) {
-    // TODO Auto-generated method stub
-
+    InputStream is =
+          this.getClass().getResourceAsStream("/data/optioncontracts.txt");
+    isOpen = true;
   }
 
   @Override
   public void close() {
-    // TODO Auto-generated method stub
+    isOpen = false;
 
   }
 
   @Override
   public boolean isClosed() {
-    // TODO Auto-generated method stub
-    return false;
+    return !isOpen;
   }
 
   @Override
   public OptionContract getLatestValue(SecurityIdentifier security) {
-    // TODO Auto-generated method stub
-    return null;
+    OptionContract result = null;
+    try (Scanner dataSource = new Scanner(
+          this.getClass().getResourceAsStream("/data/optioncontracts.txt"))) {
+      while (dataSource.hasNextLine()) {
+        String record = dataSource.nextLine();
+        try (Scanner recordScanner = new Scanner(record).useDelimiter("\t")) {
+          if (recordScanner.hasNextDouble()) {
+            Double strike = recordScanner.nextDouble();
+            String symbol = recordScanner.next();
+            String type = recordScanner.next();
+            String expiry = recordScanner.next();
+            if (symbol.equals(security.getSymbol())) {
+              result = createOption(strike, symbol, type, expiry);
+              break;
+            }
+          }
+        }
+      }
+    } catch (Exception e) {
+      LOG.error("Unable to get latest value.", e);
+    }
+    return result;
+  }
+
+  private OptionContract createOption(Double strike, String symbol, String type,
+        String expiry) {
+    OptionType optionType = OptionType.valueOf(type);
+    SecurityIdentifier id =
+          new SimpleSecurityIdentifier(IdentifierScheme.OCC, symbol);
+    ZonedDateTime updatedAt = ZonedDateTime.now().minusYears(10);
+    return new OptionContractImpl(id, updatedAt, optionType, expiry, strike);
   }
 
   @Override
   public OptionContract getLatestValue(SecurityIdentifier security,
         Instant before) {
-    // TODO Auto-generated method stub
-    return null;
+    // There is only one record for each option (the latest value).
+    return getLatestValue(security);
   }
 
   @Override
   public OptionContract getEndOfDayValue(SecurityIdentifier security,
         LocalDate date) {
-    // TODO Auto-generated method stub
-    return null;
+    // There is only one record for each option (the latest value).
+    return getLatestValue(security);
   }
 
   @Override
   public Iterator<SecurityIdentifier> getValuesUpdatedSince(Instant time) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public void registerInvalidationHandler(InvalidationReportHandler handler) {
-    // TODO Auto-generated method stub
-
+    this.handler = handler;
   }
 
 }

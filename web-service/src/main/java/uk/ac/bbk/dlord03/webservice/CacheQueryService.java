@@ -1,84 +1,77 @@
 package uk.ac.bbk.dlord03.webservice;
 
 import uk.ac.bbk.dlord03.cache.QueryService;
+import uk.ac.bbk.dlord03.cache.data.DataType;
+import uk.ac.bbk.dlord03.plugin.api.data.OptionContract;
+import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
+
+import java.time.format.DateTimeFormatter;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-@Path("cache")
+@Path("/")
 public class CacheQueryService {
 
   @Context
   private ServletContext context;
 
   @GET
-  @Path("squareRoot")
+  @Path("option/{symbol}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Result squareRoot(@QueryParam("input") double input) {
+  public OptionContractResult getOption(@PathParam("symbol") String symbol,
+        @QueryParam("asof") String asof) {
+
     final QueryService queryService = getQueryService();
-    final Result result = new Result("Square Root");
-    assert queryService != null;
-    result.setInput(input);
-    result.setOutput(Math.sqrt(result.getInput()));
+
+    final SecurityIdentifier id;
+    id = new SimpleSecurityIdentifier(IdentifierScheme.OCC, symbol);
+
+    OptionContract option = null;
+    PredicateParser predicate = new PredicateParser(asof);
+
+    try {
+      switch (predicate.getType()) {
+        case 0:
+
+          break;
+
+        default:
+          break;
+      }
+      option = queryService.getLatestValue(DataType.OPTION, id);
+    } catch (Exception e) {
+      throw new NotFoundException(e);
+    }
+
+    if (option == null)
+      throw new NotFoundException();
+
+    OptionContractResult result = new OptionContractResult();
+    result.setName(option.getContractName());
+    result.setExpiry(option.getExpiryDate());
+    result.setType(option.getOptionType().toString());
+    result.setStrike(option.getStrikePrice());
+    result.setSymbol(option.getSecurityIdentifier().getSymbol());
+    result.setUpdatedAt(
+          option.getUpdatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     return result;
+
   }
 
   private QueryService getQueryService() {
     QueryService qs = null;
     qs = (QueryService) context.getAttribute("queryService");
     return qs;
-  }
-
-  @GET
-  @Path("square")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Result square(@QueryParam("input") double input) {
-    final Result result = new Result("Square");
-    result.setInput(input);
-    result.setOutput(result.getInput() * result.getInput());
-    return result;
-  }
-
-  static class Result {
-
-    double input;
-    double output;
-    String action;
-
-    public Result() {}
-
-    public Result(String action) {
-      this.action = action;
-    }
-
-    public String getAction() {
-      return action;
-    }
-
-    public void setAction(String action) {
-      this.action = action;
-    }
-
-    public double getInput() {
-      return input;
-    }
-
-    public void setInput(double input) {
-      this.input = input;
-    }
-
-    public double getOutput() {
-      return output;
-    }
-
-    public void setOutput(double output) {
-      this.output = output;
-    }
   }
 
 }
