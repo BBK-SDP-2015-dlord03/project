@@ -107,20 +107,24 @@ public class QueryServiceImpl
     T result = cache.get(key);
 
     // If it wasn't then ask the relevant plug-in for it.
+    String typeName = type.toString().toLowerCase();
     if (result == null) {
-      LOG.info("Querying {} plugin for latest value of {}.",
-            type.toString().toLowerCase(), security);
+      LOG.info("Querying {} plugin for latest value of {}.", typeName,
+            security);
       result = (T) getPlugin(type).getLatestValue(security);
+
       // If the plug-in returned it then add it to the cache.
       if (result != null) {
-        LOG.info("Retrieved {} record from plugin.",
-              type.toString().toLowerCase());
+        LOG.info("Retrieved {} record from plugin.", typeName);
         cache.put(key, result);
       }
     } else {
       LOG.info("Found result in cache.");
     }
 
+    if (result == null) {
+      LOG.info("Record not found.");
+    }
     return result;
   }
 
@@ -146,16 +150,16 @@ public class QueryServiceImpl
     TemporalKey foundKey = index.getLatestKey(before);
 
     // If we don't then look up the data from the plug-in;
+    String typeName = type.toString().toLowerCase();
     if (foundKey == null) {
 
-      LOG.info("Querying {} plugin for latest value of {} before {}.",
-            type.toString().toLowerCase(), security, before);
+      LOG.info("Querying {} plugin for latest value of {} before {}.", typeName,
+            security, before);
 
       result = (T) getPlugin(type).getLatestValue(security, before);
       if (result != null) {
 
-        LOG.info("Retrieved {} record from plugin.",
-              type.toString().toLowerCase());
+        LOG.info("Retrieved {} record from plugin.", typeName);
 
         // If the plug-in returned data then add its key to the index
         foundKey = TemporalKeyGenerator.generate(type, result);
@@ -167,12 +171,14 @@ public class QueryServiceImpl
 
     } else {
 
-      LOG.info("Found qualifying previous {} result in index.",
-            type.toString().toLowerCase());
+      LOG.info("Found qualifying previous {} result in index.", typeName);
       result = (T) cache.get(foundKey);
 
     }
 
+    if (result == null) {
+      LOG.info("Record not found.");
+    }
     return result;
 
   }
@@ -199,16 +205,16 @@ public class QueryServiceImpl
     TemporalKey foundKey = index.getEndOfDayKey(date);
 
     // If we don't then look up the data from the plug-in;
+    String typeName = type.toString().toLowerCase();
     if (foundKey == null) {
 
-      LOG.info("Querying {} plugin for latest value of {} before {}.",
-            type.toString().toLowerCase(), security, date);
+      LOG.info("Querying {} plugin for latest value of {} before {}.", typeName,
+            security, date);
 
       result = (T) getPlugin(type).getEndOfDayValue(security, date);
       if (result != null) {
 
-        LOG.info("Retrieved {} record from plugin.",
-              type.toString().toLowerCase());
+        LOG.info("Retrieved {} record from plugin.", typeName);
 
         // If the plug-in returned data then add its key to the index
         foundKey = TemporalKeyGenerator.generate(type, result);
@@ -220,12 +226,14 @@ public class QueryServiceImpl
 
     } else {
 
-      LOG.info("Found qualifying previous {} result in index.",
-            type.toString().toLowerCase());
+      LOG.info("Found qualifying previous {} result in index.", typeName);
       result = (T) cache.get(foundKey);
 
     }
 
+    if (result == null) {
+      LOG.info("Record not found.");
+    }
     return result;
 
   }

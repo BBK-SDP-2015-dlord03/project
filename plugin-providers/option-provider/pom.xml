@@ -31,7 +31,6 @@
       <version>${slf4j.version}</version>
     </dependency>
 
-    <!-- Testing -->
   </dependencies>
 
 </project>

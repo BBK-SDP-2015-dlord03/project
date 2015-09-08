@@ -24,12 +24,12 @@ import java.util.Scanner;
  * 
  * A simple plug-in for option contracts. This plug-in is backed by tab
  * separated text file containing option contract details. On each request the
- * test file is opened and parsed for records matching the query criteria.
+ * text file is opened and parsed for records matching the query criteria.
  * </p>
  * This implementation is deliberately unoptimised. It reads the text file on
  * each request. This is to simulate the heavy cost of retrieving data from an
  * underlying data source.
- * 
+ * </p>
  * The option data in the test file has no versions. This is typical of some
  * types of data which don't change over time. In this case there will be only
  * one record that satisfies all temporal queries. This should be seen in the

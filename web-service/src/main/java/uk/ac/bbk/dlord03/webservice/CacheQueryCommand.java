@@ -44,7 +44,7 @@ public class CacheQueryCommand {
     }
 
     if (result == null) {
-      throw new NotFoundException();
+      throw new NotFoundException("Record not found.");
     }
 
     return result;

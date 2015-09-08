@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 
 /**
- * Example of an simple {@link OptionContract} implementation.
+ * Example of a simple {@link OptionContract} implementation.
  * 
  * @author David Lord
  *
@@ -17,6 +17,7 @@ import java.time.temporal.TemporalAccessor;
 public class OptionContractImpl implements OptionContract {
 
   private static final long serialVersionUID = -7179505812155258961L;
+
   private final SecurityIdentifier securityIdentifier;
   private final ZonedDateTime updatedAt;
   private final OptionType optionType;
