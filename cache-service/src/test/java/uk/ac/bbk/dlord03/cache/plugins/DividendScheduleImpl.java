@@ -33,7 +33,8 @@ public class DividendScheduleImpl implements DividendSchedule {
     LocalDate date;
     for (int i = 0; i < 23; i++) {
       date = firstDividendDate.plusMonths(i);
-      dividends.add(new DividendImpl(date, firstDividendAmount * growth));
+      dividends
+            .add(new DividendImpl(date, firstDividendAmount * growth, false));
       growth = +growth * growthRate;
     }
 
