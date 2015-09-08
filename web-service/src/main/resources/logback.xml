@@ -12,13 +12,7 @@
   </appender>
 
   <logger
-    name="org.eclipse.jetty.server.AbstractConnector"
-    level="WARN" />
-  <logger
-    name="org.eclipse.jetty.server.handler.ContextHandler"
-    level="WARN" />
-  <logger
-    name="org.hibernate.validator.internal.engine.ConfigurationImpl"
+    name="org.hibernate"
     level="WARN" />
   <logger
     name="restx.factory.Factory"

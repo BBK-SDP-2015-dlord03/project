@@ -11,10 +11,11 @@ import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 import uk.ac.bbk.dlord03.plugin.api.event.InvalidationReportHandler;
 
-import java.io.InputStream;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Scanner;
@@ -49,8 +50,6 @@ public class OptionContractPlugin implements Plugin<OptionContract> {
 
   @Override
   public void open(Properties properties) {
-    InputStream is =
-          this.getClass().getResourceAsStream("/data/optioncontracts.txt");
     isOpen = true;
   }
 
@@ -72,14 +71,16 @@ public class OptionContractPlugin implements Plugin<OptionContract> {
           this.getClass().getResourceAsStream("/data/optioncontracts.txt"))) {
       while (dataSource.hasNextLine()) {
         String record = dataSource.nextLine();
-        try (Scanner recordScanner = new Scanner(record).useDelimiter("\t")) {
+        try (Scanner recordScanner = new Scanner(record)) {
+          recordScanner.useDelimiter("\t");
           if (recordScanner.hasNextDouble()) {
             Double strike = recordScanner.nextDouble();
             String symbol = recordScanner.next();
             String type = recordScanner.next();
             String expiry = recordScanner.next();
+            String updated = recordScanner.next();
             if (symbol.equals(security.getSymbol())) {
-              result = createOption(strike, symbol, type, expiry);
+              result = createOption(strike, symbol, type, expiry, updated);
               break;
             }
           }
@@ -92,11 +93,17 @@ public class OptionContractPlugin implements Plugin<OptionContract> {
   }
 
   private OptionContract createOption(Double strike, String symbol, String type,
-        String expiry) {
+        String expiry, String updated) {
+
     OptionType optionType = OptionType.valueOf(type);
-    SecurityIdentifier id =
-          new SimpleSecurityIdentifier(IdentifierScheme.OCC, symbol);
-    ZonedDateTime updatedAt = ZonedDateTime.now().minusYears(10);
+
+    SecurityIdentifier id;
+    id = new SimpleSecurityIdentifier(IdentifierScheme.OCC, symbol);
+
+    TemporalAccessor parsedUpdated;
+    parsedUpdated = DateTimeFormatter.ISO_OFFSET_DATE_TIME.parse(updated);
+    ZonedDateTime updatedAt = ZonedDateTime.from(parsedUpdated);
+
     return new OptionContractImpl(id, updatedAt, optionType, expiry, strike);
   }
 

@@ -7,11 +7,8 @@ import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 
-import java.time.format.DateTimeFormatter;
-
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -28,44 +25,23 @@ public class CacheQueryService {
   @GET
   @Path("option/{symbol}")
   @Produces(MediaType.APPLICATION_JSON)
-  public OptionContractResult getOption(@PathParam("symbol") String symbol,
+  public OptionJsonBean getOption(@PathParam("symbol") String symbol,
         @QueryParam("asof") String asof) {
 
-    final QueryService queryService = getQueryService();
-
+    final CacheQueryCommand query = createCacheQuery(DataType.OPTION);
     final SecurityIdentifier id;
     id = new SimpleSecurityIdentifier(IdentifierScheme.OCC, symbol);
 
     OptionContract option = null;
-    PredicateParser predicate = new PredicateParser(asof);
+    option = query.getValue(id, asof);
 
-    try {
-      switch (predicate.getType()) {
-        case 0:
-
-          break;
-
-        default:
-          break;
-      }
-      option = queryService.getLatestValue(DataType.OPTION, id);
-    } catch (Exception e) {
-      throw new NotFoundException(e);
-    }
-
-    if (option == null)
-      throw new NotFoundException();
-
-    OptionContractResult result = new OptionContractResult();
-    result.setName(option.getContractName());
-    result.setExpiry(option.getExpiryDate());
-    result.setType(option.getOptionType().toString());
-    result.setStrike(option.getStrikePrice());
-    result.setSymbol(option.getSecurityIdentifier().getSymbol());
-    result.setUpdatedAt(
-          option.getUpdatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+    OptionJsonBean result = new OptionJsonBean(option);
     return result;
 
+  }
+
+  private CacheQueryCommand createCacheQuery(DataType type) {
+    return new CacheQueryCommand(type, getQueryService());
   }
 
   private QueryService getQueryService() {

@@ -9,9 +9,9 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class QueryServer {
+public class WebService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(QueryServer.class);
+  private static final Logger LOG = LoggerFactory.getLogger(WebService.class);
 
   public static void main(String[] args) throws Exception {
 
@@ -40,7 +40,9 @@ public class QueryServer {
     server.setStopAtShutdown(true);
     LOG.info("Web Service started on localhost:8080. Press [Enter] to stop.");
     System.in.read();
+    LOG.info("Web Service stopping...");
     server.stop();
+    LOG.info("Web Service stopped.");
     System.exit(0);
 
   }

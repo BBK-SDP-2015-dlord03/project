@@ -19,7 +19,7 @@
   <properties>
     <hazelcast.version>3.5</hazelcast.version>
     <jetty.version>9.3.2.v20150730</jetty.version>
-    <jersey.version>2.19</jersey.version>
+    <jersey.version>2.21</jersey.version>
   </properties>
 
   <dependencies>
@@ -97,6 +97,12 @@
     <dependency>
       <groupId>org.glassfish.jersey.media</groupId>
       <artifactId>jersey-media-moxy</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-jackson</artifactId>
       <version>${jersey.version}</version>
     </dependency>
 
