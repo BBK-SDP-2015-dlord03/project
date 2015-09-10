@@ -45,47 +45,48 @@ public class TimeQueriesTest {
   }
 
   @Test
-  public void compareInstantsSame() {
+  public void testCompareInstantsSame() {
     Assert.assertEquals(0, now.query(TimeQueries.compareTo(now)).intValue());
   }
 
   @Test
-  public void compareInstantsGreaterThan() {
+  public void testCompareInstantsGreaterThan() {
     Assert.assertEquals(1,
           now.query(TimeQueries.compareTo(justNow)).intValue());
+
   }
 
   @Test
-  public void compareInstantsLessThan() {
+  public void testCompareInstantsLessThan() {
     Assert.assertEquals(-1,
           justNow.query(TimeQueries.compareTo(now)).intValue());
   }
 
   @Test
-  public void compareLocaDateSame() {
+  public void testCompareLocaDateSame() {
     Assert.assertEquals(0,
           today.query(TimeQueries.compareTo(today)).intValue());
   }
 
   @Test
-  public void compareLocaDateGreaterThan() {
+  public void testCompareLocaDateGreaterThan() {
     Assert.assertEquals(-1,
           yesterday.query(TimeQueries.compareTo(today)).intValue());
   }
 
   @Test
-  public void compareLocaDateLessThan() {
+  public void testCompareLocaDateLessThan() {
     Assert.assertEquals(1,
           today.query(TimeQueries.compareTo(yesterday)).intValue());
   }
 
   @Test
-  public void crossCompareLessThan() {
+  public void testCrossCompareLessThan() {
     Assert.assertEquals(-1, today.query(TimeQueries.compareTo(now)).intValue());
   }
 
   @Test
-  public void crossCompareGreaterThan() {
+  public void testCrossCompareGreaterThan() {
     Assert.assertEquals(1,
           justNow.query(TimeQueries.compareTo(today)).intValue());
   }

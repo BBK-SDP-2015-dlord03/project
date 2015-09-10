@@ -9,9 +9,9 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WebService {
+public class Main {
 
-  private static final Logger LOG = LoggerFactory.getLogger(WebService.class);
+  private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
   public static void main(String[] args) throws Exception {
 
@@ -34,7 +34,7 @@ public class WebService {
     servletHolder = context.addServlet(ServletContainer.class, "/*");
     servletHolder.setInitOrder(0);
     servletHolder.setInitParameter("jersey.config.server.provider.classnames",
-          CacheQueryService.class.getCanonicalName());
+          QueryRestServlet.class.getCanonicalName());
 
     server.start();
     server.setStopAtShutdown(true);

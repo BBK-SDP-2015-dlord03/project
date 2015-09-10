@@ -1,8 +1,5 @@
 package uk.ac.bbk.dlord03.option;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import uk.ac.bbk.dlord03.plugin.api.Plugin;
 import uk.ac.bbk.dlord03.plugin.api.data.OptionContract;
 import uk.ac.bbk.dlord03.plugin.api.data.OptionType;
@@ -41,9 +38,6 @@ import java.util.Scanner;
  *
  */
 public class OptionContractPlugin implements Plugin<OptionContract> {
-
-  private final static Logger LOG =
-        LoggerFactory.getLogger(OptionContractPlugin.class);
 
   private boolean isOpen = false;
   private InvalidationReportHandler handler;
@@ -86,8 +80,6 @@ public class OptionContractPlugin implements Plugin<OptionContract> {
           }
         }
       }
-    } catch (Exception e) {
-      LOG.error("Unable to get latest value.", e);
     }
     return result;
   }

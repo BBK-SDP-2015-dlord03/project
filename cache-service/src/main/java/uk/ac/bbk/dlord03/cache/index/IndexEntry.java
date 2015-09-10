@@ -7,10 +7,10 @@ import java.io.Serializable;
 import java.time.temporal.TemporalAccessor;
 
 /**
- * An internal entry within an {@link IndexImpl} object used to store references
- * to a {@link TemporalKey} in the cache and the {@link TemporalAccessor} which
- * was used as a predicate in the query which retrieved it from the underlying
- * {@link Plugin} implementation.
+ * An internal entry within an {@link IndexImpl} object used to store references to a
+ * {@link TemporalKey} in the cache and the {@link TemporalAccessor} which was used as a
+ * predicate in the query which retrieved it from the underlying {@link Plugin}
+ * implementation.
  * 
  * @param <T> the type of predicate used for this index entry.
  *
@@ -18,7 +18,7 @@ import java.time.temporal.TemporalAccessor;
  * 
  */
 public class IndexEntry<T extends TemporalAccessor>
-      implements Comparable<IndexEntry<TemporalAccessor>>, Serializable {
+      implements Comparable<IndexEntry<? extends TemporalAccessor>>, Serializable {
 
   private static final long serialVersionUID = -258800001073888908L;
   private final TemporalKey dataKey;
@@ -39,7 +39,7 @@ public class IndexEntry<T extends TemporalAccessor>
   }
 
   @Override
-  public int compareTo(IndexEntry<TemporalAccessor> other) {
+  public int compareTo(IndexEntry<? extends TemporalAccessor> other) {
     if (this == other) {
       return 0;
     }
@@ -64,15 +64,12 @@ public class IndexEntry<T extends TemporalAccessor>
   @SuppressWarnings("rawtypes")
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) {
+    if (this == obj)
       return true;
-    }
-    if (!(obj instanceof IndexEntry)) {
+    if (!(obj instanceof IndexEntry))
       return false;
-    }
     final IndexEntry other = (IndexEntry) obj;
-    return (this.dataKey.equals(other.dataKey)
-          && this.predicate.equals(other.predicate));
+    return (this.dataKey.equals(other.dataKey) && this.predicate.equals(other.predicate));
   }
 
 }

@@ -1,8 +1,5 @@
 package uk.ac.bbk.dlord03.dividend;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import uk.ac.bbk.dlord03.plugin.api.Plugin;
 import uk.ac.bbk.dlord03.plugin.api.data.Dividend;
 import uk.ac.bbk.dlord03.plugin.api.data.DividendSchedule;
@@ -42,8 +39,6 @@ import java.util.Scanner;
  */
 public class DividendPlugin implements Plugin<DividendSchedule> {
 
-  private final static Logger LOG =
-        LoggerFactory.getLogger(DividendPlugin.class);
   private boolean isOpen = false;
   private InvalidationReportHandler handler;
 
@@ -129,6 +124,9 @@ public class DividendPlugin implements Plugin<DividendSchedule> {
           }
 
         }
+      }
+      if (divs != null) {
+        result.add(divs);
       }
 
     }

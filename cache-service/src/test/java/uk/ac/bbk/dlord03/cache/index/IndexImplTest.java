@@ -18,7 +18,7 @@ import java.time.ZonedDateTime;
 
 public class IndexImplTest {
 
-  private Index index;
+  private IndexImpl index;
   private DataType dataType;
   private SecurityIdentifier identifier;
 
@@ -32,19 +32,18 @@ public class IndexImplTest {
   @Test(expected = IllegalArgumentException.class)
   public void testCacheType() {
     final ZonedDateTime now = ZonedDateTime.now();
-    final TemporalKeyImpl key = new TemporalKeyImpl(DataType.DIVIDEND,
-          identifier, now.minusHours(1).toInstant());
+    final TemporalKeyImpl key =
+          new TemporalKeyImpl(DataType.DIVIDEND, identifier, now.minusHours(1).toInstant());
     index.addLatestKey(key, now.toInstant());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testIdentifier() {
     SecurityIdentifier wrongIdentifier;
-    wrongIdentifier =
-          new SimpleSecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
+    wrongIdentifier = new SimpleSecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
     final ZonedDateTime now = ZonedDateTime.now();
-    final TemporalKeyImpl key = new TemporalKeyImpl(dataType, wrongIdentifier,
-          now.minusHours(1).toInstant());
+    final TemporalKeyImpl key =
+          new TemporalKeyImpl(dataType, wrongIdentifier, now.minusHours(1).toInstant());
     index.addLatestKey(key, now.toInstant());
   }
 
@@ -85,26 +84,141 @@ public class IndexImplTest {
   }
 
   @Test
+  public void testUpdateNewerEndOfDayKey() {
+
+    // Create required variables.
+    final LocalDate today = LocalDate.from(ZonedDateTime.now());
+    final LocalDate yesterday = today.minusDays(1);
+    final Instant oneWeekAgo = ZonedDateTime.now().minusDays(7).toInstant();
+
+    // Create a week old key.
+    TemporalKey key = new TemporalKeyImpl(dataType, identifier, oneWeekAgo);
+
+    // Confirm the index is empty.
+    Assert.assertTrue(index.datedKeys.size() == 0);
+
+    // Add this key to the index with a predicate of yesterday.
+    index.addEndOfDayKey(key, yesterday);
+
+    // Confirm the key was added to the index.
+    Assert.assertTrue(index.datedKeys.size() == 1);
+
+    // Attempt an update with an newer predicate.
+    index.addEndOfDayKey(key, today);
+
+    // Confirm the newer key replaced the existing one.
+    Assert.assertTrue(index.datedKeys.size() == 1);
+    Assert.assertTrue(index.datedKeys.first().getPredicate().equals(today));
+
+  }
+
+  @Test
+  public void testIgnoreOlderEndOfDayKey() {
+
+    // Create required variables.
+    final LocalDate today = LocalDate.from(ZonedDateTime.now());
+    final LocalDate yesterday = today.minusDays(1);
+    final Instant oneWeekAgo = ZonedDateTime.now().minusDays(7).toInstant();
+
+    // Create a week old key.
+    TemporalKey key = new TemporalKeyImpl(dataType, identifier, oneWeekAgo);
+
+    // Confirm the index is empty.
+    Assert.assertTrue(index.datedKeys.size() == 0);
+
+    // Add this key to the index with a predicate of today.
+    index.addEndOfDayKey(key, today);
+
+    // Confirm the key was added to the index.
+    Assert.assertTrue(index.datedKeys.size() == 1);
+
+    // Attempt an update with an older predicate.
+    index.addEndOfDayKey(key, yesterday);
+
+    // Confirm the older key did not replace the existing one.
+    Assert.assertTrue(index.datedKeys.size() == 1);
+    Assert.assertTrue(index.datedKeys.first().getPredicate().equals(today));
+
+  }
+
+  @Test
+  public void testUpdateNewerIntraDayKey() {
+
+    // Create required variables.
+    final ZonedDateTime now = ZonedDateTime.now();
+    final Instant oneHourAgo = now.minusHours(1).toInstant();
+    final Instant twoHoursAgo = now.minusHours(2).toInstant();
+    final Instant oneWeekAgo = ZonedDateTime.now().minusDays(7).toInstant();
+
+    // Create a week old key.
+    TemporalKey key = new TemporalKeyImpl(dataType, identifier, oneWeekAgo);
+
+    // Confirm the index is empty.
+    Assert.assertTrue(index.timestampedKeys.size() == 0);
+
+    // Add this key to the index with a predicate of two hours ago.
+    index.addLatestKey(key, twoHoursAgo);
+
+    // Confirm the key was added to the index.
+    Assert.assertTrue(index.timestampedKeys.size() == 1);
+
+    // Attempt an update with an newer predicate.
+    index.addLatestKey(key, oneHourAgo);
+
+    // Confirm the newer key replaced the existing one.
+    Assert.assertTrue(index.timestampedKeys.size() == 1);
+    Assert.assertTrue(index.timestampedKeys.first().getPredicate().equals(oneHourAgo));
+  }
+
+  @Test
+  public void testIgnoreOlderIntraDayKey() {
+
+    // Create required variables.
+    final ZonedDateTime now = ZonedDateTime.now();
+    final Instant oneHourAgo = now.minusHours(1).toInstant();
+    final Instant twoHoursAgo = now.minusHours(2).toInstant();
+    final Instant oneWeekAgo = ZonedDateTime.now().minusDays(7).toInstant();
+
+    // Create a week old key.
+    TemporalKey key = new TemporalKeyImpl(dataType, identifier, oneWeekAgo);
+
+    // Confirm the index is empty.
+    Assert.assertTrue(index.timestampedKeys.size() == 0);
+
+    // Add this key to the index with a predicate of one hour ago.
+    index.addLatestKey(key, oneHourAgo);
+
+    // Confirm the key was added to the index.
+    Assert.assertTrue(index.timestampedKeys.size() == 1);
+
+    // Attempt an update with an older predicate.
+    index.addLatestKey(key, twoHoursAgo);
+
+    // Confirm the older key did not replace the existing one.
+    Assert.assertTrue(index.timestampedKeys.size() == 1);
+    Assert.assertTrue(index.timestampedKeys.first().getPredicate().equals(oneHourAgo));
+
+  }
+
+  @Test
   public void testRefindLatestKey() {
     final ZonedDateTime now = ZonedDateTime.now();
-    final TemporalKeyImpl keyIn = new TemporalKeyImpl(dataType, identifier,
-          now.minusHours(1).toInstant());
+    final TemporalKeyImpl keyIn =
+          new TemporalKeyImpl(dataType, identifier, now.minusHours(1).toInstant());
     index.addLatestKey(keyIn, now.toInstant());
     index = SerialisationUtils.serializeRoundTrip(index);
-    final TemporalKey keyOut =
-          index.getLatestKey(now.minusMinutes(10).toInstant());
+    final TemporalKey keyOut = index.getLatestKey(now.minusMinutes(10).toInstant());
     Assert.assertEquals(keyIn, keyOut);
   }
 
   @Test
   public void testRefindIntradayKey() {
     final ZonedDateTime now = ZonedDateTime.now();
-    final TemporalKeyImpl keyIn = new TemporalKeyImpl(dataType, identifier,
-          now.minusHours(1).toInstant());
+    final TemporalKeyImpl keyIn =
+          new TemporalKeyImpl(dataType, identifier, now.minusHours(1).toInstant());
     index.addLatestKey(keyIn, now.minusMinutes(10).toInstant());
     index = SerialisationUtils.serializeRoundTrip(index);
-    final TemporalKey keyOut =
-          index.getLatestKey(now.minusMinutes(20).toInstant());
+    final TemporalKey keyOut = index.getLatestKey(now.minusMinutes(20).toInstant());
     Assert.assertEquals(keyIn, keyOut);
   }
 
@@ -182,8 +296,8 @@ public class IndexImplTest {
   public void testNotEquals() {
     Assert.assertNull(index.getLatestKey());
     final ZonedDateTime now = ZonedDateTime.now();
-    final TemporalKeyImpl keyIn = new TemporalKeyImpl(dataType, identifier,
-          now.minusHours(1).toInstant());
+    final TemporalKeyImpl keyIn =
+          new TemporalKeyImpl(dataType, identifier, now.minusHours(1).toInstant());
     index.addLatestKey(keyIn, now.minusMinutes(10).toInstant());
     Index otherIndex = new IndexImpl(dataType, identifier);
     Assert.assertNotEquals(index, otherIndex);

@@ -1,4 +1,4 @@
-package uk.ac.bbk.dlord03.webservice;
+package uk.ac.bbk.dlord03.webservice.beans;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -12,6 +12,7 @@ import uk.ac.bbk.dlord03.cache.data.SimpleKeyGenerator;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
 import uk.ac.bbk.dlord03.cache.data.TemporalKeyGenerator;
 import uk.ac.bbk.dlord03.cache.index.Index;
+import uk.ac.bbk.dlord03.cache.index.IndexFactory;
 import uk.ac.bbk.dlord03.cache.index.IndexImpl;
 import uk.ac.bbk.dlord03.cache.index.IndexKey;
 import uk.ac.bbk.dlord03.cache.index.IndexKeyGenerator;
@@ -23,16 +24,15 @@ import uk.ac.bbk.dlord03.plugin.api.event.InvalidationReport;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 
-public class QueryServiceImpl
-      implements QueryService, PluginInvalidationReportHandler {
+public class QueryServiceImpl implements QueryService, PluginInvalidationReportHandler {
 
-  private static final Logger LOG =
-        LoggerFactory.getLogger(QueryServiceImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(QueryServiceImpl.class);
 
   private CacheManager cacheManager;
   private Properties properties;
@@ -94,8 +94,7 @@ public class QueryServiceImpl
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends SecurityData> T getLatestValue(DataType type,
-        SecurityIdentifier security) {
+  public <T extends SecurityData> T getLatestValue(DataType type, SecurityIdentifier security) {
 
     // Generate the key for the requested data.
     final SimpleKey key = SimpleKeyGenerator.generate(type, security);
@@ -109,13 +108,13 @@ public class QueryServiceImpl
     // If it wasn't then ask the relevant plug-in for it.
     String typeName = type.toString().toLowerCase();
     if (result == null) {
-      LOG.info("Querying {} plugin for latest value of {}.", typeName,
-            security);
+      LOG.info("Querying {} plugin for latest value of {}.", typeName, security);
       result = (T) getPlugin(type).getLatestValue(security);
 
       // If the plug-in returned it then add it to the cache.
       if (result != null) {
-        LOG.info("Retrieved {} record from plugin.", typeName);
+        LOG.info("Retrieved {} record from plugin (last updated {}).", typeName,
+              result.getUpdatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         cache.put(key, result);
       }
     } else {
@@ -130,18 +129,16 @@ public class QueryServiceImpl
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends SecurityData> T getLatestValue(DataType type,
-        SecurityIdentifier security, Instant before) {
+  public <T extends SecurityData> T getLatestValue(DataType type, SecurityIdentifier security,
+        Instant before) {
 
     T result = null;
 
     // Get the intra-day cache.
-    final Cache<TemporalKey, SecurityData> cache =
-          cacheController.getTimestampedCache();
+    final Cache<TemporalKey, SecurityData> cache = cacheController.getTimestampedCache();
 
     // Generate the index key for this request
-    final IndexKey indexKey =
-          IndexKeyGenerator.generate(IndexType.INTRADAY, type, security);
+    final IndexKey indexKey = IndexKeyGenerator.generate(IndexType.INTRADAY, type, security);
 
     // Get the index for this request.
     final Index index = getOrCreateIndex(indexKey);
@@ -153,13 +150,13 @@ public class QueryServiceImpl
     String typeName = type.toString().toLowerCase();
     if (foundKey == null) {
 
-      LOG.info("Querying {} plugin for latest value of {} before {}.", typeName,
-            security, before);
+      LOG.info("Querying {} plugin for latest value of {} before {}.", typeName, security, before);
 
       result = (T) getPlugin(type).getLatestValue(security, before);
       if (result != null) {
 
-        LOG.info("Retrieved {} record from plugin.", typeName);
+        LOG.info("Retrieved {} record from plugin (last updated {}).", typeName,
+              result.getUpdatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
         // If the plug-in returned data then add its key to the index
         foundKey = TemporalKeyGenerator.generate(type, result);
@@ -185,18 +182,16 @@ public class QueryServiceImpl
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends SecurityData> T getEndOfDayValue(DataType type,
-        SecurityIdentifier security, LocalDate date) {
+  public <T extends SecurityData> T getEndOfDayValue(DataType type, SecurityIdentifier security,
+        LocalDate date) {
 
     T result = null;
 
     // Get the intra-day cache.
-    final Cache<TemporalKey, SecurityData> cache =
-          cacheController.getDatedCache();
+    final Cache<TemporalKey, SecurityData> cache = cacheController.getDatedCache();
 
     // Generate the index key for this request
-    final IndexKey indexKey =
-          IndexKeyGenerator.generate(IndexType.ENDOFDAY, type, security);
+    final IndexKey indexKey = IndexKeyGenerator.generate(IndexType.ENDOFDAY, type, security);
 
     // Get the index for this request.
     final Index index = getOrCreateIndex(indexKey);
@@ -208,13 +203,13 @@ public class QueryServiceImpl
     String typeName = type.toString().toLowerCase();
     if (foundKey == null) {
 
-      LOG.info("Querying {} plugin for latest value of {} before {}.", typeName,
-            security, date);
+      LOG.info("Querying {} plugin for latest value of {} before {}.", typeName, security, date);
 
       result = (T) getPlugin(type).getEndOfDayValue(security, date);
       if (result != null) {
 
-        LOG.info("Retrieved {} record from plugin.", typeName);
+        LOG.info("Retrieved {} record from plugin (last updated {}).", typeName,
+              result.getUpdatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
         // If the plug-in returned data then add its key to the index
         foundKey = TemporalKeyGenerator.generate(type, result);
@@ -244,8 +239,7 @@ public class QueryServiceImpl
 
     // Generate the simple key for the invalidated data.
     SecurityIdentifier security = report.getInvalidatedSecurity();
-    SimpleKey key =
-          SimpleKeyGenerator.generate(DataType.valueOf(type), security);
+    SimpleKey key = SimpleKeyGenerator.generate(DataType.valueOf(type), security);
     DataType dataType = DataType.valueOf(type);
 
     // Get the latest data cache and remove this value if it is there.
@@ -261,8 +255,7 @@ public class QueryServiceImpl
       TemporalKey newKey = TemporalKeyGenerator.generate(dataType, latestEntry);
 
       // Generate the index key for this request
-      final IndexKey indexKey =
-            IndexKeyGenerator.generate(IndexType.INTRADAY, dataType, security);
+      final IndexKey indexKey = IndexKeyGenerator.generate(IndexType.INTRADAY, dataType, security);
 
       // The predicate for the intra-day value is now as it was valid until now.
       Instant predicate = Instant.now();
@@ -294,8 +287,7 @@ public class QueryServiceImpl
 
   }
 
-  private boolean addIndexLatestKey(IndexKey key, TemporalKey dataKey,
-        Instant before) {
+  private boolean addIndexLatestKey(IndexKey key, TemporalKey dataKey, Instant before) {
 
     final int maximumAttempts = 10;
     boolean success = false;
@@ -306,11 +298,9 @@ public class QueryServiceImpl
 
     for (int i = 0; !success && i < maximumAttempts; i++) {
       originalIndex = getOrCreateIndex(key);
-      updatedIndex = getOrCreateIndex(key);
+      updatedIndex = IndexFactory.create(originalIndex);
       updatedIndex.addLatestKey(dataKey, before);
       success = indexCache.replace(key, originalIndex, updatedIndex);
-      if (success)
-        break;
     }
 
     if (!success)
@@ -320,8 +310,7 @@ public class QueryServiceImpl
 
   }
 
-  private boolean addIndexEndOfDayKey(IndexKey key, TemporalKey dataKey,
-        LocalDate date) {
+  private boolean addIndexEndOfDayKey(IndexKey key, TemporalKey dataKey, LocalDate date) {
 
     final int maximumAttempts = 10;
     boolean success = false;
@@ -332,7 +321,7 @@ public class QueryServiceImpl
 
     for (int i = 0; !success && i < maximumAttempts; i++) {
       originalIndex = getOrCreateIndex(key);
-      updatedIndex = getOrCreateIndex(key);
+      updatedIndex = IndexFactory.create(originalIndex);
       updatedIndex.addEndOfDayKey(dataKey, date);
       success = indexCache.replace(key, originalIndex, updatedIndex);
       if (success)

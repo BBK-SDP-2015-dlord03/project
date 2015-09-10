@@ -1,5 +1,8 @@
 package uk.ac.bbk.dlord03.cache.index;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.cache.data.TemporalKey;
 import uk.ac.bbk.dlord03.cache.data.TemporalKeyImpl;
@@ -11,9 +14,9 @@ import java.util.NavigableSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
- * Provides a index of cache keys allowing for them to be searched from one
- * record in the cache rather than needing to rely on the underlying cache's
- * implementation of a search which may involve querying many distributed nodes.
+ * Provides a index of cache keys allowing for them to be searched from one record in the
+ * cache rather than needing to rely on the underlying cache's implementation of a search
+ * which may involve querying many distributed nodes.
  * 
  * @author David Lord
  *
@@ -22,10 +25,12 @@ public class IndexImpl implements Index {
 
   private static final long serialVersionUID = -8330314827556368663L;
 
+  private final static Logger LOG = LoggerFactory.getLogger(IndexImpl.class);
+
   private final DataType dataType;
   private final SecurityIdentifier securityIdentifier;
-  private final NavigableSet<IndexEntry<Instant>> timestampedKeys;
-  private final NavigableSet<IndexEntry<LocalDate>> datedKeys;
+  final NavigableSet<IndexEntry<Instant>> timestampedKeys;
+  final NavigableSet<IndexEntry<LocalDate>> datedKeys;
 
   public IndexImpl(DataType dataType, SecurityIdentifier securityIdentifier) {
     super();
@@ -57,17 +62,17 @@ public class IndexImpl implements Index {
   }
 
   @Override
-  public TemporalKey getLatestKey(Instant before) {
+  public TemporalKey getLatestKey(Instant predicate) {
 
-    final TemporalKey predicateKey;
-    predicateKey = new TemporalKeyImpl(dataType, securityIdentifier, before);
+    final TemporalKey key;
+    key = new TemporalKeyImpl(dataType, securityIdentifier, predicate);
 
-    final IndexEntry<Instant> predicate;
-    predicate = new IndexEntry<>(predicateKey, before);
+    final IndexEntry<Instant> predicateKey;
+    predicateKey = new IndexEntry<>(key, predicate);
 
     IndexEntry<Instant> record;
-    record = timestampedKeys.floor(predicate);
-    if (record != null && record.getPredicate().compareTo(before) >= 0) {
+    record = timestampedKeys.floor(predicateKey);
+    if (record != null && record.getPredicate().compareTo(predicate) >= 0) {
       return record.getKey();
     }
 
@@ -75,25 +80,27 @@ public class IndexImpl implements Index {
 
   }
 
-  @Override
-  public void addLatestKey(TemporalKey dataKey, Instant before) {
-    validateKey(dataKey);
-    final IndexEntry<Instant> foundKey = new IndexEntry<>(dataKey, before);
-    timestampedKeys.add(foundKey);
+  private void validateKey(TemporalKey dataKey) {
+    if (!dataKey.getDataType().equals(dataType)) {
+      throw new IllegalArgumentException();
+    }
+    if (!dataKey.getSecurityIdentifier().equals(securityIdentifier)) {
+      throw new IllegalArgumentException();
+    }
   }
 
   @Override
-  public TemporalKey getEndOfDayKey(LocalDate date) {
+  public TemporalKey getEndOfDayKey(LocalDate predicate) {
 
-    final TemporalKey predicateKey;
-    predicateKey = new TemporalKeyImpl(dataType, securityIdentifier, date);
+    final TemporalKey key;
+    key = new TemporalKeyImpl(dataType, securityIdentifier, predicate);
 
-    final IndexEntry<LocalDate> predicate;
-    predicate = new IndexEntry<>(predicateKey, date);
+    final IndexEntry<LocalDate> predicateKey;
+    predicateKey = new IndexEntry<>(key, predicate);
 
     IndexEntry<LocalDate> record;
-    record = datedKeys.floor(predicate);
-    if (record != null && record.getPredicate().compareTo(date) >= 0) {
+    record = datedKeys.floor(predicateKey);
+    if (record != null && record.getPredicate().compareTo(predicate) >= 0) {
       return record.getKey();
     }
 
@@ -102,10 +109,33 @@ public class IndexImpl implements Index {
   }
 
   @Override
-  public void addEndOfDayKey(TemporalKey dataKey, LocalDate date) {
-    validateKey(dataKey);
-    final IndexEntry<LocalDate> foundKey = new IndexEntry<>(dataKey, date);
-    datedKeys.add(foundKey);
+  public void addLatestKey(TemporalKey key, Instant predicate) {
+    validateKey(key);
+    final IndexEntry<Instant> foundKey = new IndexEntry<>(key, predicate);
+    final IndexEntry<Instant> existingKey;
+    existingKey = timestampedKeys.floor(foundKey);
+    if (existingKey == null || existingKey.getPredicate().compareTo(predicate) < 0) {
+      if (existingKey != null)
+        timestampedKeys.remove(existingKey);
+      if (timestampedKeys.add(foundKey)) {
+        LOG.debug("Intraday index updated for {}", key.getSecurityIdentifier().getSymbol());
+      }
+    }
+  }
+
+  @Override
+  public void addEndOfDayKey(TemporalKey key, LocalDate predicate) {
+    validateKey(key);
+    final IndexEntry<LocalDate> foundKey = new IndexEntry<>(key, predicate);
+    final IndexEntry<LocalDate> existingKey;
+    existingKey = datedKeys.floor(foundKey);
+    if (existingKey == null || existingKey.getPredicate().compareTo(predicate) < 0) {
+      if (existingKey != null)
+        datedKeys.remove(existingKey);
+      if (datedKeys.add(foundKey)) {
+        LOG.debug("End of day index updated for {}", key.getSecurityIdentifier().getSymbol());
+      }
+    }
   }
 
   @Override
@@ -138,15 +168,6 @@ public class IndexImpl implements Index {
           && this.securityIdentifier.equals(other.securityIdentifier)
           && this.datedKeys.equals(other.datedKeys)
           && this.timestampedKeys.equals(other.timestampedKeys));
-  }
-
-  private void validateKey(TemporalKey dataKey) {
-    if (!dataKey.getDataType().equals(dataType)) {
-      throw new IllegalArgumentException();
-    }
-    if (!dataKey.getSecurityIdentifier().equals(securityIdentifier)) {
-      throw new IllegalArgumentException();
-    }
   }
 
 }

@@ -16,8 +16,7 @@ import javax.servlet.ServletContextListener;
 
 public class ServiceLifecycleManager implements ServletContextListener {
 
-  private static final Logger LOG =
-        LoggerFactory.getLogger(ServiceLifecycleManager.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ServiceLifecycleManager.class);
 
   private QueryService queryService;
 
@@ -36,20 +35,18 @@ public class ServiceLifecycleManager implements ServletContextListener {
     this.queryService.start();
     sce.getServletContext().setAttribute("queryService", queryService);
     LOG.info("Query service started.");
+
   }
 
   private Properties getProperties() {
 
     Properties p = new Properties();
 
-    p.setProperty("option.plugin.classname",
-          "uk.ac.bbk.dlord03.option.OptionContractPlugin");
+    p.setProperty("option.plugin.classname", "uk.ac.bbk.dlord03.option.OptionContractPlugin");
 
-    p.setProperty("dividend.plugin.classname",
-          "uk.ac.bbk.dlord03.dividend.DividendPlugin");
+    p.setProperty("dividend.plugin.classname", "uk.ac.bbk.dlord03.dividend.DividendPlugin");
 
-    p.setProperty("volatility.plugin.classname",
-          "uk.ac.bbk.dlord03.volatility.VolatilityPlugin");
+    p.setProperty("volatility.plugin.classname", "uk.ac.bbk.dlord03.volatility.VolatilityPlugin");
 
     return p;
   }

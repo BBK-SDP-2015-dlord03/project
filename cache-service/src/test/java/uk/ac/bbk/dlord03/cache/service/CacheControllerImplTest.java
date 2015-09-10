@@ -46,7 +46,7 @@ public class CacheControllerImplTest {
   }
 
   @Test
-  public void testCreateIndexCache() {
+  public void testModifyIndexCache() {
 
     final DataType dt = DataType.OPTION;
     final SecurityIdentifier si =
@@ -86,27 +86,27 @@ public class CacheControllerImplTest {
   }
 
   @Test
-  public void verifyIndexCache() {
+  public void testCreateIndexCache() {
     final Cache<IndexKey, Index> cache = cacheController.getIndexCache();
     Assert.assertEquals("indexCache", cache.getName());
   }
 
   @Test
-  public void verifyLatestCache() {
+  public void testCreateLatestCache() {
     final Cache<SimpleKey, SecurityData> cache =
           cacheController.getLatestCache();
     Assert.assertEquals("latestCache", cache.getName());
   }
 
   @Test
-  public void verifyTimestampedCache() {
+  public void testCreateTimestampedCache() {
     final Cache<TemporalKey, SecurityData> cache =
           cacheController.getTimestampedCache();
     Assert.assertEquals("timestampedCache", cache.getName());
   }
 
   @Test
-  public void verifyDatedCache() {
+  public void testCreateDatedCache() {
     final Cache<TemporalKey, SecurityData> cache =
           cacheController.getDatedCache();
     Assert.assertEquals("datedCache", cache.getName());

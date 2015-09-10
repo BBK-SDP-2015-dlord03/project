@@ -303,7 +303,7 @@ public class QueryServiceImplTest {
   }
 
   @Test
-  public void verifyCopiesOfIndex() throws Exception {
+  public void testIndexEquals() throws Exception {
 
     initialiseQueryService();
 

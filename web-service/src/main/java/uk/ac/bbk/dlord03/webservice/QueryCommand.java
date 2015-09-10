@@ -8,12 +8,12 @@ import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
-public class CacheQueryCommand {
+public class QueryCommand {
 
   final private DataType type;
   final private QueryService service;
 
-  public CacheQueryCommand(DataType type, QueryService service) {
+  public QueryCommand(DataType type, QueryService service) {
     super();
     this.type = type;
     this.service = service;
