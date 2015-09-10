@@ -10,8 +10,8 @@ public class SimpleSecurityIdentifierTest {
   private SecurityIdentifier vodafone2;
   private SecurityIdentifier britishTelecom1;
   private SecurityIdentifier britishTelecom2;
-  private final static String RIC_VODAFONE = "VOD.L";
-  private final static String RIC_BT = "BT.L";
+  private static final String RIC_VODAFONE = "VOD.L";
+  private static final String RIC_BT = "BT.L";
 
   @Before
   public void setUp() {
@@ -60,8 +60,7 @@ public class SimpleSecurityIdentifierTest {
 
   @Test
   public void testToString() {
-    Assert.assertEquals(britishTelecom1.toString(),
-          "SecurityIdentifier(scheme=RIC,symbol=BT.L)");
+    Assert.assertEquals(britishTelecom1.toString(), "SecurityIdentifier(scheme=RIC,symbol=BT.L)");
   }
 
 }

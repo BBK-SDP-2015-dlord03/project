@@ -19,9 +19,8 @@ public class DividendScheduleImpl implements DividendSchedule {
   private final String currency;
   private final List<Dividend> dividends;
 
-  public DividendScheduleImpl(SecurityIdentifier si, ZonedDateTime updatedAt,
-        String currency, LocalDate firstDividendDate,
-        Double firstDividendAmount, Double growthRate) {
+  public DividendScheduleImpl(SecurityIdentifier si, ZonedDateTime updatedAt, String currency,
+        LocalDate firstDividendDate, Double firstDividendAmount, Double growthRate) {
     super();
     this.si = si;
     this.updatedAt = updatedAt;
@@ -33,8 +32,7 @@ public class DividendScheduleImpl implements DividendSchedule {
     LocalDate date;
     for (int i = 0; i < 23; i++) {
       date = firstDividendDate.plusMonths(i);
-      dividends
-            .add(new DividendImpl(date, firstDividendAmount * growth, false));
+      dividends.add(new DividendImpl(date, firstDividendAmount * growth, false));
       growth = +growth * growthRate;
     }
 
@@ -66,20 +64,22 @@ public class DividendScheduleImpl implements DividendSchedule {
       return false;
     }
     DividendScheduleImpl other = (DividendScheduleImpl) obj;
-    if (!this.si.equals(other.si))
+    if (!this.si.equals(other.si)) {
       return false;
-    if (!this.currency.equals(other.currency))
+    }
+    if (!this.currency.equals(other.currency)) {
       return false;
-    if (!this.updatedAt.equals(other.updatedAt))
+    }
+    if (!this.updatedAt.equals(other.updatedAt)) {
       return false;
+    }
     return true;
   }
 
   @Override
   public String toString() {
-    return String.format(
-          "DividendScheduleImpl[Security=%s,Currency=%s,UpdatedAt=%s]", si,
-          currency, updatedAt);
+    return String.format("DividendScheduleImpl[Security=%s,Currency=%s,UpdatedAt=%s]", si, currency,
+          updatedAt);
   }
 
 }

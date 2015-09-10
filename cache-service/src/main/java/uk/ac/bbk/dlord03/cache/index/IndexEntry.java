@@ -64,10 +64,12 @@ public class IndexEntry<T extends TemporalAccessor>
   @SuppressWarnings("rawtypes")
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (!(obj instanceof IndexEntry))
+    }
+    if (!(obj instanceof IndexEntry)) {
       return false;
+    }
     final IndexEntry other = (IndexEntry) obj;
     return (this.dataKey.equals(other.dataKey) && this.predicate.equals(other.predicate));
   }

@@ -16,8 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-public abstract class AbstractPluginImp<T extends SecurityData>
-      implements Plugin<T> {
+public abstract class AbstractPluginImp<T extends SecurityData> implements Plugin<T> {
 
   protected boolean isOpen = false;
   protected InvalidationReportHandler handler;
@@ -57,8 +56,9 @@ public abstract class AbstractPluginImp<T extends SecurityData>
 
     latestHitCount++;
 
-    if (latestRecord == null)
+    if (latestRecord == null) {
       latestRecord = createLatest(security);
+    }
 
     return latestRecord;
 
@@ -128,8 +128,7 @@ public abstract class AbstractPluginImp<T extends SecurityData>
 
   protected abstract T createLatest(SecurityIdentifier security);
 
-  protected T getRecord(List<T> list, SecurityIdentifier security,
-        ZonedDateTime before) {
+  protected T getRecord(List<T> list, SecurityIdentifier security, ZonedDateTime before) {
 
     return list.stream().filter(p -> p.getSecurityIdentifier().equals(security))
           .sorted(new SecurityDataComparator()).findFirst().orElse(null);
@@ -147,8 +146,7 @@ public abstract class AbstractPluginImp<T extends SecurityData>
     return now.minusMonths(1);
   }
 
-  static private class SecurityDataComparator
-        implements Comparator<SecurityData> {
+  private static class SecurityDataComparator implements Comparator<SecurityData> {
 
     @Override
     public int compare(SecurityData o1, SecurityData o2) {

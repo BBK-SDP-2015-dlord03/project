@@ -9,8 +9,6 @@ import org.junit.Test;
 import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
-import uk.ac.bbk.dlord03.cache.data.DataType;
-import uk.ac.bbk.dlord03.cache.data.SimpleKeyImpl;
 
 public class SimpleDataKeyImplTest {
 
@@ -20,8 +18,7 @@ public class SimpleDataKeyImplTest {
   @Before
   public void setUp() {
     security = new SimpleSecurityIdentifier(IdentifierScheme.RIC, "VOD.L");
-    differentSecurity =
-      new SimpleSecurityIdentifier(IdentifierScheme.RIC, "BT.L");
+    differentSecurity = new SimpleSecurityIdentifier(IdentifierScheme.RIC, "BT.L");
   }
 
   @Test

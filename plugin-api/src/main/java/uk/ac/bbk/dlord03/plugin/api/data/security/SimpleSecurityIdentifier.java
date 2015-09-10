@@ -1,7 +1,6 @@
 package uk.ac.bbk.dlord03.plugin.api.data.security;
 
 /**
- * 
  * Simple utility implementation bean of {@linkplain SecurityIdentifier}.
  * 
  * @author David Lord
@@ -40,8 +39,7 @@ public class SimpleSecurityIdentifier implements SecurityIdentifier {
 
   @Override
   public String toString() {
-    return String.format("SecurityIdentifier(scheme=%s,symbol=%s)", scheme,
-          symbol);
+    return String.format("SecurityIdentifier(scheme=%s,symbol=%s)", scheme, symbol);
   }
 
   @Override
@@ -53,8 +51,7 @@ public class SimpleSecurityIdentifier implements SecurityIdentifier {
       return false;
     }
     final SecurityIdentifier other = (SecurityIdentifier) obj;
-    return (this.scheme.equals(other.getScheme())
-          && this.symbol.equals(other.getSymbol()));
+    return (this.scheme.equals(other.getScheme()) && this.symbol.equals(other.getSymbol()));
   }
 
 }

@@ -18,22 +18,17 @@ import java.util.Properties;
  * @author David Lord
  *
  */
-public class OptionContractPluginImpl
-      extends AbstractPluginImp<OptionContract> {
+public class OptionContractPluginImpl extends AbstractPluginImp<OptionContract> {
 
-  private static final Logger LOG =
-        LoggerFactory.getLogger(OptionContractPluginImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OptionContractPluginImpl.class);
 
   private Option[] options;
 
   public OptionContractPluginImpl() {
     super();
-    options = new Option[] {
-        new Option("BT.L", "BT Group Plc", "2016-08-01", OptionType.PUT),
-        new Option("VOD.L", "Vodafone Group Plc", "2018-08-01",
-              OptionType.CALL),
-        new Option("LGEN.L", "Legal & General Group Plc", "2020-08-01",
-              OptionType.PUT),
+    options = new Option[] {new Option("BT.L", "BT Group Plc", "2016-08-01", OptionType.PUT),
+        new Option("VOD.L", "Vodafone Group Plc", "2018-08-01", OptionType.CALL),
+        new Option("LGEN.L", "Legal & General Group Plc", "2020-08-01", OptionType.PUT),
         new Option("ULVR.L", "Unilever plc", "2017-08-01", OptionType.CALL)};
   }
 
@@ -57,8 +52,7 @@ public class OptionContractPluginImpl
     addSomeRecords(option.symbol, option.name, option.expiry, option.type);
   }
 
-  private void addSomeRecords(String ric, String name, String expiry,
-        OptionType type) {
+  private void addSomeRecords(String ric, String name, String expiry, OptionType type) {
 
     si = new SimpleSecurityIdentifier(IdentifierScheme.RIC, ric);
     OptionContractImpl option;
@@ -66,16 +60,14 @@ public class OptionContractPluginImpl
     // Add some representative end of day records.
     final ZonedDateTime monthAgo = getOneMonthAgo();
     for (int i = 0; i < 28; i++) {
-      option = new OptionContractImpl(si, monthAgo.plusDays(i), type, expiry,
-            25.5D, name);
+      option = new OptionContractImpl(si, monthAgo.plusDays(i), type, expiry, 25.5D, name);
       endOfDayRecords.add(option);
     }
 
     // Add some representative intra-day records.
     final ZonedDateTime dayAgo = getOneDayAgo();
     for (int i = 0; i < 20; i++) {
-      option = new OptionContractImpl(si, dayAgo.plusHours(i), type, expiry,
-            25.5D, name);
+      option = new OptionContractImpl(si, dayAgo.plusHours(i), type, expiry, 25.5D, name);
       intraDayRecords.add(option);
     }
 
@@ -91,11 +83,12 @@ public class OptionContractPluginImpl
       }
     }
 
-    if (found == null)
+    if (found == null) {
       return null;
+    }
 
-    return new OptionContractImpl(security, ZonedDateTime.now(), found.type,
-          found.expiry, 25.5D, found.name);
+    return new OptionContractImpl(security, ZonedDateTime.now(), found.type, found.expiry, 25.5D,
+          found.name);
   }
 
   class Option {

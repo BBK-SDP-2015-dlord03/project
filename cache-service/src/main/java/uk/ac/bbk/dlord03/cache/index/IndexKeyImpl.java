@@ -1,8 +1,8 @@
 package uk.ac.bbk.dlord03.cache.index;
 
-import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.cache.data.SimpleKeyImpl;
+import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 
 public class IndexKeyImpl extends SimpleKeyImpl implements IndexKey {
 
@@ -42,8 +42,7 @@ public class IndexKeyImpl extends SimpleKeyImpl implements IndexKey {
 
   @Override
   public String toString() {
-    return String.format(
-          "IndexKeyImpl(dataType=%s,securityIdentifier=%s,indexType=%s)",
+    return String.format("IndexKeyImpl(dataType=%s,securityIdentifier=%s,indexType=%s)",
           getDataType(), getSecurityIdentifier(), indexType);
   }
 

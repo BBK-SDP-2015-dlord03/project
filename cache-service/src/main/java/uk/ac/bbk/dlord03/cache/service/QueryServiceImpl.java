@@ -303,8 +303,9 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
       success = indexCache.replace(key, originalIndex, updatedIndex);
     }
 
-    if (!success)
+    if (!success) {
       LOG.warn("Index update failure.");
+    }
 
     return success;
 
@@ -324,12 +325,14 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
       updatedIndex = IndexFactory.create(originalIndex);
       updatedIndex.addEndOfDayKey(dataKey, date);
       success = indexCache.replace(key, originalIndex, updatedIndex);
-      if (success)
+      if (success) {
         break;
+      }
     }
 
-    if (!success)
+    if (!success) {
       LOG.warn("Index update failure.");
+    }
 
     return success;
 

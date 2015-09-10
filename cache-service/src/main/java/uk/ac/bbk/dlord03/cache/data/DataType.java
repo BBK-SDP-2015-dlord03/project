@@ -6,7 +6,6 @@ import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
 import uk.ac.bbk.dlord03.plugin.api.data.VolatilitySurface;
 
 /**
- * 
  * Represents the different types of data held in a cache and the classes that represent them.
  * 
  * @author David Lord
@@ -45,9 +44,15 @@ public enum DataType {
   }
   
   public static DataType valueOf(Class<? extends SecurityData> valueClass) {
-    if (valueClass.equals(OptionContract.class)) return OPTION;
-    if (valueClass.equals(DividendSchedule.class)) return DIVIDEND;
-    if (valueClass.equals(VolatilitySurface.class)) return VOLATILITY;
+    if (valueClass.equals(OptionContract.class)) {
+      return OPTION;
+    }
+    if (valueClass.equals(DividendSchedule.class)) {
+      return DIVIDEND;
+    }
+    if (valueClass.equals(VolatilitySurface.class)) {
+      return VOLATILITY;
+    }
     return null;
     
   }

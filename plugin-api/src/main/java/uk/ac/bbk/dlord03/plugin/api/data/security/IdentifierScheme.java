@@ -1,7 +1,6 @@
 package uk.ac.bbk.dlord03.plugin.api.data.security;
 
 /**
- * 
  * Security identifier types are the various methods by which a security product
  * or issue is identified. They are each managed and distributed by different
  * organisations.

@@ -25,7 +25,7 @@ public class IndexImpl implements Index {
 
   private static final long serialVersionUID = -8330314827556368663L;
 
-  private final static Logger LOG = LoggerFactory.getLogger(IndexImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(IndexImpl.class);
 
   private final DataType dataType;
   private final SecurityIdentifier securityIdentifier;
@@ -56,8 +56,9 @@ public class IndexImpl implements Index {
 
   @Override
   public TemporalKey getLatestKey() {
-    if (timestampedKeys.isEmpty())
+    if (timestampedKeys.isEmpty()) {
       return null;
+    }
     return timestampedKeys.last().getKey();
   }
 
@@ -115,8 +116,9 @@ public class IndexImpl implements Index {
     final IndexEntry<Instant> existingKey;
     existingKey = timestampedKeys.floor(foundKey);
     if (existingKey == null || existingKey.getPredicate().compareTo(predicate) < 0) {
-      if (existingKey != null)
+      if (existingKey != null) {
         timestampedKeys.remove(existingKey);
+      }
       if (timestampedKeys.add(foundKey)) {
         LOG.debug("Intraday index updated for {}", key.getSecurityIdentifier().getSymbol());
       }
@@ -130,8 +132,9 @@ public class IndexImpl implements Index {
     final IndexEntry<LocalDate> existingKey;
     existingKey = datedKeys.floor(foundKey);
     if (existingKey == null || existingKey.getPredicate().compareTo(predicate) < 0) {
-      if (existingKey != null)
+      if (existingKey != null) {
         datedKeys.remove(existingKey);
+      }
       if (datedKeys.add(foundKey)) {
         LOG.debug("End of day index updated for {}", key.getSecurityIdentifier().getSymbol());
       }

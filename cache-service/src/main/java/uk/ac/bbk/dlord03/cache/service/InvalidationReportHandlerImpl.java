@@ -10,16 +10,17 @@ public class InvalidationReportHandlerImpl<T extends SecurityData>
   private final Class<T> dataType;
   private final PluginInvalidationReportHandler handler;
 
-  public InvalidationReportHandlerImpl(PluginInvalidationReportHandler handler,
-        Class<T> dataType) {
+  public InvalidationReportHandlerImpl(PluginInvalidationReportHandler handler, Class<T> dataType) {
 
     super();
 
-    if (dataType == null)
+    if (dataType == null) {
       throw new IllegalArgumentException("Invalid Data Type");
+    }
 
-    if (handler == null)
+    if (handler == null) {
       throw new IllegalArgumentException("Invalid Handler");
+    }
 
     this.dataType = dataType;
 
