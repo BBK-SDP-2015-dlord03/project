@@ -60,7 +60,7 @@ public class SimpleSecurityIdentifierTest {
 
   @Test
   public void testToString() {
-    Assert.assertEquals(britishTelecom1.toString(), "SecurityIdentifier(scheme=RIC,symbol=BT.L)");
+    Assert.assertEquals("RIC:BT.L", britishTelecom1.toString());
   }
 
 }
