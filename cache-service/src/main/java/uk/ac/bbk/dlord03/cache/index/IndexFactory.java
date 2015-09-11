@@ -9,14 +9,36 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+/**
+ * Utility factory class for creating implementations of the {@link Index} interface.
+ * 
+ * @author David Lord
+ *
+ */
 public class IndexFactory {
 
-  public static Index create(DataType dataType, SecurityIdentifier securityIdentifier) {
+  // Private constructor for utility class.
+  private IndexFactory() {}
 
-    return new IndexImpl(dataType, securityIdentifier);
+  /**
+   * Create an {@link Index} for data of a particular type and security.
+   * 
+   * @param dataType the data type of the index.
+   * @param security the security of the index.
+   * @return the new Index.
+   */
+  public static Index create(DataType dataType, SecurityIdentifier security) {
+
+    return new IndexImpl(dataType, security);
 
   }
 
+  /**
+   * Create a new {@link Index} from an existing one.
+   * 
+   * @param index the index to copy from.
+   * @return the new index.
+   */
   public static Index create(Index index) {
 
     IndexImpl from = null;

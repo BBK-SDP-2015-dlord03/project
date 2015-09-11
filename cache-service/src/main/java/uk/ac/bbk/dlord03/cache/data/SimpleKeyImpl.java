@@ -2,6 +2,13 @@ package uk.ac.bbk.dlord03.cache.data;
 
 import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
 
+/**
+ * A simple implementation of the {@link SimpleKey} interface with correctly implemented
+ * {@code hashcode()} and {@code equals()} methods.
+ * 
+ * @author David Lord
+ *
+ */
 public class SimpleKeyImpl implements SimpleKey {
 
   private static final long serialVersionUID = -2427181751666407572L;
@@ -9,8 +16,14 @@ public class SimpleKeyImpl implements SimpleKey {
   private final DataType dataType;
   private final SecurityIdentifier securityIdentifier;
 
-  public SimpleKeyImpl(DataType dataType,
-        SecurityIdentifier securityIdentifier) {
+  /**
+   * Create a {@link SimpleKeyImpl} object from a {@link DataType} and
+   * {@link SecurityIdentifier}.
+   * 
+   * @param dataType the data type for the key.
+   * @param securityIdentifier the identifier for the key.
+   */
+  public SimpleKeyImpl(DataType dataType, SecurityIdentifier securityIdentifier) {
     super();
     this.dataType = dataType;
     this.securityIdentifier = securityIdentifier;
@@ -36,8 +49,8 @@ public class SimpleKeyImpl implements SimpleKey {
 
   @Override
   public String toString() {
-    return String.format("SimpleCacheKey(dataType=%s,securityIdentifier=%s)",
-          dataType, securityIdentifier);
+    return String.format("SimpleCacheKey(dataType=%s,securityIdentifier=%s)", dataType,
+          securityIdentifier);
   }
 
   @Override

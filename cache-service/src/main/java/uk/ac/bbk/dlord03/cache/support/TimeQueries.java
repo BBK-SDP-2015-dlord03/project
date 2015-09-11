@@ -18,11 +18,11 @@ public class TimeQueries {
   private TimeQueries() {}
 
   /**
-   * Compares two {@link TemporalAccessor} objects with different precision.
+   * Returns a {@link TemporalQuery} which compares two {@link TemporalAccessor} objects
+   * with different precision.
    * 
    * @param other the other object to compare with.
-   * @return 0, -1 or 1 if the other object is equal, less than, or equal
-   *         respectively.
+   * @return 0, -1 or 1 if the other object is equal, less than, or equal respectively.
    * 
    */
   public static TemporalQuery<Integer> compareTo(TemporalAccessor other) {
@@ -40,6 +40,9 @@ public class TimeQueries {
   }
 
   /**
+   * Returns a {@link TemporalQuery} which extracts a @ {@code Long} timestamp from a
+   * {@link TemporalAccessor} object which may not have the necessary precision.
+   * 
    * @return
    */
   public static TemporalQuery<Long> getTimestamp() {
