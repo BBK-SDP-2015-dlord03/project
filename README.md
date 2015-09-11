@@ -54,4 +54,6 @@ The sample application should then start and be available at the URL `http://loc
 
 | URL | Description |
 |-----|-------------|
-| http://localhost:8080/option/VOD151016C00044000 | Get the latest version of the option with [OCC Code](https://en.wikipedia.org/wiki/Option_symbol) VOD151016C00044000 |
+| [/option/VOD151016C00044000](http://localhost:8080/option/VOD151016C00044000) | Get the latest version of the option with [OCC Code](https://en.wikipedia.org/wiki/Option_symbol) [VOD151016C00044000](http://finance.yahoo.com/q?s=VOD151016C00044000). |
+|[dividend/GSK.L?asof=20150420](http://localhost:8080/dividend/GSK.L?asof=20150420)| Get the end of day record for GlaxoSmithKline [GSL.L](https://www.google.co.uk/finance?q=LON:GSK) as of the 20th April 2015.|
+|[dividend/GSK.L?asof=101505](http://localhost:8080/dividend/GSK.L?asof=20150420)| Get the latest intra-ay record for GlaxoSmithKline [GSL.L](https://www.google.co.uk/finance?q=LON:GSK) as of 10:15:05AM today.|
