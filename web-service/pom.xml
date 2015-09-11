@@ -10,7 +10,6 @@
     <groupId>uk.ac.bbk.dcs.dlord03</groupId>
     <artifactId>root</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>web-service</artifactId>
