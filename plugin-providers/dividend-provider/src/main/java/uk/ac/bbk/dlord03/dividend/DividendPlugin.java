@@ -119,6 +119,10 @@ public class DividendPlugin implements Plugin<DividendSchedule> {
     this.handler = handler;
   }
 
+  public InvalidationReportHandler getHandler() {
+    return handler;
+  }
+
   private List<DividendSchedule> getDividends(SecurityIdentifier security) {
 
     List<DividendSchedule> result = new ArrayList<>();

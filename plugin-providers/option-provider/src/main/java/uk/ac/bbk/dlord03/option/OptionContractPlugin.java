@@ -19,20 +19,19 @@ import java.util.Scanner;
 
 /**
  * 
- * A simple plug-in for option contracts. This plug-in is backed by tab
- * separated text file containing option contract details. On each request the
- * text file is opened and parsed for records matching the query criteria.
+ * A simple plug-in for option contracts. This plug-in is backed by tab separated text
+ * file containing option contract details. On each request the text file is opened and
+ * parsed for records matching the query criteria.
  * </p>
- * This implementation is deliberately unoptimised. It reads the text file on
- * each request. This is to simulate the heavy cost of retrieving data from an
- * underlying data source.
+ * This implementation is deliberately unoptimised. It reads the text file on each
+ * request. This is to simulate the heavy cost of retrieving data from an underlying data
+ * source.
  * </p>
- * The option data in the test file has no versions. This is typical of some
- * types of data which don't change over time. In this case there will be only
- * one record that satisfies all temporal queries. This should be seen in the
- * query interface by the plug-in only getting called once for each option
- * contract. After the first request all subsequent queries can be serviced from
- * the cache.
+ * The option data in the test file has no versions. This is typical of some types of data
+ * which don't change over time. In this case there will be only one record that satisfies
+ * all temporal queries. This should be seen in the query interface by the plug-in only
+ * getting called once for each option contract. After the first request all subsequent
+ * queries can be serviced from the cache.
  * 
  * @author David Lord
  *
@@ -61,8 +60,8 @@ public class OptionContractPlugin implements Plugin<OptionContract> {
   @Override
   public OptionContract getLatestValue(SecurityIdentifier security) {
     OptionContract result = null;
-    try (Scanner dataSource = new Scanner(
-          this.getClass().getResourceAsStream("/data/optioncontracts.txt"))) {
+    try (Scanner dataSource =
+          new Scanner(this.getClass().getResourceAsStream("/data/optioncontracts.txt"))) {
       while (dataSource.hasNextLine()) {
         String record = dataSource.nextLine();
         try (Scanner recordScanner = new Scanner(record)) {
@@ -84,8 +83,12 @@ public class OptionContractPlugin implements Plugin<OptionContract> {
     return result;
   }
 
-  private OptionContract createOption(Double strike, String symbol, String type,
-        String expiry, String updated) {
+  public InvalidationReportHandler getHandler() {
+    return handler;
+  }
+
+  private OptionContract createOption(Double strike, String symbol, String type, String expiry,
+        String updated) {
 
     OptionType optionType = OptionType.valueOf(type);
 
@@ -100,15 +103,13 @@ public class OptionContractPlugin implements Plugin<OptionContract> {
   }
 
   @Override
-  public OptionContract getLatestValue(SecurityIdentifier security,
-        Instant before) {
+  public OptionContract getLatestValue(SecurityIdentifier security, Instant before) {
     // There is only one record for each option (the latest value).
     return getLatestValue(security);
   }
 
   @Override
-  public OptionContract getEndOfDayValue(SecurityIdentifier security,
-        LocalDate date) {
+  public OptionContract getEndOfDayValue(SecurityIdentifier security, LocalDate date) {
     // There is only one record for each option (the latest value).
     return getLatestValue(security);
   }

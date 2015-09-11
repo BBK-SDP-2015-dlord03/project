@@ -33,8 +33,7 @@ public class InstantIndexEntryTest {
 
   @Test
   public void testHashCode() {
-    IndexEntry<? extends TemporalAccessor> newIndexEntry =
-          serializeRoundTrip(indexEntry);
+    IndexEntry<? extends TemporalAccessor> newIndexEntry = serializeRoundTrip(indexEntry);
     Assert.assertEquals(indexEntry.hashCode(), newIndexEntry.hashCode());
   }
 
@@ -50,10 +49,8 @@ public class InstantIndexEntryTest {
 
   @Test
   public void testCompareTo() {
-    IndexEntry<? extends TemporalAccessor> newIndexEntry =
-          serializeRoundTrip(indexEntry);
-    Assert.assertEquals(0,
-          indexEntry.compareTo((IndexEntry<TemporalAccessor>) newIndexEntry));
+    IndexEntry<? extends TemporalAccessor> newIndexEntry = serializeRoundTrip(indexEntry);
+    Assert.assertEquals(0, indexEntry.compareTo(newIndexEntry));
   }
 
   @Test
@@ -63,8 +60,7 @@ public class InstantIndexEntryTest {
 
   @Test
   public void testEqualsObject() {
-    IndexEntry<? extends TemporalAccessor> newIndexEntry =
-          serializeRoundTrip(indexEntry);
+    IndexEntry<? extends TemporalAccessor> newIndexEntry = serializeRoundTrip(indexEntry);
     Assert.assertEquals(indexEntry, newIndexEntry);
   }
 

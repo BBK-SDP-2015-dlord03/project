@@ -18,8 +18,8 @@ public class InvalidationReportHandlerImplTest {
     queryService = new InvalidationHandler();
 
     InvalidationReportHandler reportHandler;
-    reportHandler = new InvalidationReportHandlerImpl<OptionContract>(
-          queryService, OptionContract.class);
+    reportHandler =
+          new InvalidationReportHandlerImpl<OptionContract>(queryService, OptionContract.class);
 
     reportHandler.invalidate(new InvalidationReport() {
 
@@ -44,10 +44,9 @@ public class InvalidationReportHandlerImplTest {
 
   }
 
-  private static class InvalidationHandler
-        implements PluginInvalidationReportHandler {
+  public static class InvalidationHandler implements PluginInvalidationReportHandler {
 
-    Class handledType;
+    Class<? extends SecurityData> handledType;
     InvalidationReport handledReport;
 
     @Override
@@ -55,6 +54,14 @@ public class InvalidationReportHandlerImplTest {
           InvalidationReport report) {
       this.handledType = type;
       this.handledReport = report;
+    }
+
+    public Class<? extends SecurityData> getHandledType() {
+      return handledType;
+    }
+
+    public InvalidationReport getHandledReport() {
+      return handledReport;
     }
 
   }

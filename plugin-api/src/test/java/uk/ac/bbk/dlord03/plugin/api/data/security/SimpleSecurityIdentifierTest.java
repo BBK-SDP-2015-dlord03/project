@@ -49,6 +49,11 @@ public class SimpleSecurityIdentifierTest {
   }
 
   @Test
+  public void testEqualToAnother() {
+    Assert.assertEquals(britishTelecom1, britishTelecom2);
+  }
+
+  @Test
   public void testNotEqualToNull() {
     Assert.assertNotEquals(britishTelecom1, null);
   }
