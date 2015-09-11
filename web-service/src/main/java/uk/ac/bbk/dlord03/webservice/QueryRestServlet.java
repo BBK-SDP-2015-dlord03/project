@@ -44,7 +44,7 @@ public class QueryRestServlet<T> {
 
     validateRequest();
     MultivaluedMap<String, String> queryParams;
-    queryParams = new MultivaluedHashMap<>(uriInfo.getQueryParameters());
+    queryParams = copyMap(uriInfo.getQueryParameters());
     queryParams.add("symbolType", IdentifierScheme.OCC.toString());
     queryParams.add("symbol", symbol);
     queryParams.add("dataType", DataType.OPTION.toString());
@@ -63,7 +63,7 @@ public class QueryRestServlet<T> {
 
     validateRequest();
     MultivaluedMap<String, String> queryParams;
-    queryParams = new MultivaluedHashMap<>(uriInfo.getQueryParameters());
+    queryParams = copyMap(uriInfo.getQueryParameters());
     queryParams.add("symbolType", IdentifierScheme.RIC.toString());
     queryParams.add("symbol", symbol);
     queryParams.add("dataType", DataType.DIVIDEND.toString());
@@ -71,6 +71,14 @@ public class QueryRestServlet<T> {
     DividendSchedule dividends;
     dividends = executeQuery(queryParams);
     return new DividendsJsonBean(dividends);
+
+  }
+
+  private static MultivaluedMap<String, String> copyMap(MultivaluedMap<String, String> from) {
+    MultivaluedMap<String, String> newMap;
+    newMap = new MultivaluedHashMap<>();
+    from.forEach((key, value) -> newMap.put(key, value));
+    return newMap;
 
   }
 
