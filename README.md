@@ -1,12 +1,12 @@
 
 # Integration of Heterogeneous Data Sources for Financial Risk Calculations Using Cache Plugins
 
-## Birkbeck, University of London  
-## Department of Computer Science and Information Systems  
+## Birkbeck, University of London
+Department of Computer Science and Information Systems
 
-## MSc Computing for the Financial Services  
-## Project Report  
-## 2015
+## MSc Computing for the Financial Services
+Project Report  <br />
+2015
 
 
 
