@@ -1,51 +1,57 @@
-### BIRKBECK, UNIVERSITY OF LONDON
-#### DEPARTMENT OF COMPUTER SCIENCE AND INFORMATION SYSTEMS
 
-#### MSC COMPUTING FOR THE FINANCIAL SERVICES
-#### PROJECT REPORT
-#### 2015
+# Integration of Heterogeneous Data Sources for Financial Risk Calculations Using Cache Plugins
 
-# INTEGRATION OF HETEROGENEOUS DATA SOURCES FOR FINANCIAL RISK CALCULATIONS USING CACHE PLUGINS
+## Birkbeck, University of London
+## Department of Computer Science and Information Systems
+
+## MSc Computing for the Financial Services
+## Project Report
+## 2015
+
+
 
 Supervisor:   Dr Nigel Martin
 
 Author:	      David Lord
 
-# Task List
-* TODO Add JavaDoc coverage policy into this README.
-* TODO Add JavaDoc to all classes 
-* TODO Add instructions for building and running reference implementation to this README.
-* TODO Add FindBugs report into Maven build and include screen shot in report.
-* TODO Add CheckStyle report into Maven build and include screen shot in report.
-
-# matic-very-simple-example
-
-A very simple example project for Matic using one Jade template and one schema file.
-
-## Deprecated
-Please see [Matic-draft4-example](https://github.com/mattyod/matic-draft4-example).
-
 ## Dependencies
-To build this example you will need to install the following two node packages:
+To build this project you will need to the following :
 
-[Matic](https://github.com/mattyod/matic)
+* [Java SE Development Kit 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or above
 
-and
-
-[Jade](https://github.com/visionmedia/jade)
+* [Maven 3.3.3](https://maven.apache.org/download.cgi) or above
 
 ## Installation
 Then you can download this repository with
 
-    git clone https://github.com/mattyod/matic-very-simple-example.git
+	git clone https://github.com/BBK-SDP-2015-dlord03/project.git
 
-## Building the example docs
+## Building
 Then simply navigate into the newly cloned example folder and run:
 
-    matic
+    mvn package
 
-You should now have a new folder called 'web' within the sample project. Within this should be a file called very-simple-example.html, open this with a browser and view the generated documentation.
+This will compile, test and package all the modules in the project. When the build is complete you should see the following message:
 
-Please note this particular example is built to work as a simple local flat file system and so paths are not set as they would be if files were hosted on a server. That means you can just double click the generated HTML file and view it in your default browser.
+	[INFO] Cache Plugin Project ............................... SUCCESS [  0.114 s]
+	[INFO] Plugin API ......................................... SUCCESS [  2.328 s]
+	[INFO] Plugin Providers ................................... SUCCESS [  0.002 s]
+	[INFO] Dividend Plugin .................................... SUCCESS [  0.293 s]
+	[INFO] Volatility Plugin .................................. SUCCESS [  0.132 s]
+	[INFO] Option Plugin ...................................... SUCCESS [  0.180 s]
+	[INFO] Cache Query Service ................................ SUCCESS [  2.335 s]
+	[INFO] Web Service ........................................ SUCCESS [  0.625 s]
+	[INFO] Distribution ....................................... SUCCESS [  4.943 s]
 
-[An example of the output](http://mattyod.github.com/matic-very-simple-example/).
+
+## Running the Sample
+
+After building the project as shown above you should now have a new folder called `distribution/target/distribution-1.0-SNAPSHOT/` within the project directory. To start the demonstration web services application `cd` to that directory and type in the following:
+
+	%JAVA_HOME%\bin\java -classpath * uk.ac.bbk.dlord03.webservice.Main
+
+The sample application should then start and be available at the URL `http://localhost:8080`. Some example queries are shown below.
+
+| URL | Description |
+|-----|-------------|
+| http://localhost:8080/option/VOD151016C00044000 | Get the latest version of the option with [OCC Code](https://en.wikipedia.org/wiki/Option_symbol) VOD151016C00044000 |
