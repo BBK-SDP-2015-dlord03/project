@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,17 +22,16 @@ import java.util.Scanner;
 
 /**
  * 
- * A simple plug-in for dividend schedules. This plug-in is backed by tab
- * separated text file containing dividend details. On each request the text
- * file is opened and parsed for records matching the query criteria.
+ * A simple plug-in for dividend schedules. This plug-in is backed by tab separated text
+ * file containing dividend details. On each request the text file is opened and parsed
+ * for records matching the query criteria.
  * </p>
- * This implementation is deliberately unoptimised. It reads the text file on
- * each request. This is to simulate the heavy cost of retrieving data from an
- * underlying data source.
+ * This implementation is deliberately unoptimised. It reads the text file on each
+ * request. This is to simulate the heavy cost of retrieving data from an underlying data
+ * source.
  * </p>
- * The dividend data in the test file holds four versions of a dividend schedule
- * for GlaxoSmithKline
- * <a href="https://uk.finance.yahoo.com/q?s=GSK.L">GSK.L</a>.
+ * The dividend data in the test file holds four versions of a dividend schedule for
+ * GlaxoSmithKline <a href="https://uk.finance.yahoo.com/q?s=GSK.L">GSK.L</a>.
  * </p>
  * 
  * @author David Lord
@@ -60,8 +60,8 @@ public class DividendPlugin implements Plugin<DividendSchedule> {
 
   @Override
   public DividendSchedule getLatestValue(SecurityIdentifier security) {
-    Optional<DividendSchedule> result = getDividends(security).stream()
-          .max(new Comparator<DividendSchedule>() {
+    Optional<DividendSchedule> result =
+          getDividends(security).stream().max(new Comparator<DividendSchedule>() {
 
             @Override
             public int compare(DividendSchedule o1, DividendSchedule o2) {
@@ -72,17 +72,41 @@ public class DividendPlugin implements Plugin<DividendSchedule> {
   }
 
   @Override
-  public DividendSchedule getLatestValue(SecurityIdentifier security,
-        Instant before) {
-    // TODO Auto-generated method stub
-    return null;
+  public DividendSchedule getLatestValue(SecurityIdentifier security, Instant before) {
+    Optional<DividendSchedule> result =
+          getDividends(security).stream().filter(p -> p.getUpdatedAt().toInstant().isBefore(before))
+                .max(new Comparator<DividendSchedule>() {
+
+                  @Override
+                  public int compare(DividendSchedule o1, DividendSchedule o2) {
+                    return o1.getUpdatedAt().compareTo(o2.getUpdatedAt());
+                  }
+                });
+    return result.orElse(null);
   }
 
   @Override
-  public DividendSchedule getEndOfDayValue(SecurityIdentifier security,
-        LocalDate date) {
-    // TODO Auto-generated method stub
-    return null;
+  public DividendSchedule getEndOfDayValue(SecurityIdentifier security, LocalDate date) {
+    Instant predicate = getInstantFromLocalDate(date);
+    Optional<DividendSchedule> result = getDividends(security).stream()
+          .filter(p -> p.getUpdatedAt().toInstant().isBefore(predicate))
+          .max(new Comparator<DividendSchedule>() {
+
+            @Override
+            public int compare(DividendSchedule o1, DividendSchedule o2) {
+              return o1.getUpdatedAt().compareTo(o2.getUpdatedAt());
+            }
+          });
+    return result.orElse(null);
+  }
+
+  private Instant getInstantFromLocalDate(LocalDate date) {
+    ZonedDateTime now = ZonedDateTime.now();
+    now = now.truncatedTo(ChronoUnit.DAYS);
+    now = now.withYear(date.getYear());
+    now = now.withMonth(date.getMonthValue());
+    now = now.withDayOfMonth(date.getDayOfMonth());
+    return now.toInstant();
   }
 
   @Override
@@ -102,8 +126,7 @@ public class DividendPlugin implements Plugin<DividendSchedule> {
     if (!"GSK.L".equals(security.getSymbol()))
       return result;
 
-    try (Scanner dataSource =
-          new Scanner(this.getClass().getResourceAsStream("/data/gsk.txt"))) {
+    try (Scanner dataSource = new Scanner(this.getClass().getResourceAsStream("/data/gsk.txt"))) {
 
       String currency = dataSource.nextLine().trim();
       DividendScheduleImpl divs = null;

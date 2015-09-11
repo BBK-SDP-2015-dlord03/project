@@ -10,34 +10,33 @@ import javax.ws.rs.NotFoundException;
 
 public class QueryCommand {
 
-  final private DataType type;
   final private QueryService service;
+  final private CommandParser command;
 
-  public QueryCommand(DataType type, QueryService service) {
-    super();
-    this.type = type;
+  public QueryCommand(QueryService service, CommandParser command) {
     this.service = service;
+    this.command = command;
   }
 
-  public <T extends SecurityData> T getValue(SecurityIdentifier id,
-        String asof) {
+  public <T extends SecurityData> T execute() {
 
-    PredicateParser predicate = new PredicateParser(asof);
-    if (predicate == null || !predicate.isValid()) {
-      throw new BadRequestException("Invalid predicate.");
+    if (!command.isValid()) {
+      throw new BadRequestException();
     }
 
+    SecurityIdentifier id = command.getSecurityIdentifier();
+    DataType type = command.getDataType();
     T result = null;
 
-    switch (predicate.getType()) {
-      case LATEST:
+    switch (command.getCommandType()) {
+      case LATEST_QUERY:
         result = service.getLatestValue(type, id);
         break;
-      case INTRADAY:
-        result = service.getLatestValue(type, id, predicate.getInstant());
+      case INTRADAY_QUERY:
+        result = service.getLatestValue(type, id, command.getInstant());
         break;
-      case ENDOFDAY:
-        result = service.getEndOfDayValue(type, id, predicate.getLocalDate());
+      case ENDOFDAY_QUERY:
+        result = service.getEndOfDayValue(type, id, command.getLocalDate());
         break;
       default:
         throw new BadRequestException("Invalid predicate.");
@@ -48,7 +47,6 @@ public class QueryCommand {
     }
 
     return result;
-
   }
 
 }

@@ -39,7 +39,7 @@ public class SimpleSecurityIdentifier implements SecurityIdentifier {
 
   @Override
   public String toString() {
-    return String.format("SecurityIdentifier(scheme=%s,symbol=%s)", scheme, symbol);
+    return String.format("%s:%s", scheme, symbol);
   }
 
   @Override

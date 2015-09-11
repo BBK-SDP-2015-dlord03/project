@@ -24,6 +24,8 @@ import uk.ac.bbk.dlord03.plugin.api.event.InvalidationReport;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
@@ -118,7 +120,7 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
         cache.put(key, result);
       }
     } else {
-      LOG.info("Found result in cache.");
+      LOG.info("Found result in latest cache.");
     }
 
     if (result == null) {
@@ -150,7 +152,8 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
     String typeName = type.toString().toLowerCase();
     if (foundKey == null) {
 
-      LOG.info("Querying {} plugin for latest value of {} before {}.", typeName, security, before);
+      LOG.info("Querying {} plugin for latest value of {} before {}.", typeName, security,
+            formatTimestamp(before));
 
       result = (T) getPlugin(type).getLatestValue(security, before);
       if (result != null) {
@@ -168,7 +171,8 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
     } else {
 
-      LOG.info("Found qualifying previous {} result in index.", typeName);
+      LOG.info("Found qualifying previous {} result in index (last updated {}).", typeName,
+            formatTimestamp(foundKey.getTimestamp()));
       result = (T) cache.get(foundKey);
 
     }
@@ -178,6 +182,11 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
     }
     return result;
 
+  }
+
+  private static String formatTimestamp(Instant timestamp) {
+    LocalDateTime ldt = LocalDateTime.ofInstant(timestamp, ZoneId.systemDefault());
+    return ldt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
   }
 
   @SuppressWarnings("unchecked")
@@ -203,7 +212,8 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
     String typeName = type.toString().toLowerCase();
     if (foundKey == null) {
 
-      LOG.info("Querying {} plugin for latest value of {} before {}.", typeName, security, date);
+      LOG.info("Querying {} plugin for end of day value of {} before {}.", typeName, security,
+            date);
 
       result = (T) getPlugin(type).getEndOfDayValue(security, date);
       if (result != null) {
@@ -221,7 +231,8 @@ public class QueryServiceImpl implements QueryService, PluginInvalidationReportH
 
     } else {
 
-      LOG.info("Found qualifying previous {} result in index.", typeName);
+      LOG.info("Found qualifying previous {} result in index (last updated {}).", typeName,
+            formatTimestamp(foundKey.getTimestamp()));
       result = (T) cache.get(foundKey);
 
     }

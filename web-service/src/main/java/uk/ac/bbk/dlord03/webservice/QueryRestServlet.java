@@ -7,9 +7,8 @@ import uk.ac.bbk.dlord03.cache.QueryService;
 import uk.ac.bbk.dlord03.cache.data.DataType;
 import uk.ac.bbk.dlord03.plugin.api.data.DividendSchedule;
 import uk.ac.bbk.dlord03.plugin.api.data.OptionContract;
+import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
 import uk.ac.bbk.dlord03.plugin.api.data.security.IdentifierScheme;
-import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
-import uk.ac.bbk.dlord03.plugin.api.data.security.SimpleSecurityIdentifier;
 import uk.ac.bbk.dlord03.webservice.beans.DividendsJsonBean;
 import uk.ac.bbk.dlord03.webservice.beans.OptionJsonBean;
 
@@ -23,6 +22,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
 
 @Path("/")
@@ -41,22 +42,16 @@ public class QueryRestServlet<T> {
   public OptionJsonBean getOption(@PathParam("symbol") String symbol,
         @QueryParam("asof") String asof) {
 
-    logRequest();
-    OptionJsonBean result = null;
+    validateRequest();
+    MultivaluedMap<String, String> queryParams;
+    queryParams = new MultivaluedHashMap<>(uriInfo.getQueryParameters());
+    queryParams.add("symbolType", IdentifierScheme.OCC.toString());
+    queryParams.add("symbol", symbol);
+    queryParams.add("dataType", DataType.OPTION.toString());
 
-    try {
-      result = lookupOption(symbol, asof);
-    } catch (BadRequestException bre) {
-      LOG.warn(bre.getMessage());
-      throw bre;
-    } catch (NotFoundException nfe) {
-      throw nfe;
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw e;
-    }
-
-    return result;
+    OptionContract option;
+    option = executeQuery(queryParams);
+    return new OptionJsonBean(option);
 
   }
 
@@ -66,52 +61,47 @@ public class QueryRestServlet<T> {
   public DividendsJsonBean getDividend(@PathParam("symbol") String symbol,
         @QueryParam("asof") String asof) {
 
-    logRequest();
-    DividendsJsonBean result = null;
+    validateRequest();
+    MultivaluedMap<String, String> queryParams;
+    queryParams = new MultivaluedHashMap<>(uriInfo.getQueryParameters());
+    queryParams.add("symbolType", IdentifierScheme.RIC.toString());
+    queryParams.add("symbol", symbol);
+    queryParams.add("dataType", DataType.DIVIDEND.toString());
 
+    DividendSchedule dividends;
+    dividends = executeQuery(queryParams);
+    return new DividendsJsonBean(dividends);
+
+  }
+
+  private <V extends SecurityData> V executeQuery(MultivaluedMap<String, String> params) {
     try {
-      result = lookupDividend(symbol, asof);
+      final CommandParser command = new CommandParser(params);
+      final QueryCommand query = createCacheQuery(command);
+      return query.execute();
     } catch (BadRequestException bre) {
       LOG.warn(bre.getMessage());
       throw bre;
     } catch (NotFoundException nfe) {
       throw nfe;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error(e.getMessage());;
       throw e;
     }
-
-    return result;
   }
 
-  private DividendsJsonBean lookupDividend(String symbol, String asof) {
-    final SecurityIdentifier id;
-    id = createSecurityIdentifier(IdentifierScheme.RIC, symbol);
-    final QueryCommand query = createCacheQuery(DataType.DIVIDEND);
-    DividendSchedule dividends;
-    dividends = query.getValue(id, asof);
-    return new DividendsJsonBean(dividends);
-  }
-
-  private OptionJsonBean lookupOption(String symbol, String asof) {
-    final SecurityIdentifier id;
-    id = createSecurityIdentifier(IdentifierScheme.OCC, symbol);
-    final QueryCommand query = createCacheQuery(DataType.OPTION);
-    OptionContract option;
-    option = query.getValue(id, asof);
-    return new OptionJsonBean(option);
-  }
-
-  private SecurityIdentifier createSecurityIdentifier(IdentifierScheme scheme, String symbol) {
-    return new SimpleSecurityIdentifier(scheme, symbol);
-  }
-
-  private void logRequest() {
+  private void validateRequest() {
+    uriInfo.getQueryParameters().forEach((paramName, paramValue) -> {
+      if (!"asof".equals(paramName) && !"symbol".equals(paramName)) {
+        LOG.info("Invalid parameter {}={}", paramName, paramValue);
+        throw new BadRequestException();
+      }
+    });
     LOG.info("Received request: {}", uriInfo.getRequestUri());
   }
 
-  private QueryCommand createCacheQuery(DataType type) {
-    return new QueryCommand(type, getQueryService());
+  private QueryCommand createCacheQuery(CommandParser command) {
+    return new QueryCommand(getQueryService(), command);
   }
 
   private QueryService getQueryService() {
