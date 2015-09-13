@@ -6,13 +6,15 @@ import uk.ac.bbk.dlord03.plugin.api.data.SecurityData;
 import uk.ac.bbk.dlord03.plugin.api.data.VolatilitySurface;
 
 /**
- * Represents the different types of data held in a cache and the classes that represent them.
+ * Represents the different types of data held in a cache and the classes that represent
+ * them.
  * 
  * @author David Lord
- * @formatter:off
  *
  */
 public enum DataType {
+
+  // @formatter:off
 
   /**
    * Option contract details.
@@ -26,6 +28,8 @@ public enum DataType {
    * Volatility surface.
    */
   VOLATILITY("volatility", VolatilitySurface.class);
+
+  // @formatter:on
 
   private final String name;
   private final Class<? extends SecurityData> valueClass;
@@ -42,7 +46,7 @@ public enum DataType {
   public Class<? extends SecurityData> getValueClass() {
     return valueClass;
   }
-  
+
   public static DataType valueOf(Class<? extends SecurityData> valueClass) {
     if (valueClass.equals(OptionContract.class)) {
       return OPTION;
@@ -54,7 +58,7 @@ public enum DataType {
       return VOLATILITY;
     }
     return null;
-    
+
   }
 
 }

@@ -6,11 +6,12 @@ package uk.ac.bbk.dlord03.plugin.api.data.security;
  * organisations.
  * 
  * @author David Lord
- * @formatter:off
  *
  */
 public enum IdentifierScheme {
 
+  // @formatter:off
+  
   /**
    * International Securities Identification Number.
    */
@@ -36,4 +37,5 @@ public enum IdentifierScheme {
    */
   OCC
 
+  // @formatter:on
 }

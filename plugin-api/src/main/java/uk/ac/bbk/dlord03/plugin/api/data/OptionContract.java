@@ -10,7 +10,7 @@ import uk.ac.bbk.dlord03.plugin.api.data.security.SecurityIdentifier;
  * sell (put) a security or other financial asset at an agreed-upon price (the
  * strike price) during a certain period of time or on a specific date (expiry
  * date).
- * </p>
+ * <p>
  * For an example of the simple representation of these contracts see Yahoo!
  * Finance's options listing for Vodafone Group PLC (
  * <a href="http://finance.yahoo.com/q/op?s=VOD+Options">VOD</a> ). For the

@@ -15,10 +15,10 @@ import java.util.Properties;
  * contribute data to the cache. Implementers of this interface must provide a no argument
  * constructor and initialise themselves from the <code>Properties</code> passed to them
  * via the {@link #open(Properties)} command.
- * <p/>
+ * <p>
  * Plug-in implementors must provide results for the required query methods by querying
  * their underlying data stores.
- * <p/>
+ * <p>
  * Cache consistency must be maintained via registering the passed in
  * {@link InvalidationReportHandler} and calling it with the affected records whenever the
  * underlying data store makes changes to its data which will invalid previously cached

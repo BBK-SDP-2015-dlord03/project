@@ -25,14 +25,14 @@ import java.util.Scanner;
  * A simple plug-in for dividend schedules. This plug-in is backed by tab separated text
  * file containing dividend details. On each request the text file is opened and parsed
  * for records matching the query criteria.
- * </p>
+ * <p>
  * This implementation is deliberately unoptimised. It reads the text file on each
  * request. This is to simulate the heavy cost of retrieving data from an underlying data
  * source.
- * </p>
+ * <p>
  * The dividend data in the test file holds four versions of a dividend schedule for
  * GlaxoSmithKline <a href="https://uk.finance.yahoo.com/q?s=GSK.L">GSK.L</a>.
- * </p>
+ * <p>
  * 
  * @author David Lord
  *
